@@ -9,7 +9,7 @@ export default function useProductStore() {
     productStore.subscribe(forceUpdate);
 
     return () => productStore.unSubscribe(forceUpdate);
-  });
+  }, []);
 
   return productStore;
 }

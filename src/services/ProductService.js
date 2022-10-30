@@ -5,14 +5,6 @@ import config from '../../config';
 const baseurl = config.apiBaseUrl;
 
 export default class ProductService {
-  constructor() {
-    this.accessToken = '';
-  }
-
-  setAccessToken(accessToken) {
-    this.accessToken = accessToken;
-  }
-
   async fetchProduct(productId) {
     const url = `${baseurl}/products/${productId}`;
     const { data } = await axios.get(url);
@@ -20,6 +12,20 @@ export default class ProductService {
     const product = data;
 
     return product;
+  }
+
+  async fetchWishes(prodcutId, accessToken) {
+    const url = `${baseurl}/products/wishes/${prodcutId}`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${{ accessToken }}`,
+      },
+    });
+
+    const wishes = data;
+
+    return wishes;
   }
 }
 

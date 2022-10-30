@@ -1,22 +1,57 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ProductDetail from '../components/ProductDetail';
 import useProductStore from '../hooks/useProductStore';
 
 export default function ProductDetailPage() {
   const productStore = useProductStore();
 
-  const { productId } = useParams();
+  const location = useLocation();
+
+  const productId = Number(location.pathname.split('/')[2]);
 
   useEffect(() => {
     productStore.fetchProduct(productId);
-  });
+  }, []);
 
-  const { product } = productStore;
+  const {
+    product, thumbnailUrl, productOptions, totalPayment, quantity,
+  } = productStore;
+
+  const handleSelectOption = (productOption) => {
+    const amount = productOption.addAmount;
+
+    productStore.selectOption(amount);
+  };
+
+  const handleClickAddQuantity = () => {
+    productStore.addQuantity();
+  };
+
+  const handleClickReduceQuantity = () => {
+    productStore.reduceQuantity();
+  };
+
+  const handleClickResetOption = () => {
+    productStore.resetQuantityAndTotalPayment();
+  };
+
+  const handleClickWishes = (prodcutId, accessToken) => {
+    productStore.fetchwishes(productId, accessToken);
+  };
 
   return (
     <ProductDetail
-      prodcut={product}
+      product={product}
+      thumbnailUrl={thumbnailUrl}
+      productOptions={productOptions}
+      handleSelectOption={handleSelectOption}
+      totalPayment={totalPayment}
+      handleClickAddQuantity={handleClickAddQuantity}
+      handleClickReduceQuantity={handleClickReduceQuantity}
+      quantity={quantity}
+      handleClickResetOption={handleClickResetOption}
+      handleClickWishes={handleClickWishes}
     />
   );
 }
