@@ -36,6 +36,10 @@ export default function ProductDetailPage() {
     productStore.resetQuantityAndTotalPayment();
   };
 
+  const handleClickWishes = (prodcutId, accessToken) => {
+    productStore.fetchwishes(productId, accessToken);
+  };
+
   return (
     <ProductDetail
       product={product}
@@ -47,6 +51,7 @@ export default function ProductDetailPage() {
       handleClickReduceQuantity={handleClickReduceQuantity}
       quantity={quantity}
       handleClickResetOption={handleClickResetOption}
+      handleClickWishes={handleClickWishes}
     />
   );
 }

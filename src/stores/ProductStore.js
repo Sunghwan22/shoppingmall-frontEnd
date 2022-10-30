@@ -28,6 +28,12 @@ export default class ProductStore {
     this.publish();
   }
 
+  async fetchwishes(prodcutId, accessToken) {
+    this.product.wishes = await productService.fetchWishes(prodcutId, accessToken);
+
+    this.publish();
+  }
+
   selectOption(amount) {
     this.totalPayment = this.product.price + amount;
 

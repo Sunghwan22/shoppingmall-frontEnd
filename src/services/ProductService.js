@@ -13,6 +13,20 @@ export default class ProductService {
 
     return product;
   }
+
+  async fetchWishes(prodcutId, accessToken) {
+    const url = `${baseurl}/products/wishes/${prodcutId}`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${{ accessToken }}`,
+      },
+    });
+
+    const wishes = data;
+
+    return wishes;
+  }
 }
 
 export const productService = new ProductService();

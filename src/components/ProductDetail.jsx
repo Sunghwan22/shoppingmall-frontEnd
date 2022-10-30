@@ -1,13 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 import numberFormat from '../utils/NumberFormat';
 
 export default function ProductDetail(
   {
     product, thumbnailUrl, productOptions, handleSelectOption, totalPayment,
     handleClickAddQuantity, handleClickReduceQuantity, quantity, handleClickResetOption,
+    handleClickWishes,
   },
 
 ) {
+  const [accessToken] = useLocalStorage('accessToken', '');
+  const navigate = useNavigate();
+
   const [selectedOption, setSelectedOption] = useState(false);
 
   const handleClickOption = (event) => {
@@ -35,7 +41,11 @@ export default function ProductDetail(
   };
 
   const handleClickWish = () => {
+    if (!accessToken) {
+      navigate('/login');
+    }
 
+    handleClickWishes(product.id, accessToken);
   };
 
   return (
