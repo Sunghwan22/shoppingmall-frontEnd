@@ -7,25 +7,24 @@ const baseurl = config.apiBaseUrl;
 export default class ProductService {
   async fetchProduct(productId) {
     const url = `${baseurl}/products/${productId}`;
+
     const { data } = await axios.get(url);
 
-    const product = data;
-
-    return product;
+    return data;
   }
 
-  async fetchWishes(prodcutId, accessToken) {
-    const url = `${baseurl}/products/wishes/${prodcutId}`;
+  async fetchWishes(productId, accessToken) {
+    const url = `${baseurl}/products/wishes`;
 
-    const { data } = await axios.get(url, {
+    const { data } = await axios.post(url, { productId }, {
       headers: {
-        Authorization: `Bearer ${{ accessToken }}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    const wishes = data;
+    const wishNumber = data;
 
-    return wishes;
+    return wishNumber;
   }
 }
 
