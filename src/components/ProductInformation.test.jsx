@@ -7,7 +7,7 @@ export default function ProductDetail(
   {
     product, thumbnailUrl, productOptions, handleSelectOption, totalPayment,
     handleClickAddQuantity, handleClickReduceQuantity, quantity, handleClickResetOption,
-    handleClickWishes,
+    handleClickWishes, productImages,
   },
 
 ) {
@@ -56,6 +56,7 @@ export default function ProductDetail(
         width="200px"
       />
       <p>Product Info</p>
+      {' '}
       <p>
         브랜드
         {' '}
@@ -130,7 +131,7 @@ export default function ProductDetail(
         <button
           type="button"
         >
-          구매후기
+          구매하기
         </button>
         <button
           type="button"
@@ -143,8 +144,24 @@ export default function ProductDetail(
         <button
           type="button"
         >
-          구매후기
+          장바구니
         </button>
+        <div>
+          <p>
+            상품상세 설명
+          </p>
+          <p>
+            {productImages.map((productImage) => (
+              <img
+                key={productImage.id}
+                src={productImage.url}
+                alt="subProductImage"
+                width="200px"
+              />
+            ))}
+          </p>
+          <p>{product.description}</p>
+        </div>
       </div>
     </div>
   );

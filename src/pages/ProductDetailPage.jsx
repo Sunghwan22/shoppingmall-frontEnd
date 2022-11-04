@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import ProductDetail from '../components/ProductDetail';
+import ProductBestReview from '../components/ProductBestReview';
+import ProductDetailDescription from '../components/ProductDetaiDescription';
+import ProductInformation from '../components/ProductInformation';
+import ProductReviews from '../components/ProductReviews';
+
 import useProductStore from '../hooks/useProductStore';
 
 export default function ProductDetailPage() {
@@ -16,12 +20,13 @@ export default function ProductDetailPage() {
 
   const {
     product, thumbnailUrl, productOptions, totalPayment, quantity,
+    productImages, reviews, bestReviews, totalRating, reviewImages,
   } = productStore;
 
   const handleSelectOption = (productOption) => {
     const amount = productOption.addAmount;
 
-    productStore.selectOption(amount);
+    productStore.selectOption(amount, productOption);
   };
 
   const handleClickAddQuantity = () => {
@@ -36,22 +41,45 @@ export default function ProductDetailPage() {
     productStore.resetQuantityAndTotalPayment();
   };
 
-  const handleClickWishes = (prodcutId, accessToken) => {
+  const handleClickWishes = (accessToken) => {
     productStore.fetchwishes(productId, accessToken);
   };
 
+  const handleClickAddCart = (accessToken) => {
+    productStore.addCartItem(productId, accessToken);
+  };
+
   return (
-    <ProductDetail
-      product={product}
-      thumbnailUrl={thumbnailUrl}
-      productOptions={productOptions}
-      handleSelectOption={handleSelectOption}
-      totalPayment={totalPayment}
-      handleClickAddQuantity={handleClickAddQuantity}
-      handleClickReduceQuantity={handleClickReduceQuantity}
-      quantity={quantity}
-      handleClickResetOption={handleClickResetOption}
-      handleClickWishes={handleClickWishes}
-    />
+    <div>
+      <ProductInformation
+        product={product}
+        thumbnailUrl={thumbnailUrl}
+        productOptions={productOptions}
+        handleSelectOption={handleSelectOption}
+        totalPayment={totalPayment}
+        handleClickAddQuantity={handleClickAddQuantity}
+        handleClickReduceQuantity={handleClickReduceQuantity}
+        quantity={quantity}
+        handleClickResetOption={handleClickResetOption}
+        handleClickWishes={handleClickWishes}
+        handleClickAddCart={handleClickAddCart}
+      />
+      <ProductBestReview
+        totalRating={totalRating}
+        bestReviews={bestReviews}
+        reviews={reviews}
+        reviewImages={reviewImages}
+      />
+      <ProductDetailDescription
+        product={product}
+        productImages={productImages}
+      />
+      <ProductReviews
+        totalRating={totalRating}
+
+        reviews={reviews}
+        reviewImages={reviewImages}
+      />
+    </div>
   );
 }
