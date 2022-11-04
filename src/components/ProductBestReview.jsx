@@ -1,9 +1,17 @@
 export default function ProductBestReview(
   {
-    bestReviews, reviews, totalRating, reviewImages,
+    bestReviews, reviews, totalRating, reviewImages, onClickReview,
+  },
+
+  handleClickBestReview = () => {
+    onClickReview();
   },
 
 ) {
+  if (bestReviews.length === 0) {
+    return <p>베스트 리뷰로 등록된 리뷰가 없습니다</p>;
+  }
+
   return (
     <div>
       <p>
@@ -19,7 +27,10 @@ export default function ProductBestReview(
       <ul>
         {bestReviews.map((bestReview) => (
           <li key={bestReview.id}>
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => handleClickBestReview(bestReview.id)}
+            >
               <span>
                 ★★★★★
                 {' '}

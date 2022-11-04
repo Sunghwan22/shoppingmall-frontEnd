@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { cartService } from '../services/CartService';
-import { productService } from '../services/ProductService';
+import { productApiService } from '../services/ProductApiService';
 
 export default class ProductStore {
   constructor() {
@@ -14,6 +14,8 @@ export default class ProductStore {
 
     this.reviews = [];
     this.bestReviews = [];
+    this.generalReviews = [];
+    this.recommendations = [];
 
     this.totalRating = 0;
     this.totalPayment = 0;
@@ -27,7 +29,7 @@ export default class ProductStore {
   }
 
   async fetchProduct(productId) {
-    this.product = await productService.fetchProduct(productId);
+    this.product = await productApiService.fetchProduct(productId);
 
     this.thumbnailUrl = this.product.images.find((productImage) => productImage.thumbnailImage).url;
     this.productImages = this.product.images.filter((productImage) => (productImage.thumbnailImage === false));
@@ -35,8 +37,11 @@ export default class ProductStore {
     this.productOptions = this.product.options;
 
     this.reviews = this.product.reviews;
+    this.generalReviews = this.product.reviews.filter((review) => review.bestReview === false);
     this.bestReviews = this.product.reviews.filter((review) => review.bestReview === true);
     this.bestReviews.length = 4;
+
+    this.recommendations = this.product.recommendations;
 
     this.reviewImages = this.product.reviewImages;
 
@@ -47,7 +52,7 @@ export default class ProductStore {
   }
 
   async fetchwishes(productId, accessToken) {
-    const wishNumber = await productService.fetchWishes(productId, accessToken);
+    const wishNumber = await productApiService.fetchWishes(productId, accessToken);
 
     const number = wishNumber.wishNumber;
 
