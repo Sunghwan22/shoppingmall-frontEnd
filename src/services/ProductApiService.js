@@ -4,7 +4,7 @@ import config from '../../config';
 
 const baseurl = config.apiBaseUrl;
 
-export default class ProductService {
+export default class ProductApiService {
   async fetchProduct(productId) {
     const url = `${baseurl}/products/${productId}`;
 
@@ -28,4 +28,4 @@ export default class ProductService {
   }
 }
 
-export const productService = new ProductService();
+export const productApiService = new ProductApiService();

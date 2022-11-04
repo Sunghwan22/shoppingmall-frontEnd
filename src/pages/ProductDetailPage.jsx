@@ -6,9 +6,11 @@ import ProductInformation from '../components/ProductInformation';
 import ProductReviews from '../components/ProductReviews';
 
 import useProductStore from '../hooks/useProductStore';
+import useReviewStore from '../hooks/userReviewStore';
 
 export default function ProductDetailPage() {
   const productStore = useProductStore();
+  const reviewStore = useReviewStore();
 
   const location = useLocation();
 
@@ -21,6 +23,7 @@ export default function ProductDetailPage() {
   const {
     product, thumbnailUrl, productOptions, totalPayment, quantity,
     productImages, reviews, bestReviews, totalRating, reviewImages,
+    recommendations,
   } = productStore;
 
   const handleSelectOption = (productOption) => {
@@ -47,6 +50,10 @@ export default function ProductDetailPage() {
 
   const handleClickAddCart = (accessToken) => {
     productStore.addCartItem(productId, accessToken);
+  };
+
+  const handleClickRecommendation = (accessToken, reviewId) => {
+    reviewStore.createRecommendation(accessToken, reviewId);
   };
 
   return (
@@ -76,9 +83,10 @@ export default function ProductDetailPage() {
       />
       <ProductReviews
         totalRating={totalRating}
-
         reviews={reviews}
         reviewImages={reviewImages}
+        recommendations={recommendations}
+        onClickRecommendation={handleClickRecommendation}
       />
     </div>
   );
