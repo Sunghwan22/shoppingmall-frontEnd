@@ -18,13 +18,18 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     productStore.fetchProduct(productId);
+    reviewStore.fetchReviews(productId);
   }, []);
 
   const {
     product, thumbnailUrl, productOptions, totalPayment, quantity,
-    productImages, reviews, bestReviews, totalRating, reviewImages,
-    recommendations,
+    productImages,
   } = productStore;
+
+  const {
+    reviews, bestReviews, totalRating, reviewImages,
+    recommendations,
+  } = reviewStore;
 
   const handleSelectOption = (productOption) => {
     const amount = productOption.addAmount;
@@ -53,7 +58,7 @@ export default function ProductDetailPage() {
   };
 
   const handleClickRecommendation = (accessToken, reviewId) => {
-    reviewStore.createRecommendation(accessToken, reviewId);
+    reviewStore.fetchRecommendation(accessToken, reviewId, productId);
   };
 
   return (

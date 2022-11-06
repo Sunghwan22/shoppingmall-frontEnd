@@ -3,10 +3,9 @@ export default function ProductBestReview(
     bestReviews, reviews, totalRating, reviewImages, onClickReview,
   },
 
-  handleClickBestReview = () => {
-    onClickReview();
+  handleClickBestReview = (reviewId) => {
+    onClickReview(reviewId);
   },
-
 ) {
   if (bestReviews.length === 0) {
     return <p>베스트 리뷰로 등록된 리뷰가 없습니다</p>;
