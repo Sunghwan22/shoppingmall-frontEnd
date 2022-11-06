@@ -8,16 +8,10 @@ export default class ProductStore {
 
     this.thumbnailUrl = {};
     this.productImages = [];
-
     this.productOptions = [];
+
     this.selectedOption = {};
 
-    this.reviews = [];
-    this.bestReviews = [];
-    this.generalReviews = [];
-    this.recommendations = [];
-
-    this.totalRating = 0;
     this.totalPayment = 0;
 
     this.quantity = 1;
@@ -33,20 +27,7 @@ export default class ProductStore {
 
     this.thumbnailUrl = this.product.images.find((productImage) => productImage.thumbnailImage).url;
     this.productImages = this.product.images.filter((productImage) => (productImage.thumbnailImage === false));
-
     this.productOptions = this.product.options;
-
-    this.reviews = this.product.reviews;
-    this.generalReviews = this.product.reviews.filter((review) => review.bestReview === false);
-    this.bestReviews = this.product.reviews.filter((review) => review.bestReview === true);
-    this.bestReviews.length = 4;
-
-    this.recommendations = this.product.recommendations;
-
-    this.reviewImages = this.product.reviewImages;
-
-    this.totalRating = this.product.reviews.reduce((accumulator, review) => accumulator + review.rating, 0)
-    / this.reviews.length;
 
     this.publish();
   }
