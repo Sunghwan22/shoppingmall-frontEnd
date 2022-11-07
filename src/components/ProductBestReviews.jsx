@@ -1,12 +1,14 @@
-export default function ProductBestReview(
+export default function ProductBestReviews(
   {
-    bestReviews, reviews, totalRating, reviewImages, onClickReview,
+    bestReviews, totalRating, reviewImages, onClickBestReview,
+    totalReviewsNumber,
   },
 
-  handleClickBestReview = (reviewId) => {
-    onClickReview(reviewId);
-  },
 ) {
+  const handleClickBestReview = (reviewId) => {
+    onClickBestReview(reviewId);
+  };
+
   if (bestReviews.length === 0) {
     return <p>베스트 리뷰로 등록된 리뷰가 없습니다</p>;
   }
@@ -16,7 +18,7 @@ export default function ProductBestReview(
       <p>
         리뷰 수
         {' '}
-        {reviews.length}
+        {totalReviewsNumber}
         {' '}
         사용자 총 평점
         {totalRating}
