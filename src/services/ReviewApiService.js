@@ -14,7 +14,7 @@ export default class ReviewApiService {
       },
     });
 
-    return data;
+    return data.recommendations;
   }
 
   async fetchReviews(productId) {
@@ -23,6 +23,32 @@ export default class ReviewApiService {
     const { data } = await axios.get(url);
 
     return data;
+  }
+
+  async changePage(productId, number) {
+    const url = `${baseurl}/reviews/${productId}`;
+
+    const { data } = await axios.get(url, {
+      params: {
+        page: number,
+      },
+    });
+
+    const { reviews, recommendations } = data;
+
+    return { reviews, recommendations };
+  }
+
+  async fetchReview(reviewId) {
+    const url = `${baseurl}/reviews/detail/${reviewId}`;
+
+    const { data } = await axios.get(url);
+
+    console.log(data);
+
+    const { review, reviewRecommendations, reviewImage } = data;
+
+    return { review, reviewRecommendations, reviewImage };
   }
 }
 

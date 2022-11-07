@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
+
 import numberFormat from '../utils/NumberFormat';
 
 export default function ProductInformation(
@@ -11,9 +10,6 @@ export default function ProductInformation(
   },
 
 ) {
-  const [accessToken] = useLocalStorage('accessToken', '');
-  const navigate = useNavigate();
-
   const [selectedOption, setSelectedOption] = useState(false);
 
   const handleClickOption = (event) => {
@@ -41,29 +37,16 @@ export default function ProductInformation(
   };
 
   const handleClickWish = () => {
-    if (!accessToken) {
-      navigate('/login');
-    }
-
-    handleClickWishes(accessToken);
+    handleClickWishes();
   };
 
   const handleClickCart = () => {
-    if (!accessToken) {
-      navigate('/login');
-      return;
-    }
-
     if (!selectedOption) {
       alert('옵션을 선택해주세요');
       return;
     }
 
-    handleClickAddCart(accessToken);
-
-    if (window.confirm('장바구니에 상품이 추가됬습니다 장바구니로 이동하시겠습니까?')) {
-      navigate('/cart');
-    }
+    handleClickAddCart();
   };
 
   return (
