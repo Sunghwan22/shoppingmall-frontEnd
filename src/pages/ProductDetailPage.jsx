@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import LoginConfirmModal from '../components/LoginConfirmModal';
 import ProductBestReviews from '../components/ProductBestReviews';
@@ -14,6 +15,11 @@ import useInquiryStore from '../hooks/useInquiryStore';
 import useProductStore from '../hooks/useProductStore';
 import useReviewStore from '../hooks/useReviewStore';
 import useWishStore from '../hooks/useWishStore';
+
+const Container = styled.div`
+    width: 100%;
+    padding: 0 5vw 12vw 5vw;
+`;
 
 export default function ProductDetailPage() {
   const productStore = useProductStore();
@@ -166,7 +172,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div>
+    <Container>
       <ProductInformation
         product={product}
         thumbnailImage={thumbnailImage}
@@ -236,6 +242,6 @@ export default function ProductDetailPage() {
           onClickStay={onClickStay}
         />
       ) : null}
-    </div>
+    </Container>
   );
 }

@@ -5,9 +5,11 @@ import SearchProductForm from './SearchProductForm';
 
 const Container = styled.div`
     width: 100%;
+    height: 10%;
     padding: 1em;
-    height: 5vh;
     font-size: 0.7em;
+
+    border-bottom: 1px solid #000;
 `;
 
 const Navigation = styled.nav`
@@ -22,6 +24,8 @@ const MenuList = styled.div`
 
     li {
         padding-right: 1em;
+
+        
     }
 `;
 
