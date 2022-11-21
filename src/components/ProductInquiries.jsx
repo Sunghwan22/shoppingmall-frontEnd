@@ -80,6 +80,7 @@ export default function ProductInquiries(
                 >
                   {productInquiry.content}
                 </button>
+
               </td>
               <td>{productInquiry.userNickName}</td>
               <td>{productInquiry.createdAt}</td>

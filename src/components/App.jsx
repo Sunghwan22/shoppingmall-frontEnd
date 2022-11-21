@@ -6,11 +6,13 @@ import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
 import SearchProductResultPage from '../pages/SearchProductResultPage';
+import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
 
 const Main = styled.main`
-  max-width: 768px;
+  min-width: 768px;
+  max-width: 1920px;
   min-height: 100%;
   display: flex;
 `;
@@ -19,6 +21,7 @@ export default function App() {
   return (
     <div>
       <Reset />
+      <GlobalStyle />
       <Header />
       <ModalProvider>
         <Main>
