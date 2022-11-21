@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
+import SearchProductForm from './SearchProductForm';
 
 const Container = styled.div`
     width: 100%;
@@ -40,6 +41,7 @@ export default function Header() {
           <li>
             <Link to="/">홈 </Link>
           </li>
+          <SearchProductForm />
           {accessToken ? (
             <MenuList>
               <li>

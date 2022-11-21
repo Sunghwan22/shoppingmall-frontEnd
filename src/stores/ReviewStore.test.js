@@ -1,123 +1,152 @@
-/* eslint-disable max-len */
-import { reviewApiService } from '../services/ReviewApiService';
+import ReviewStore from './ReviewStore';
 
-export default class ReviewStore {
-  constructor() {
-    this.reviews = [];
-    this.review = {};
+const context = describe;
 
-    this.bestReviews = [];
-    this.reviewImages = [];
-    this.reviewImage = {};
+let reviewStore;
 
-    this.totalRating = 0;
-    this.totalReviewsNumber = 0;
+describe('ReviewStore', () => {
+  beforeEach(() => {
+    reviewStore = new ReviewStore();
+  });
 
-    this.recommendations = [];
-    this.recommendation = {};
-    this.reviewRecommendations = [];
+  context('일반 리뷰 불러오기', () => {
+    it('일반 리뷰를 fetchReviews함수로 API서버에서 불러옴', async () => {
+      const productId = 1;
 
-    this.pageNumbers = [];
+      await reviewStore.fetchReviews(productId);
 
-    this.isReviewDetail = false;
-    this.isBestReviewDetail = false;
+      const { reviews } = reviewStore;
 
-    this.listeners = new Set();
-  }
+      expect(reviews.length).toBe(2);
+      expect(reviews[0].isBestReview).toBeFalsy();
+      expect(reviews[1].isBestReview).toBeFalsy();
+    });
+  });
 
-  async fetchRecommendation(accessToken, reviewId, productId) {
-    this.recommendations = await
-    reviewApiService
-      .fetchRecommendation(accessToken, reviewId, productId);
+  context('베스트 리뷰 불러오기', () => {
+    it('베스트 리뷰를 fetchBestReviews함수로 API서버에서 불러옴', async () => {
+      const productId = 1;
 
-    this.publish();
-  }
+      await reviewStore.fetchBestReviews(productId);
 
-  async changePageNumber(productId, number) {
-    const { reviews, recommendations } = await reviewApiService.changePage(productId, number);
+      const { bestReviews } = reviewStore;
 
-    this.reviews = reviews;
-    this.recommendations = recommendations;
+      expect(bestReviews.length).toBe(2);
+      expect(bestReviews[0].isBestReview).toBeTruthy();
+      expect(bestReviews[1].isBestReview).toBeTruthy();
+    });
+  });
 
-    this.publish();
-  }
+  context('1페이지의 일반리뷰 불러오기', () => {
+    it('일반 리뷰를 changePageNumber함수로 API서버에서 불러옴', async () => {
+      const productId = 1;
+      const page = 1;
 
-  async fetchReviews(productId) {
-    const data = await reviewApiService.fetchReviews(productId);
+      await reviewStore.changePageNumber(productId, page);
 
-    this.reviews = data.reviews;
+      const { reviews } = reviewStore;
 
-    this.reviewImages = data.reviewImages;
+      expect(reviews.length).toBe(2);
+      expect(reviews[0].isBestReview).toBeFalsy();
+      expect(reviews[1].isBestReview).toBeFalsy();
+    });
+  });
 
-    this.recommendations = data.recommendations;
+  context('1페이지의 베스트리뷰 불러오기', () => {
+    it('베스트 리뷰를 changeBestReviewPage함수로 API서버에서 불러옴', async () => {
+      const productId = 1;
+      const page = 1;
 
-    this.bestReviews = this.reviews.filter((review) => review.bestReview === true);
-    this.bestReviews.length = 4;
+      await reviewStore.changeBestReviewPageNumber(productId, page);
 
-    this.pageNumbers = [...Array(data.pageNumber)].map((number, index) => index + 1);
+      const { bestReviews } = reviewStore;
 
-    this.totalRating = data.totalRating;
+      expect(bestReviews.length).toBe(2);
+      expect(bestReviews[0].isBestReview).toBeTruthy();
+      expect(bestReviews[1].isBestReview).toBeTruthy();
+    });
+  });
 
-    this.totalReviewsNumber = data.totalReviewsNumber;
+  context('리뷰 상세 보기', () => {
+    it('리뷰에 대한 상세 정보를 fetchReview함수로 API서버에서 불러옴', async () => {
+      const reviewId = 1;
 
-    this.publish();
-  }
+      await reviewStore.fetchReview(reviewId);
 
-  async fetchReview(reviewId) {
-    const { review, reviewRecommendations, reviewImage } = await reviewApiService.fetchReview(reviewId);
+      const { review } = reviewStore;
 
-    this.review = review;
+      expect(review).toStrictEqual(
+        {
+          id: 1,
+          productId: 1,
+          rating: 5,
+          userId: 1,
+          optionName: '블랙',
+          content: '이것은 상품 리뷰 입니다',
+          isBestReview: true,
+          userNickName: '유저닉네임',
+          reviewImages: [
+            { url: 'image' },
+          ],
+          recommendations: [
+            { userId: 2 },
+          ],
+          createAt: '2022-11-11',
+        },
+      );
+    });
+  });
 
-    this.reviewRecommendations = reviewRecommendations;
+  context('리뷰 추천하기', () => {
+    it('베스트 리뷰중 첫번쨰 리뷰에 추천', async () => {
+      const productId = 1;
+      const reviewId = 5;
 
-    this.reviewImage = reviewImage;
+      await reviewStore.fetchBestReviews(productId);
 
-    this.isReviewDetail = true;
+      await reviewStore.fetchRecommendation('AccessToken', reviewId, productId);
 
-    this.publish();
-  }
+      const { bestReviews } = reviewStore;
 
-  async fetchBestReview(reviewId) {
-    const { review, reviewRecommendations, reviewImage } = await reviewApiService.fetchReview(reviewId);
+      expect(bestReviews.length).toBe(2);
+      expect(bestReviews[0].id).toBe(5);
+      expect(bestReviews[0].isBestReview).toBeTruthy();
+      expect(bestReviews[1].isBestReview).toBeTruthy();
 
-    this.review = review;
+      expect(bestReviews[0].recommendations.length).toBe(1);
+    });
 
-    this.reviewRecommendations = reviewRecommendations;
+    it('일반 리뷰 중 첫번쨰 리뷰에 추천', async () => {
+      const productId = 1;
+      const reviewId = 5;
 
-    this.reviewImage = reviewImage;
+      await reviewStore.fetchReviews(productId);
 
-    this.isBestReviewDetail = true;
+      await reviewStore.fetchRecommendation('AccessToken', reviewId, productId);
 
-    this.publish();
-  }
+      const { reviews } = reviewStore;
 
-  exitReviewDetail() {
-    this.isReviewDetail = false;
+      expect(reviews.length).toBe(2);
+      expect(reviews[0].id).toBe(5);
+      expect(reviews[0].isBestReview).toBeFalsy();
+      expect(reviews[1].isBestReview).toBeFalsy();
 
-    this.publish();
-  }
+      expect(reviews[0].recommendations.length).toBe(1);
+    });
+  });
 
-  exitBestReviewDetail() {
-    this.isBestReviewDetail = false;
+  context('리뷰상세페이지 보기', () => {
+    it('리뷰 디테일을 트루로 설정', async () => {
+      const productId = 1;
+      const page = 1;
 
-    this.publish();
-  }
+      await reviewStore.changePageNumber(productId, page);
 
-  subscribe(listener) {
-    this.listeners.add(listener);
+      const { reviews } = reviewStore;
 
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
-  }
-}
-
-export const reviewStore = new ReviewStore();
+      expect(reviews.length).toBe(2);
+      expect(reviews[0].isBestReview).toBeFalsy();
+      expect(reviews[1].isBestReview).toBeFalsy();
+    });
+  });
+});

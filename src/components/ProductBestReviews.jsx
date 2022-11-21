@@ -1,12 +1,27 @@
+import styled from 'styled-components';
+
+const PageList = styled.ul`
+    display: flex;   
+`;
+
 export default function ProductBestReviews(
   {
-    bestReviews, totalRating, reviewImages, onClickBestReview,
-    totalReviewsNumber,
+    bestReviews, totalRating, onClickBestReview,
+    totalReviewsNumber, bestReviewPageNumbers, onClickRecommendation,
+    onClickBestReviewPageNumbers,
   },
 
 ) {
   const handleClickBestReview = (reviewId) => {
     onClickBestReview(reviewId);
+  };
+
+  const handleClickPageNumber = (number) => {
+    onClickBestReviewPageNumbers(number);
+  };
+
+  const handleClickRecommendation = (reviewId) => {
+    onClickRecommendation(reviewId);
   };
 
   if (bestReviews.length === 0) {
@@ -21,9 +36,9 @@ export default function ProductBestReviews(
         {totalReviewsNumber}
         {' '}
         사용자 총 평점
+        {' '}
         {totalRating}
-        /
-        5
+        /5
       </p>
       <ul>
         {bestReviews.map((bestReview) => (
@@ -51,14 +66,36 @@ export default function ProductBestReviews(
                 {bestReview.content}
               </p>
               <img
-                src={reviewImages.find((reviewImage) => reviewImage.reviewId === bestReview.id).url}
+                src={bestReview.reviewImages.length !== 0 ? bestReview.reviewImages[0].url
+                  : 'productImage'}
                 alt="reviewImage"
                 width="50px"
               />
             </button>
+            <button
+              type="button"
+              onClick={() => handleClickRecommendation(bestReview.id)}
+            >
+              추천
+              {bestReview.recommendations.length}
+            </button>
           </li>
         ))}
       </ul>
+      <PageList>
+        {bestReviewPageNumbers.map((number) => (
+          <li key={number}>
+            <button
+              type="button"
+              onClick={() => handleClickPageNumber(number)}
+              id={`bestReview-pageNumber${number}`}
+              data-testid={`bestReview-pageNumber${number}`}
+            >
+              {number}
+            </button>
+          </li>
+        ))}
+      </PageList>
     </div>
   );
 }

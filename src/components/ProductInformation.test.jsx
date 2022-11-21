@@ -1,168 +1,205 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
-import numberFormat from '../utils/NumberFormat';
+import {
+  fireEvent, render, screen,
+} from '@testing-library/react';
+import ProductInformation from './ProductInformation';
 
-export default function ProductDetail(
-  {
-    product, thumbnailUrl, productOptions, handleSelectOption, totalPayment,
-    handleClickAddQuantity, handleClickReduceQuantity, quantity, handleClickResetOption,
-    handleClickWishes, productImages,
-  },
+const product = {
+  id: 1,
+  productNumber: 12,
+  productName: '아이폰 14',
+  maker: '애플',
+  category: '전자기기',
+  views: 1000,
+  cumulativesales: 150,
+  price: 10000,
+  stock: 100,
+  maximumQuantity: '50',
+  description: '이것은 아이폰 14입니다',
+  deliveryFee: 3000,
+  options: [{ addAmount: 3000, description: '블랙' },
+    { addAmount: 5000, description: '화이트' }],
+  productImages: [{ url: 'imageUrl', isThumbnailImage: true },
+    { url: 'imageUrl', isThumbnailImage: false }],
+};
 
-) {
-  const [accessToken] = useLocalStorage('accessToken', '');
-  const navigate = useNavigate();
+const thumbnailImage = { url: 'imageUrl', isThumbnailImage: true };
 
-  const [selectedOption, setSelectedOption] = useState(false);
+const options = [{ addAmount: 3000, description: '블랙' },
+  { addAmount: 5000, description: '화이트' }];
 
-  const handleClickOption = (event) => {
-    const { value } = event.target;
+const productWishes = [{ id: 1, userId: 1, productId: 1 },
+  { id: 2, userId: 2, productId: 1 }];
 
-    if (value === '옵션을 선택해주세요') {
-      setSelectedOption(false);
-      handleClickResetOption();
-      return;
-    }
+let totalPayment;
+let quantity;
+const onClickSelectOption = jest.fn();
+const onClickAddQuantity = jest.fn();
+const onClickReduceQuantity = jest.fn();
+const onClickResetOption = jest.fn();
+const onClickWishes = jest.fn();
+const onClickAddCart = jest.fn();
 
-    const productOption = JSON.parse(value);
+jest.spyOn(window, 'alert').mockImplementation(() => {});
 
-    handleSelectOption(productOption);
+const context = describe;
 
-    setSelectedOption(true);
-  };
+describe(('상품 상세 페이지'), () => {
+  context(('상품 정보 확인'), () => {
+    it('상품 이미지와 가격 확인', async () => {
+      render(<ProductInformation
+        product={product}
+        thumbnailImage={thumbnailImage}
+        options={options}
+        productWishes={productWishes}
+      />);
 
-  const handleClickMinus = () => {
-    handleClickReduceQuantity();
-  };
+      screen.getByText('Product Info');
+      screen.getByText(/애플/);
+      screen.getByText(/1000/);
+      screen.getByText(/가격 10,000원/);
+      screen.getByAltText('productProfile');
+      screen.getByText(/배송비 3,000원/);
+    });
 
-  const handleClickPlus = () => {
-    handleClickAddQuantity();
-  };
+    it('상품 옵션 선택하기', () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+      />);
 
-  const handleClickWish = () => {
-    if (!accessToken) {
-      navigate('/login');
-    }
+      fireEvent.change(screen.getByLabelText('상품 옵션'), {
+        target: { value: '{"addAmount":3000,"description":"블랙"}' },
+      });
 
-    handleClickWishes(product.id, accessToken);
-  };
+      expect(onClickSelectOption).toBeCalledWith(
+        { addAmount: 3000, description: '블랙' },
+      );
+    });
 
-  return (
-    <div>
-      <img
-        src={thumbnailUrl}
-        alt="productProfile"
-        width="200px"
-      />
-      <p>Product Info</p>
-      {' '}
-      <p>
-        브랜드
-        {' '}
-        {product.maker}
-      </p>
-      <p>
-        누적 조회수(1개월)
-        {' '}
-        {product.views}
-        {' '}
-      </p>
-      <p>
-        누적 판매
-        {' '}
-        {product.cumulativeSales}
-      </p>
-      <p>
-        좋아요
-        {' '}
-        {product.likes}
-      </p>
-      <h3>
-        가격
-        {' '}
-        {numberFormat(product.price)}
-        {' '}
-        원
-      </h3>
-      <select
-        onChange={handleClickOption}
-      >
-        <option>옵션을 선택해주세요</option>
-        {productOptions.map((productOption) => (
-          <option
-            key={productOption.id}
-            value={JSON.stringify(productOption)}
-          >
-            {productOption.description}
-            {' '}
-            +
-            {productOption.addAmount}
-            원
-          </option>
-        ))}
-      </select>
-      {selectedOption ? (
-        <div>
-          <p>
-            결제금액
-            {' '}
-            {totalPayment}
-          </p>
-          <span>구매 수량</span>
-          <button
-            type="button"
-            name="minusQuantity-button"
-            onClick={handleClickMinus}
-          >
-            -
-          </button>
-          <span>{quantity}</span>
-          <button
-            type="button"
-            name="addQuantity-button"
-            onClick={handleClickPlus}
-          >
-            +
-          </button>
-        </div>
-      ) : null}
-      <div>
-        <button
-          type="button"
-        >
-          구매하기
-        </button>
-        <button
-          type="button"
-          onClick={handleClickWish}
-        >
-          찜하기
-          {' '}
-          {product.wishes}
-        </button>
-        <button
-          type="button"
-        >
-          장바구니
-        </button>
-        <div>
-          <p>
-            상품상세 설명
-          </p>
-          <p>
-            {productImages.map((productImage) => (
-              <img
-                key={productImage.id}
-                src={productImage.url}
-                alt="subProductImage"
-                width="200px"
-              />
-            ))}
-          </p>
-          <p>{product.description}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+    it('상품 옵션 초기화 하기', async () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+        onClickResetOption={onClickResetOption}
+      />);
+
+      fireEvent.change(screen.getByLabelText('상품 옵션'), {
+        target: { value: '{"addAmount":3000,"description":"블랙"}' },
+      });
+
+      expect(onClickSelectOption).toBeCalledWith(
+        { addAmount: 3000, description: '블랙' },
+      );
+
+      fireEvent.change(screen.getByLabelText('상품 옵션'), {
+        target: { value: '옵션을 선택해주세요' },
+      });
+
+      expect(onClickResetOption).toBeCalled();
+    });
+
+    it('장바구니 추가 하기', () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+        onClickResetOption={onClickResetOption}
+        onClickAddCart={onClickAddCart}
+      />);
+
+      fireEvent.change(screen.getByLabelText('상품 옵션'), {
+        target: { value: '{"addAmount":3000,"description":"블랙"}' },
+      });
+
+      fireEvent.click(screen.getByText('장바구니'));
+
+      expect(onClickAddCart).toBeCalled();
+    });
+
+    it('옵션을 추가 하지 않고 장바구니 추가 하기', async () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+        onClickResetOption={onClickResetOption}
+        onClickAddCart={onClickAddCart}
+      />);
+
+      fireEvent.click(screen.getByText('장바구니'));
+
+      screen.getByText('옵션을 선택해주세요');
+    });
+  });
+
+  context(('상품 찜하기'), () => {
+    it('찜하기 목록에 추가', () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+        onClickResetOption={onClickResetOption}
+        onClickAddCart={onClickAddCart}
+        onClickWishes={onClickWishes}
+      />);
+
+      fireEvent.click(screen.getByRole('button', { name: /찜하기 / }));
+
+      expect(onClickWishes).toBeCalled();
+    });
+  });
+
+  context(('상품 수량 조정하기'), () => {
+    it('상품 수량 +', () => {
+      render(<ProductInformation
+        product={product}
+        onClickSelectOption={onClickSelectOption}
+        totalPayment={totalPayment}
+        quantity={quantity}
+        options={options}
+        thumbnailImage={thumbnailImage}
+        productWishes={productWishes}
+        onClickResetOption={onClickResetOption}
+        onClickAddCart={onClickAddCart}
+        onClickWishes={onClickWishes}
+        onClickAddQuantity={onClickAddQuantity}
+        onClickReduceQuantity={onClickReduceQuantity}
+      />);
+
+      fireEvent.change(screen.getByLabelText('상품 옵션'), {
+        target: { value: '{"addAmount":3000,"description":"블랙"}' },
+      });
+
+      screen.getByText('+');
+
+      fireEvent.click(screen.getByText('+'));
+
+      expect(onClickAddQuantity).toBeCalled();
+
+      fireEvent.click(screen.getByText('-'));
+
+      expect(onClickReduceQuantity).toBeCalled();
+    });
+  });
+});

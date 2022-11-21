@@ -1,21 +1,23 @@
+import { v4 } from 'uuid';
+
 export default function ProductDetailDescription(
-  { product, productImages },
+  { product, subProductImages },
 ) {
   return (
     <div>
       <p>
         상품상세 설명
       </p>
-      <p>
-        {productImages.map((productImage) => (
+      <ul>
+        {subProductImages.map((productImage) => (
           <img
-            key={productImage.id}
+            key={v4()}
             src={productImage.url}
-            alt="subProductImage"
-            width="200px"
+            alt="productImage"
+            width="100"
           />
         ))}
-      </p>
+      </ul>
       <p>{product.description}</p>
     </div>
   );
