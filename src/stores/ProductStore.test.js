@@ -1,4 +1,3 @@
-import { waitFor } from '@testing-library/dom';
 import ProductStore from './ProductStore';
 
 const context = describe;
@@ -10,27 +9,130 @@ describe('productStore', () => {
     productStore = new ProductStore();
   });
 
-  describe('상세 페이지 상품 정보 확인', () => {
-    context('id가 1인 상품을 불러옴', () => {
-      it('상품 정보를 불러옴', () => {
-        waitFor(() => {
-          expect(productStore.fetchProduct(1)).toStrictEqual(
-            {
-              id: 1,
-              productNumber: 12,
-              name: '아이폰 14',
-              image: 's3://test-s3-image/스크린샷 2022-10-20 오후 10.55.03.png',
-              maker: '애플',
-              views: 1000,
-              cumulativesales: 150,
-              like: 100,
-              options: ['맥스 + 300000', '그라파이트', '블랙', '실버'],
-              price: 1500000,
-              wish: 30,
-            },
-          );
-        });
+  context('id가 1인 상품을 불러옴', () => {
+    it('상품 정보를 불러옴', async () => {
+      const productId = 1;
+
+      await productStore.fetchProduct(productId);
+
+      const { product } = productStore;
+
+      expect(product).toStrictEqual({
+        id: 1,
+        productNumber: 12,
+        productName: '아이폰 14',
+        maker: '애플',
+        category: '전자기기',
+        views: 1000,
+        cumulativesales: 150,
+        price: 1500000,
+        stock: 100,
+        maximumQuantity: '50',
+        description: '이것은 아이폰 14입니다',
+        deliveryFee: '3000',
+        options: [{ addAmount: 3000, description: '블랙' },
+          { addAmount: 5000, description: '화이트' }],
+        productImages: [{ url: 'imageUrl', isThumbnailImage: true },
+          { url: 'imageUrl', isThumbnailImage: false }],
       });
+    });
+  });
+
+  context('상품 옵션 선택', () => {
+    it('selectOption함수 실행', async () => {
+      const productId = 1;
+
+      await productStore.fetchProduct(productId);
+
+      const amount = 20000;
+      const productOption = { addAmount: 3000, description: '블랙' };
+
+      await productStore.selectOption(amount, productOption);
+
+      const { product, totalPayment, selectOptionPrice } = productStore;
+
+      expect(product.price).toBe(1500000);
+      expect(totalPayment).toBe(1520000);
+      expect(selectOptionPrice).toBe(1520000);
+    });
+  });
+
+  context('상품 수량 +1', () => {
+    it('addQuantity함수 실행', async () => {
+      const productId = 1;
+
+      await productStore.fetchProduct(productId);
+
+      const amount = 20000;
+      const productOption = { addAmount: 3000, description: '블랙' };
+
+      await productStore.selectOption(amount, productOption);
+
+      await productStore.addQuantity();
+
+      const { quantity, totalPayment } = productStore;
+
+      expect(quantity).toBe(2);
+      expect(totalPayment).toBe(3040000);
+    });
+  });
+
+  context('상품 수량 -1', () => {
+    it('reduceQuantity함수 실행', async () => {
+      const productId = 1;
+
+      await productStore.fetchProduct(productId);
+
+      const amount = 20000;
+      const productOption = { addAmount: 3000, description: '블랙' };
+
+      await productStore.selectOption(amount, productOption);
+
+      await productStore.addQuantity();
+
+      await productStore.reduceQuantity();
+
+      const { quantity, totalPayment } = productStore;
+
+      expect(quantity).toBe(1);
+      expect(totalPayment).toBe(1520000);
+    });
+  });
+
+  context('상품 수량 -1', () => {
+    it('reduceQuantity함수 실행', async () => {
+      const productId = 1;
+
+      await productStore.fetchProduct(productId);
+
+      const amount = 20000;
+      const productOption = { addAmount: 3000, description: '블랙' };
+
+      await productStore.selectOption(amount, productOption);
+
+      await productStore.addQuantity();
+
+      await productStore.resetQuantityAndTotalPayment();
+
+      const { quantity, totalPayment } = productStore;
+
+      expect(quantity).toBe(1);
+      expect(totalPayment).toBe(0);
+    });
+  });
+
+  context('상품 검색 후 검색명에 맞는 상품 불러오기', () => {
+    it('searchProduct함수 실행', async () => {
+      const word = '아이폰';
+
+      await productStore.searchProduct(word);
+
+      const { products } = productStore;
+
+      expect(products.length).toBe(2);
+      expect(products[0].productName).toBe('아이폰 14');
+      expect(products[0].price).toBe(1500000);
+      expect(products[0].cumulativesales).toBe(150);
     });
   });
 });

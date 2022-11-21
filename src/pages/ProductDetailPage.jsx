@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
+import LoginConfirmModal from '../components/LoginConfirmModal';
 import ProductBestReviews from '../components/ProductBestReviews';
 
 import ProductDetailDescription from '../components/ProductDetaiDescription';
@@ -8,169 +9,233 @@ import ProductInformation from '../components/ProductInformation';
 import ProductInquiries from '../components/ProductInquiries';
 import ProductReviews from '../components/ProductReviews';
 import ReviewDetail from '../components/ReviewDetail';
+import useInquiryStore from '../hooks/useInquiryStore';
 
 import useProductStore from '../hooks/useProductStore';
-import useReviewStore from '../hooks/userReviewStore';
+import useReviewStore from '../hooks/useReviewStore';
+import useWishStore from '../hooks/useWishStore';
 
 export default function ProductDetailPage() {
   const productStore = useProductStore();
   const reviewStore = useReviewStore();
+  const inquiryStore = useInquiryStore();
+  const wishStore = useWishStore();
 
   const location = useLocation();
 
-  const productId = Number(location.pathname.split('/')[2]);
+  const productId = location.state !== null
+    ? location.state.productId
+    : Number(location.pathname.split('/')[2]);
 
   const [accessToken] = useLocalStorage('accessToken', '');
+  const [loginConfirm, setLoginConfirm] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     productStore.fetchProduct(productId);
+    wishStore.fetchProductWishes(productId);
     reviewStore.fetchReviews(productId);
-    // inquiryStore.fetchInquiries(productId);
+    reviewStore.fetchBestReviews(productId);
+    inquiryStore.fetchInquiries(productId, accessToken);
   }, []);
 
   const {
-    product, thumbnailUrl, productOptions, totalPayment, quantity,
-    productImages,
+    product, totalPayment, quantity, options, thumbnailImage,
+    subProductImages, guideMessage,
   } = productStore;
 
   const {
-    reviews, totalRating, reviewImages, bestReviews,
-    recommendations, pageNumbers, totalReviewsNumber, isReviewDetail,
-    review, reviewImage, isBestReviewDetail,
+    reviews, review, bestReviews, totalRating, totalReviewsNumber, pageNumbers
+    , isBestReviewDetail, bestReviewPageNumbers, isReviewDetail,
   } = reviewStore;
 
-  const handleSelectOption = (productOption) => {
+  const {
+    inquiries, inquiry, totalInquiryNumber
+    , inquiryPageNumbers,
+  } = inquiryStore;
+
+  const { productWishes } = wishStore;
+
+  const onClickSelectOption = (productOption) => {
     const amount = productOption.addAmount;
 
     productStore.selectOption(amount, productOption);
   };
 
-  const handleClickAddQuantity = () => {
+  const onClickAddQuantity = () => {
     productStore.addQuantity();
   };
 
-  const handleClickReduceQuantity = () => {
+  const onClickReduceQuantity = () => {
     productStore.reduceQuantity();
   };
 
-  const handleClickResetOption = () => {
+  const onClickResetOption = () => {
     productStore.resetQuantityAndTotalPayment();
   };
 
-  const handleClickWishes = () => {
+  const onClickWishes = () => {
     if (!accessToken) {
-      navigate('/login');
+      setLoginConfirm(true);
+      return;
     }
 
-    productStore.fetchwishes(productId, accessToken);
+    wishStore.createWishes(productId, accessToken);
   };
 
-  const handleClickAddCart = () => {
+  const onClickAddCart = () => {
     if (!accessToken) {
-      navigate('/login');
+      setLoginConfirm(true);
       return;
     }
 
     productStore.addCartItem(productId, accessToken);
-
-    if (window.confirm('장바구니에 상품이 추가됬습니다 장바구니로 이동하시겠습니까?')) {
-      navigate('/cart');
-    }
   };
 
-  const handleClickRecommendation = (reviewId) => {
+  const onClickRecommendation = (reviewId) => {
     if (!accessToken) {
-      navigate('/login');
+      setLoginConfirm(true);
+      return;
     }
 
     reviewStore.fetchRecommendation(accessToken, reviewId, productId);
   };
 
-  const handleClickPageNumbers = (number) => {
+  const onClickPageNumbers = (number) => {
     reviewStore.changePageNumber(productId, number);
   };
 
-  const handleClickReview = (reviewId) => {
-    reviewStore.fetchReview(reviewId);
+  const onClickBestReviewPageNumbers = (number) => {
+    reviewStore.changeBestReviewPageNumber(productId, number);
   };
 
-  const handleBestClickReview = (reviewId) => {
+  const onClickBestReview = (reviewId) => {
     reviewStore.fetchBestReview(reviewId);
   };
 
-  const handleClickExitReviewDetail = () => {
+  const onClickReview = (reviewId) => {
+    reviewStore.fetchReview(reviewId);
+  };
+
+  const onClickExitReviewDetail = () => {
     reviewStore.exitReviewDetail();
   };
 
-  const handleClickExitBestReviewDetail = () => {
+  const onClickExitBestReviewDetail = () => {
     reviewStore.exitBestReviewDetail();
+  };
+
+  const onClickInquiryPageNumbers = (number) => {
+    inquiryStore.changePageNumber(productId, accessToken, number);
+  };
+
+  const onClickInquiry = (inquiryId) => {
+    inquiryStore.fetchInquiry(inquiryId, accessToken);
+  };
+
+  const onClickWriteInquiry = () => {
+    if (!accessToken) {
+      setLoginConfirm(true);
+      return;
+    }
+
+    navigate('/inquiry/write', {
+      state: {
+        productId,
+      },
+    });
+  };
+
+  const onClickFindMyInquiries = () => {
+    if (!accessToken) {
+      setLoginConfirm(true);
+      return;
+    }
+
+    navigate('/mypage/');
+  };
+
+  const onClickConfirm = () => {
+    navigate('/login');
+    setLoginConfirm(false);
+  };
+
+  const onClickStay = () => {
+    setLoginConfirm(false);
   };
 
   return (
     <div>
       <ProductInformation
         product={product}
-        thumbnailUrl={thumbnailUrl}
-        productOptions={productOptions}
-        handleSelectOption={handleSelectOption}
-        totalPayment={totalPayment}
-        handleClickAddQuantity={handleClickAddQuantity}
-        handleClickReduceQuantity={handleClickReduceQuantity}
+        thumbnailImage={thumbnailImage}
+        options={options}
         quantity={quantity}
-        handleClickResetOption={handleClickResetOption}
-        handleClickWishes={handleClickWishes}
-        handleClickAddCart={handleClickAddCart}
+        totalPayment={totalPayment}
+        productWishes={productWishes}
+        onClickSelectOption={onClickSelectOption}
+        onClickAddQuantity={onClickAddQuantity}
+        onClickReduceQuantity={onClickReduceQuantity}
+        onClickResetOption={onClickResetOption}
+        onClickWishes={onClickWishes}
+        onClickAddCart={onClickAddCart}
+        guideMessage={guideMessage}
       />
       {isBestReviewDetail ? (
         <ReviewDetail
           review={review}
-          recommendations={recommendations}
-          reviewImage={reviewImage}
-          onClickRecommendation={handleClickRecommendation}
-          onClickExitReviewDetail={handleClickExitBestReviewDetail}
+          onClickExitReviewDetail={onClickExitBestReviewDetail}
         />
       ) : (
         <ProductBestReviews
           totalRating={totalRating}
           bestReviews={bestReviews}
-          reviewImages={reviewImages}
-          recommendations={recommendations}
-          pageNumbers={pageNumbers}
-          onClickRecommendation={handleClickRecommendation}
-          onClickPageNumber={handleClickPageNumbers}
+          bestReviewPageNumbers={bestReviewPageNumbers}
+          onClickRecommendation={onClickRecommendation}
+          onClickBestReviewPageNumbers={onClickBestReviewPageNumbers}
           totalReviewsNumber={totalReviewsNumber}
-          onClickBestReview={handleBestClickReview}
+          onClickBestReview={onClickBestReview}
         />
       )}
       <ProductDetailDescription
         product={product}
-        productImages={productImages}
+        subProductImages={subProductImages}
       />
       {isReviewDetail
         ? (
           <ReviewDetail
             review={review}
-            recommendations={recommendations}
-            reviewImage={reviewImage}
-            onClickRecommendation={handleClickRecommendation}
-            onClickExitReviewDetail={handleClickExitReviewDetail}
+            onClickExitReviewDetail={onClickExitReviewDetail}
           />
         )
         : (
           <ProductReviews
             totalRating={totalRating}
             reviews={reviews}
-            reviewImages={reviewImages}
-            recommendations={recommendations}
             pageNumbers={pageNumbers}
-            onClickRecommendation={handleClickRecommendation}
-            onClickPageNumber={handleClickPageNumbers}
+            onClickRecommendation={onClickRecommendation}
+            onClickPageNumber={onClickPageNumbers}
             totalReviewsNumber={totalReviewsNumber}
-            onClickReview={handleClickReview}
+            onClickReview={onClickReview}
           />
         )}
-      <ProductInquiries />
+      <ProductInquiries
+        inquiries={inquiries}
+        totalInquiryNumber={totalInquiryNumber}
+        inquiryPageNumbers={inquiryPageNumbers}
+        onClickInquiryPageNumbers={onClickInquiryPageNumbers}
+        onClickInquiry={onClickInquiry}
+        inquiry={inquiry}
+        onClickFindMyInquiries={onClickFindMyInquiries}
+        onClickWriteInquiry={onClickWriteInquiry}
+      />
+      {loginConfirm ? (
+        <LoginConfirmModal
+          onClickConfirm={onClickConfirm}
+          onClickStay={onClickStay}
+        />
+      ) : null}
     </div>
   );
 }

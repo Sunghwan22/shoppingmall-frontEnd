@@ -1,48 +1,37 @@
+import { v4 } from 'uuid';
+
 export default function ReviewDetail({
-  review, recommendations, reviewImage, onClickRecommendation,
-  onClickExitReviewDetail,
+  review, onClickExitReviewDetail,
 }) {
   const handleClickExit = () => {
     onClickExitReviewDetail();
   };
 
-  const handleClickRecommendation = (reviewId) => {
-    onClickRecommendation(reviewId);
-  };
-
   return (
     <div>
+      <ul>
+        {review.reviewImages.map((reviewImage) => (
+          <img
+            key={v4()}
+            src={reviewImage.url}
+            alt="reviewImage"
+            width="50"
+          />
+        ))}
+      </ul>
+      평점
+      {review.rating}
+      {review.userNickName}
+      {review.createdAt}
       <p>
-        <img
-          src={reviewImage.url}
-          alt="reviewImage"
-          width="75px"
-        />
-        <p>
-          평점
-          {review.rating}
-          {review.userNickName}
-          {review.createdAt}
-        </p>
-        <p>
-          {review.content}
-        </p>
-        <button
-          type="button"
-          onClick={() => handleClickRecommendation(review.id)}
-        >
-          추천
-          {recommendations.filter(
-            (recommendation) => recommendation.reviewId === review.id,
-          ).length}
-        </button>
-        <button
-          type="button"
-          onClick={handleClickExit}
-        >
-          X
-        </button>
+        {review.content}
       </p>
+      <button
+        type="button"
+        onClick={handleClickExit}
+      >
+        X
+      </button>
     </div>
   );
 }

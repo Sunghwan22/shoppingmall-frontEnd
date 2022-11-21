@@ -1,12 +1,14 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 
 import numberFormat from '../utils/NumberFormat';
 
 export default function ProductInformation(
   {
-    product, thumbnailUrl, productOptions, handleSelectOption, totalPayment,
-    handleClickAddQuantity, handleClickReduceQuantity, quantity, handleClickResetOption,
-    handleClickWishes, handleClickAddCart,
+    product, quantity, totalPayment, thumbnailImage, options,
+    onClickSelectOption, onClickAddQuantity, onClickReduceQuantity,
+    onClickResetOption, onClickWishes, onClickAddCart, productWishes,
+    guideMessage,
   },
 
 ) {
@@ -17,42 +19,41 @@ export default function ProductInformation(
 
     if (value === '옵션을 선택해주세요') {
       setSelectedOption(false);
-      handleClickResetOption();
+      onClickResetOption();
       return;
     }
 
     const productOption = JSON.parse(value);
 
-    handleSelectOption(productOption);
-
     setSelectedOption(true);
+
+    onClickSelectOption(productOption);
   };
 
   const handleClickMinus = () => {
-    handleClickReduceQuantity();
+    onClickReduceQuantity();
   };
 
   const handleClickPlus = () => {
-    handleClickAddQuantity();
+    onClickAddQuantity();
   };
 
   const handleClickWish = () => {
-    handleClickWishes();
+    onClickWishes();
   };
 
   const handleClickCart = () => {
-    if (!selectedOption) {
-      alert('옵션을 선택해주세요');
-      return;
-    }
-
-    handleClickAddCart();
+    onClickAddCart();
   };
+
+  if (!product) {
+    return <p>Now Loading...</p>;
+  }
 
   return (
     <div>
       <img
-        src={thumbnailUrl}
+        src={thumbnailImage.url}
         alt="productProfile"
         width="200px"
       />
@@ -61,6 +62,11 @@ export default function ProductInformation(
         브랜드
         {' '}
         {product.maker}
+      </p>
+      <p>
+        상품명
+        {' '}
+        {product.productName}
       </p>
       <p>
         누적 조회수(1개월)
@@ -76,28 +82,32 @@ export default function ProductInformation(
       <p>
         배송비
         {' '}
-        {product.deleveryFee}
+        {numberFormat(product.deliveryFee)}
+        원
       </p>
       <h3>
         가격
         {' '}
         {numberFormat(product.price)}
-        {' '}
         원
       </h3>
+      <label htmlFor="product-option">상품 옵션</label>
       <select
+        id="product-option"
         onChange={handleClickOption}
+        name="product-option"
       >
         <option>옵션을 선택해주세요</option>
-        {productOptions.map((productOption) => (
+        {options.map((option) => (
           <option
-            key={productOption.id}
-            value={JSON.stringify(productOption)}
+            key={option.description}
+            value={JSON.stringify(option)}
           >
-            {productOption.description}
+            {option.description}
             {' '}
             +
-            {productOption.addAmount}
+            {' '}
+            {numberFormat(option.addAmount)}
             원
           </option>
         ))}
@@ -106,8 +116,10 @@ export default function ProductInformation(
         <div>
           <p>
             결제금액
+            :
             {' '}
-            {totalPayment}
+            {numberFormat(totalPayment)}
+            원
           </p>
           <span>구매 수량</span>
           <button
@@ -139,7 +151,7 @@ export default function ProductInformation(
         >
           찜하기
           {' '}
-          {product.wishes}
+          {productWishes.length}
         </button>
         <button
           type="button"
@@ -147,6 +159,8 @@ export default function ProductInformation(
         >
           장바구니
         </button>
+        {guideMessage === '옵션을 선택해주세요'
+          ? <p>옵션을 선택해주세요</p> : null}
       </div>
     </div>
   );

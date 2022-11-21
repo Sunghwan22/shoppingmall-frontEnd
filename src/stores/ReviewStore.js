@@ -7,37 +7,63 @@ export default class ReviewStore {
     this.review = {};
 
     this.bestReviews = [];
-    this.reviewImages = [];
-    this.reviewImage = {};
 
     this.totalRating = 0;
     this.totalReviewsNumber = 0;
 
-    this.recommendations = [];
-    this.recommendation = {};
-    this.reviewRecommendations = [];
-
     this.pageNumbers = [];
+    this.bestReviewPageNumbers = [];
 
     this.isReviewDetail = false;
     this.isBestReviewDetail = false;
+
+    this.recommendations = [];
+
+    this.errorMessage = '';
 
     this.listeners = new Set();
   }
 
   async fetchRecommendation(accessToken, reviewId, productId) {
-    this.recommendations = await
-    reviewApiService
-      .fetchRecommendation(accessToken, reviewId, productId);
+    try {
+      await reviewApiService.fetchRecommendation(accessToken, reviewId);
+    } catch (error) {
+      const { message } = error.response.data;
+
+      this.errorMessage = message;
+    }
+
+    await this.fetchBestReviews(productId);
+
+    await this.fetchReviews(productId);
+
+    this.publish();
+  }
+
+  async fetchReview(reviewId) {
+    this.review = await reviewApiService.fetchReview(reviewId);
+
+    this.isReviewDetail = true;
+
+    this.publish();
+  }
+
+  async fetchBestReview(reviewId) {
+    this.review = await reviewApiService.fetchReview(reviewId);
+
+    this.isBestReviewDetail = true;
 
     this.publish();
   }
 
   async changePageNumber(productId, number) {
-    const { reviews, recommendations } = await reviewApiService.changePage(productId, number);
+    this.reviews = await reviewApiService.changePage(productId, number);
 
-    this.reviews = reviews;
-    this.recommendations = recommendations;
+    this.publish();
+  }
+
+  async changeBestReviewPageNumber(productId, number) {
+    this.bestReviews = await reviewApiService.changeBestReviewPage(productId, number);
 
     this.publish();
   }
@@ -47,46 +73,21 @@ export default class ReviewStore {
 
     this.reviews = data.reviews;
 
-    this.reviewImages = data.reviewImages;
-
-    this.recommendations = data.recommendations;
-
-    this.bestReviews = this.reviews.filter((review) => review.bestReview === true);
-    this.bestReviews.length = 4;
-
-    this.pageNumbers = [...Array(data.pageNumber)].map((number, index) => index + 1);
+    this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
 
     this.totalRating = data.totalRating;
 
-    this.totalReviewsNumber = data.totalReviewsNumber;
+    this.totalReviewsNumber = data.totalReviewNumber;
 
     this.publish();
   }
 
-  async fetchReview(reviewId) {
-    const { review, reviewRecommendations, reviewImage } = await reviewApiService.fetchReview(reviewId);
+  async fetchBestReviews(productId) {
+    const data = await reviewApiService.fetchBestReviews(productId);
 
-    this.review = review;
+    this.bestReviews = data.reviews;
 
-    this.reviewRecommendations = reviewRecommendations;
-
-    this.reviewImage = reviewImage;
-
-    this.isReviewDetail = true;
-
-    this.publish();
-  }
-
-  async fetchBestReview(reviewId) {
-    const { review, reviewRecommendations, reviewImage } = await reviewApiService.fetchReview(reviewId);
-
-    this.review = review;
-
-    this.reviewRecommendations = reviewRecommendations;
-
-    this.reviewImage = reviewImage;
-
-    this.isBestReviewDetail = true;
+    this.bestReviewPageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
 
     this.publish();
   }

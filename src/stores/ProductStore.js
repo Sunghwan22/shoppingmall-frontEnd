@@ -5,19 +5,22 @@ import { productApiService } from '../services/ProductApiService';
 export default class ProductStore {
   constructor() {
     this.product = {};
+    this.products = [];
 
-    this.thumbnailUrl = {};
-    this.productImages = [];
-    this.productOptions = [];
+    this.options = [];
 
-    this.selectedOption = {};
+    this.thumbnailImage = {};
+    this.subProductImages = [];
+
+    this.selectedProductOption = {};
 
     this.totalPayment = 0;
 
     this.quantity = 1;
-    this.reviewImages = [];
 
     this.selectOptionPrice = 0;
+
+    this.guideMessage = '';
 
     this.listeners = new Set();
   }
@@ -25,30 +28,41 @@ export default class ProductStore {
   async fetchProduct(productId) {
     this.product = await productApiService.fetchProduct(productId);
 
-    this.thumbnailUrl = this.product.images.find((productImage) => productImage.thumbnailImage).url;
-    this.productImages = this.product.images.filter((productImage) => (productImage.thumbnailImage === false));
-    this.productOptions = this.product.options;
+    this.subProductImages = this.product.productImages.filter((productImage) => (
+      productImage.thumbnailImage === false
+    ));
 
-    this.publish();
-  }
+    this.thumbnailImage = this.product.productImages.find((productImage) => (
+      productImage.thumbnailImage === true
+    ));
 
-  async fetchwishes(productId, accessToken) {
-    const wishNumber = await productApiService.fetchWishes(productId, accessToken);
-
-    const number = wishNumber.wishNumber;
-
-    this.product.wishes = number;
+    this.options = this.product.options;
 
     this.publish();
   }
 
   async addCartItem(productId, accessToken) {
+    if (Object.keys(this.selectedProductOption).length === 0
+        || this.guideMessage === '옵션 미선택') {
+      this.guideMessage = '옵션을 선택해주세요';
+      this.publish();
+      return;
+    }
+
     await cartService.createCartItem(
       productId,
       accessToken,
       this.quantity,
       this.selectedOption,
     );
+
+    this.publish();
+  }
+
+  async searchProduct(word) {
+    const { products } = await productApiService.searchProduct(word);
+
+    this.products = products;
 
     this.publish();
   }
@@ -60,7 +74,9 @@ export default class ProductStore {
 
     this.quantity = 1;
 
-    this.selectedOption = productOption;
+    this.selectedProductOption = productOption;
+
+    this.guideMessage = '';
 
     this.publish();
   }
@@ -92,6 +108,8 @@ export default class ProductStore {
   resetQuantityAndTotalPayment() {
     this.totalPayment = 0;
     this.quantity = 1;
+
+    this.guideMessage = '옵션 미선택';
 
     this.publish();
   }

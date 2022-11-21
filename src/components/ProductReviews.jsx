@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 
-/* eslint-disable max-len */
 const PageList = styled.ul`
   display: flex;
 `;
 
 export default function ProductReviews(
   {
-    reviews, totalRating, reviewImages, recommendations,
-    onClickRecommendation, pageNumbers, onClickPageNumber,
-    totalReviewsNumber, onClickBestReview,
+    reviews, totalRating, onClickRecommendation, pageNumbers, onClickPageNumber,
+    totalReviewsNumber, onClickReview,
   },
 ) {
   const handleClickRecommendation = (reviewId, number) => {
@@ -21,7 +19,7 @@ export default function ProductReviews(
   };
 
   const handleClickReview = (reviewId) => {
-    onClickBestReview(reviewId);
+    onClickReview(reviewId);
   };
 
   if (reviews.length === 0) {
@@ -32,11 +30,12 @@ export default function ProductReviews(
     <div>
       <h2>상품 리뷰</h2>
       <div>
-        <p>사용자 총 평점</p>
-        {' '}
-        {totalRating}
-        /
-        5
+        <p>
+          사용자 총 평점
+          {' '}
+          {totalRating}
+          /5
+        </p>
         <p>
           전체 리뷰 수
           {' '}
@@ -55,7 +54,8 @@ export default function ProductReviews(
                 onClick={() => handleClickReview(review.id)}
               >
                 <img
-                  src={reviewImages.find((reviewImage) => reviewImage.reviewId === review.id).url}
+                  src={review.reviewImages.length !== 0 ? review.reviewImages[0].url
+                    : 'productImage'}
                   alt="reviewImage"
                   width="40px"
                 />
@@ -72,19 +72,14 @@ export default function ProductReviews(
                   {' '}
                   {review.optionName}
                 </p>
-                <p>
-                  {' '}
-                  {review.content}
-                </p>
+                {review.content}
               </button>
               <button
                 type="button"
                 onClick={() => handleClickRecommendation(review.id)}
               >
                 추천
-                {recommendations.filter(
-                  (recommendation) => recommendation.reviewId === review.id,
-                ).length}
+                {review.recommendations.length}
               </button>
             </li>
           ))}
@@ -95,6 +90,7 @@ export default function ProductReviews(
               <button
                 type="button"
                 onClick={() => handleClickPageNumber(number)}
+                id={`review-pageNumber${number}`}
               >
                 {number}
               </button>

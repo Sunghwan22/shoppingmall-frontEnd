@@ -13,18 +13,16 @@ export default class ProductApiService {
     return data;
   }
 
-  async fetchWishes(productId, accessToken) {
-    const url = `${baseurl}/products/wishes`;
+  async searchProduct(word) {
+    const url = `${baseurl}/products/search`;
 
-    const { data } = await axios.post(url, { productId }, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const { data } = await axios.get(url, {
+      params: {
+        word,
       },
     });
 
-    const wishNumber = data;
-
-    return wishNumber;
+    return data;
   }
 }
 

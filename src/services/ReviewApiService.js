@@ -5,20 +5,30 @@ import config from '../../config';
 const baseurl = config.apiBaseUrl;
 
 export default class ReviewApiService {
-  async fetchRecommendation(accessToken, reviewId, productId) {
-    const url = `${baseurl}/reviews/recommendation/${reviewId}`;
+  async fetchRecommendation(accessToken, reviewId) {
+    const url = `${baseurl}/reviews/${reviewId}/recommendations`;
 
-    const { data } = await axios.post(url, { productId }, {
+    const { data } = await axios.post(url, {}, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return data.recommendations;
+    const { recommendations } = data;
+
+    return recommendations;
   }
 
   async fetchReviews(productId) {
-    const url = `${baseurl}/reviews/${productId}`;
+    const url = `${baseurl}/reviews/products/${productId}`;
+
+    const { data } = await axios.get(url);
+
+    return data;
+  }
+
+  async fetchBestReviews(productId) {
+    const url = `${baseurl}/reviews/best/products/${productId}`;
 
     const { data } = await axios.get(url);
 
@@ -26,7 +36,7 @@ export default class ReviewApiService {
   }
 
   async changePage(productId, number) {
-    const url = `${baseurl}/reviews/${productId}`;
+    const url = `${baseurl}/reviews/products/${productId}`;
 
     const { data } = await axios.get(url, {
       params: {
@@ -34,21 +44,31 @@ export default class ReviewApiService {
       },
     });
 
-    const { reviews, recommendations } = data;
+    const { reviews } = data;
 
-    return { reviews, recommendations };
+    return reviews;
+  }
+
+  async changeBestReviewPage(productId, number) {
+    const url = `${baseurl}/reviews/best/products/${productId}`;
+
+    const { data } = await axios.get(url, {
+      params: {
+        page: number,
+      },
+    });
+
+    const { reviews } = data;
+
+    return reviews;
   }
 
   async fetchReview(reviewId) {
-    const url = `${baseurl}/reviews/detail/${reviewId}`;
+    const url = `${baseurl}/reviews/${reviewId}`;
 
     const { data } = await axios.get(url);
 
-    console.log(data);
-
-    const { review, reviewRecommendations, reviewImage } = data;
-
-    return { review, reviewRecommendations, reviewImage };
+    return data;
   }
 }
 
