@@ -13,8 +13,8 @@ export default class ProductApiService {
     return data;
   }
 
-  async searchProduct(word) {
-    const url = `${baseurl}/products/search`;
+  async fetchProducts(word) {
+    const url = `${baseurl}/products`;
 
     const { data } = await axios.get(url, {
       params: {

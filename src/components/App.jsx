@@ -5,10 +5,11 @@ import { Reset } from 'styled-reset';
 import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
-import SearchProductResultPage from '../pages/SearchProductResultPage';
+import ProductsPage from '../pages/ProductsPage';
 import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
+import Products from './Products';
 
 const Main = styled.main`
   min-width: 768px;
@@ -27,9 +28,9 @@ export default function App() {
         <Main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products/:productId" element={<ProductDetailPage />} />
+            <Route path="/product/:productId" element={<ProductDetailPage />} />
             <Route path="/inquiry/write" element={<InquiryFormPage />} />
-            <Route path="/search/:word" element={<SearchProductResultPage />} />
+            <Route path="/products" element={<ProductsPage />} />
           </Routes>
         </Main>
       </ModalProvider>

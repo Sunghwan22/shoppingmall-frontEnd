@@ -121,11 +121,9 @@ describe('productStore', () => {
     });
   });
 
-  context('상품 검색 후 검색명에 맞는 상품 불러오기', () => {
-    it('searchProduct함수 실행', async () => {
-      const word = '아이폰';
-
-      await productStore.searchProduct(word);
+  context('상품 목록 불러오기', () => {
+    it('fetchProducts함수 실행', async () => {
+      await productStore.fetchProducts();
 
       const { products } = productStore;
 

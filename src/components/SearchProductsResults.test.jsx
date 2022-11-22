@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import SearchProductsResults from './SearchProductsResults';
+import SearchProductsResults from './Products';
 
 const context = describe;
 

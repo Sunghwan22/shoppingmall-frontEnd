@@ -59,8 +59,8 @@ export default class ProductStore {
     this.publish();
   }
 
-  async searchProduct(word) {
-    const { products } = await productApiService.searchProduct(word);
+  async fetchProducts() {
+    const { products } = await productApiService.fetchProducts();
 
     this.products = products;
 
