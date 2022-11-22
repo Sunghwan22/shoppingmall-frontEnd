@@ -13,16 +13,24 @@ export default class ProductApiService {
     return data;
   }
 
-  async fetchProducts(word) {
+  async fetchProducts() {
+    const url = `${baseurl}/products`;
+
+    const { data } = await axios.get(url);
+
+    return data;
+  }
+
+  async changePageNumber(number) {
     const url = `${baseurl}/products`;
 
     const { data } = await axios.get(url, {
       params: {
-        word,
+        page: number,
       },
     });
 
-    return data;
+    return data.products;
   }
 }
 

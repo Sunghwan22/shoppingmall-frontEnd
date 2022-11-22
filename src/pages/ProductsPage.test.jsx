@@ -12,12 +12,16 @@ jest.mock('react-router-dom', () => ({
 }));
 
 let products;
+let pageNumbers;
 
 const fetchProducts = jest.fn();
+const changeProductsPageNumber = jest.fn();
 
 jest.mock('../hooks/useProductStore', () => () => ({
   products,
+  pageNumbers,
   fetchProducts,
+  changeProductsPageNumber,
 }));
 
 let productWishes;
@@ -75,6 +79,8 @@ describe('ProductsPage', () => {
     },
   ];
 
+  pageNumbers = [1, 2];
+
   function renderProductsPage() {
     render(<ProductsPage />);
   }
@@ -99,23 +105,33 @@ describe('ProductsPage', () => {
 
   context('상품 찜하기', () => {
     it('onClickWishes함수 실행', () => {
-      renderProductsPage();
+      localStorage.setItem('accessToken', JSON.stringify('ACCESS.TOKEN'));
 
-      localStorage.setItem('ACCESS.TOKEN');
+      renderProductsPage();
 
       fireEvent.click(screen.getByText('찜하기 100'));
 
-      expect(createWishes).toBeCalledWith('1', 'ACCESS.TOKEN');
+      expect(createWishes).toBeCalledWith(1, 'ACCESS.TOKEN');
     });
   });
 
-  context('로그인 하지 않고 상품 찜하기', () => {
-    it('onClickWishes함수 실행', () => {
+  // context('로그인 하지 않고 상품 찜하기', () => {
+  //   it('onClickWishes함수 실행', () => {
+  //     renderProductsPage();
+
+  //     fireEvent.click(screen.getByText('찜하기 100'));
+
+  //     screen.getByText('로그인이 필요한 서비스입니다 로그인하시겠습니까?');
+  //   });
+  // });
+
+  context('상품 목록 페이지 전환', () => {
+    it('changeProductsPageNumber함수 실행', () => {
       renderProductsPage();
 
-      fireEvent.click(screen.getByText('찜하기 100'));
+      fireEvent.click(screen.getByText('2'));
 
-      screen.getByText('로그인이 필요한 서비스입니다 로그인하시겠습니까?');
+      expect(changeProductsPageNumber).toBeCalledWith(2);
     });
   });
 });

@@ -22,6 +22,9 @@ export default class ProductStore {
 
     this.guideMessage = '';
 
+    this.pageNumbers = [];
+    this.totalProductsNumber = 0;
+
     this.listeners = new Set();
   }
 
@@ -60,9 +63,19 @@ export default class ProductStore {
   }
 
   async fetchProducts() {
-    const { products } = await productApiService.fetchProducts();
+    const data = await productApiService.fetchProducts();
 
-    this.products = products;
+    this.products = data.products;
+
+    this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
+
+    this.totalProductsNumber = data.totalProductsNumber;
+
+    this.publish();
+  }
+
+  async changeProductsPageNumber(number) {
+    this.products = await productApiService.changePageNumber(number);
 
     this.publish();
   }

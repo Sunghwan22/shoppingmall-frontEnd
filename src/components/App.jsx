@@ -9,7 +9,6 @@ import ProductsPage from '../pages/ProductsPage';
 import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
-import Products from './Products';
 
 const Main = styled.main`
   min-width: 768px;
