@@ -25,14 +25,39 @@ const server = setupServer(
       { url: 'imageUrl', isThumbnailImage: false }],
   }))),
 
-  rest.get(`${baseurl}/products/search`, async (request, response, context) => {
-    const word = await request.url.searchParams.get('word');
+  rest.get(`${baseurl}/products`, async (request, response, context) => {
+    const page = await request.url.searchParams.get('page');
 
-    if (word === '아이폰') {
+    if (!page) {
       return response(context.json({
         products: [
           {
             id: 1,
+            productNumber: 12,
+            productName: '아이폰 13',
+            maker: '애플',
+            category: '전자기기',
+            views: 1000,
+            cumulativesales: 120,
+            price: 1000000,
+            stock: 100,
+            maximumQuantity: '50',
+            description: '이것은 아이폰 13입니다',
+            deliveryFee: '3000',
+            options: [{ addAmount: 3000, description: '블랙' },
+              { addAmount: 5000, description: '화이트' }],
+            productImages: [{ url: 'imageUrl', isThumbnailImage: true },
+              { url: 'imageUrl', isThumbnailImage: false }],
+          },
+        ],
+      }));
+    }
+
+    if (page === '2') {
+      return response(context.json({
+        products: [
+          {
+            id: 2,
             productNumber: 12,
             productName: '아이폰 14',
             maker: '애플',
@@ -43,24 +68,6 @@ const server = setupServer(
             stock: 100,
             maximumQuantity: '50',
             description: '이것은 아이폰 14입니다',
-            deliveryFee: '3000',
-            options: [{ addAmount: 3000, description: '블랙' },
-              { addAmount: 5000, description: '화이트' }],
-            productImages: [{ url: 'imageUrl', isThumbnailImage: true },
-              { url: 'imageUrl', isThumbnailImage: false }],
-          },
-          {
-            id: 2,
-            productNumber: 13,
-            productName: '아이폰 13',
-            maker: '애플',
-            category: '전자기기',
-            views: 1000,
-            cumulativesales: 150,
-            price: 1000000,
-            stock: 100,
-            maximumQuantity: '50',
-            description: '이것은 아이폰 13입니다',
             deliveryFee: '3000',
             options: [{ addAmount: 3000, description: '블랙' },
               { addAmount: 5000, description: '화이트' }],

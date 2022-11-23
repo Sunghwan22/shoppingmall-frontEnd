@@ -7,11 +7,12 @@ import numberFormat from '../utils/NumberFormat';
 const Container = styled.div`
    display: flex;
    justify-content: center;
-   padding-top: 1.5em;
-   height: 35%;  
+   height: 500px;  
+   margin-top: 3em;
    margin-left: 10%;
    margin-right: 10%;
-   border: solid 1px;
+   margin-bottom: 5em;
+   border: dotted 1px #000;
 `;
 
 const Image = styled.img`
@@ -63,6 +64,7 @@ const ProductPrice = styled.div`
 `;
 
 const ProductInforamtion = styled.div`
+  padding-top: 2em;
   padding-right: 2em;
 `;
 
@@ -81,6 +83,7 @@ const ProductOption = styled.select`
   width: 100%;
   padding: 0.3em;
   margin-bottom: 1em;
+  cursor: pointer;
 `;
 
 const PayInformation = styled.div`
@@ -96,9 +99,6 @@ const PayInformation = styled.div`
   }
 `;
 
-const QuantityBox = styled.div`
-`;
-
 const MinusButton = styled.button`
   font-size: 1em;
   font-weight: bold;
@@ -106,6 +106,12 @@ const MinusButton = styled.button`
   border: none;
   margin-right: .5em;
   cursor: pointer;
+  
+
+  :hover {
+    background-color: #adadad;
+    color: white;
+  }
 `;
 
 const PlusButton = styled.button`
@@ -115,6 +121,11 @@ const PlusButton = styled.button`
   border: none;
   margin-left: .5em;
   cursor: pointer; 
+
+  :hover {
+    background-color: #adadad;
+    color: white;
+  }
 `;
 
 const PayMoeny = styled.p`
@@ -144,10 +155,14 @@ const BuyButton = styled.button`
 
   border-radius: 5px;
 
-  :hover {
-    background: linear-gradient(269.99deg,
+/*   
+  linear-gradient(269.99deg,
     rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    rgb(232, 116, 250) 99.99%); */
+  :hover {
+    
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 
@@ -173,9 +188,8 @@ const WishButton = styled.button`
   border-radius: 3px;
 
   :hover {
-    background: linear-gradient(269.99deg,
-    rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 
@@ -195,9 +209,9 @@ const CartButton = styled.button`
   border-radius: 3px;
 
   :hover {
-    background: linear-gradient(269.99deg,
-    rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 
@@ -331,23 +345,23 @@ export default function ProductInformation(
         </ProductOption>
         {selectedOption ? (
           <PayInformation>
-            <QuantityBox>
-              <MinusButton
-                type="button"
-                name="minusQuantity-button"
-                onClick={handleClickMinus}
-              >
-                -
-              </MinusButton>
-              <span>{quantity}</span>
-              <PlusButton
-                type="button"
-                name="addQuantity-button"
-                onClick={handleClickPlus}
-              >
-                +
-              </PlusButton>
-            </QuantityBox>
+
+            <MinusButton
+              type="button"
+              name="minusQuantity-button"
+              onClick={handleClickMinus}
+            >
+              -
+            </MinusButton>
+            <span>{quantity}</span>
+            <PlusButton
+              type="button"
+              name="addQuantity-button"
+              onClick={handleClickPlus}
+            >
+              +
+            </PlusButton>
+
             <PayMoeny>
               <span>총 상품금액</span>
               {' '}

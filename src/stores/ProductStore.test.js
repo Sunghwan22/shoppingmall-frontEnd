@@ -121,15 +121,26 @@ describe('productStore', () => {
     });
   });
 
-  context('상품 검색 후 검색명에 맞는 상품 불러오기', () => {
-    it('searchProduct함수 실행', async () => {
-      const word = '아이폰';
-
-      await productStore.searchProduct(word);
+  context('상품 목록 불러오기', () => {
+    it('fetchProducts함수 실행', async () => {
+      await productStore.fetchProducts();
 
       const { products } = productStore;
 
-      expect(products.length).toBe(2);
+      expect(products.length).toBe(1);
+      expect(products[0].productName).toBe('아이폰 13');
+      expect(products[0].price).toBe(1000000);
+      expect(products[0].cumulativesales).toBe(120);
+    });
+  });
+
+  context('상품 목록 페이지 전환하기', () => {
+    it('2페이지에 있는 상품을 보여줌 ', async () => {
+      await productStore.changeProductsPageNumber(2);
+
+      const { products } = productStore;
+
+      expect(products.length).toBe(1);
       expect(products[0].productName).toBe('아이폰 14');
       expect(products[0].price).toBe(1500000);
       expect(products[0].cumulativesales).toBe(150);

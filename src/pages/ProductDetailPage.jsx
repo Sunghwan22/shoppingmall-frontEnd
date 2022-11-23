@@ -133,7 +133,7 @@ export default function ProductDetailPage() {
   };
 
   const onClickInquiryPageNumbers = (number) => {
-    inquiryStore.changePageNumber(productId, accessToken, number);
+    inquiryStore.changeInquiryPageNumber(productId, accessToken, number);
   };
 
   const onClickInquiry = (inquiryId) => {

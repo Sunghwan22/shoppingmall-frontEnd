@@ -39,8 +39,6 @@ const onClickResetOption = jest.fn();
 const onClickWishes = jest.fn();
 const onClickAddCart = jest.fn();
 
-jest.spyOn(window, 'alert').mockImplementation(() => {});
-
 const context = describe;
 
 describe(('상품 상세 페이지'), () => {
@@ -55,10 +53,11 @@ describe(('상품 상세 페이지'), () => {
 
       screen.getByText('Product Info');
       screen.getByText(/애플/);
-      screen.getByText(/1000/);
-      screen.getByText(/가격 10,000원/);
+      screen.getByText('1,000회');
+      screen.getByText('10,000원');
       screen.getByAltText('productProfile');
-      screen.getByText(/배송비 3,000원/);
+      screen.getByText('배송비');
+      screen.getByText('3,000원');
     });
 
     it('상품 옵션 선택하기', () => {

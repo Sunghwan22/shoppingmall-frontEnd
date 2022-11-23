@@ -5,15 +5,15 @@ Before(({ I }) => {
 });
 
 Scenario('상품 상세 정보 확인', ({ I }) => {
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('Product Info');
-  I.see('가격 25,000원');
-  I.see('상품명 아이폰14');
+  I.see('25,000원');
+  I.see('아이폰14');
 });
 
 Scenario('상품 옵션 확인하기', ({ I }) => {
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('select[name="product-option"]');
 
@@ -22,11 +22,11 @@ Scenario('상품 옵션 확인하기', ({ I }) => {
   I.see('블루 + 3,000원');
 
   I.selectOption('product-option', '블랙 + 4,000원');
-  I.see('결제금액 : 29,000원');
+  I.see('29,000원');
 });
 
 Scenario('갯수 변경하기', ({ I }) => {
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('select[name="product-option"]');
 
@@ -34,17 +34,17 @@ Scenario('갯수 변경하기', ({ I }) => {
 
   I.click('+');
 
-  I.see('결제금액 : 58,000원');
+  I.see('58,000원');
 
   I.click('-');
 
-  I.see('결제금액 : 29,000원');
+  I.see('29,000원');
 });
 
 // Scenario('상품 찜하기', ({ I }) => {
 //   // todo 로그인 구현하고 테스트 해야함
 
-//   I.amOnPage('/products/1');
+//   I.amOnPage('/product/1');
 
 //   I.click(/찜하기 0/);
 
@@ -54,7 +54,7 @@ Scenario('갯수 변경하기', ({ I }) => {
 Scenario('로그인 하지 않고 상품 찜하기를 누른 경우', ({ I }) => {
   I.setupWishes();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('찜하기 3');
 
@@ -66,7 +66,7 @@ Scenario('로그인 하지 않고 상품 찜하기를 누른 경우', ({ I }) =>
 // Scenario('장바구니 추가 하기', ({ I }) => {
 //   I.login('tidls45');
 
-//   I.amOnPage('/products/1');
+//   I.amOnPage('/product/1');
 
 //   I.click('장바구니');
 
@@ -78,7 +78,7 @@ Scenario('로그인 하지 않고 상품 찜하기를 누른 경우', ({ I }) =>
 // });
 
 Scenario('로그인 하지 않고 장바구니 추가 하기', ({ I }) => {
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('장바구니');
 
@@ -90,7 +90,7 @@ Scenario('로그인 하지 않고 장바구니 추가 하기', ({ I }) => {
 Scenario('베스트 리뷰 확인하기', ({ I }) => {
   I.setupReviews();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('리뷰 수 10');
   I.see('사용자 총 평점 5/5');
@@ -101,7 +101,7 @@ Scenario('베스트 리뷰 확인하기', ({ I }) => {
 Scenario('일반 리뷰 확인하기', ({ I }) => {
   I.setupReviews();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('리뷰 수 10');
   I.see('사용자 총 평점 5/5');
@@ -112,7 +112,7 @@ Scenario('일반 리뷰 확인하기', ({ I }) => {
 Scenario('2페이지의 베스트 리뷰 보기', ({ I }) => {
   I.setupReviews();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('리뷰 수 10');
   I.see('사용자 총 평점 5/5');
@@ -125,7 +125,7 @@ Scenario('2페이지의 베스트 리뷰 보기', ({ I }) => {
 Scenario('2페이지의 일반 리뷰 보기', ({ I }) => {
   I.setupReviews();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('리뷰 수 10');
   I.see('사용자 총 평점 5/5');
@@ -140,7 +140,7 @@ Scenario('2페이지의 일반 리뷰 보기', ({ I }) => {
 
 //   I.setupReviews();
 
-//   I.amOnPage('/products/1');
+//   I.amOnPage('/product/1');
 
 //   I.click('추천');
 
@@ -154,7 +154,7 @@ Scenario('2페이지의 일반 리뷰 보기', ({ I }) => {
 Scenario('로그인 하지 않고 리뷰 추천 하기', ({ I }) => {
   I.setupReviews();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('추천');
 
@@ -164,7 +164,7 @@ Scenario('로그인 하지 않고 리뷰 추천 하기', ({ I }) => {
 // Scenario('로그인 하지 않고 추천 하기', ({ I }) => {
 //   I.setupReviews();
 
-//   I.amOnPage('/products/1');
+//   I.amOnPage('/product/1');
 
 //   // todo 리뷰 버튼 이름 만들어야 함
 //   I.click('추천');
@@ -184,7 +184,7 @@ Scenario('로그인 하지 않고 리뷰 추천 하기', ({ I }) => {
 
 //   I.setupInquiries();
 
-//   I.amOnPage('/products/1');
+//   I.amOnPage('/product/1');
 
 //   I.see('압도적 승리감이 있나요?');
 //   I.see('미답변');
@@ -193,7 +193,7 @@ Scenario('로그인 하지 않고 리뷰 추천 하기', ({ I }) => {
 Scenario('로그인 하지 않은 상태로 비밀글이 아닌 상품 문의 및 답변 확인', ({ I }) => {
   I.setupInquiries();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.see('Q&A 6');
 
@@ -205,7 +205,7 @@ Scenario('비밀글이 아닌 상품 문의의 상세 페이지 확인', ({ I })
   I.setupInquiries();
   I.setupAnswer();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('조금의 미소만 있으면 된다?');
   I.see('이것은 답변이다2');
@@ -215,7 +215,7 @@ Scenario('비밀글의 문의 내용을 클릭했을 경우', ({ I }) => {
   I.setupInquiries();
   I.setupAnswer();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('비밀글 입니다');
   I.see('접근 권한이 없습니다');
@@ -225,7 +225,7 @@ Scenario('상품 문의 2페이지 전환', ({ I }) => {
   I.setupInquiries();
   I.setupAnswer();
 
-  I.amOnPage('/products/1');
+  I.amOnPage('/product/1');
 
   I.click('#inquiry-pageNumber2');
 

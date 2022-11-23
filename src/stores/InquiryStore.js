@@ -40,7 +40,7 @@ export default class InquiryStore {
     this.publish();
   }
 
-  async changePageNumber(productId, accessToken, number) {
+  async changeInquiryPageNumber(productId, accessToken, number) {
     const data = await inquiryApiService.changePageNumber(productId, accessToken, number);
 
     this.inquiries = data.inquiries;

@@ -45,6 +45,9 @@ export default function Header() {
           <li>
             <Link to="/">홈 </Link>
           </li>
+          <li>
+            <Link to="/products">스토어</Link>
+          </li>
           <SearchProductForm />
           {accessToken ? (
             <MenuList>

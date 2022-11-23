@@ -41,7 +41,7 @@ describe('InquiryStore', () => {
         const productId = 1;
         const page = 2;
 
-        await inquiryStore.changePageNumber(productId, 'AccessToken', page);
+        await inquiryStore.changeInquiryPageNumber(productId, 'AccessToken', page);
 
         const { inquiries } = inquiryStore;
 
@@ -58,7 +58,7 @@ describe('InquiryStore', () => {
         const productId = 1;
         const page = 2;
 
-        await inquiryStore.changePageNumber(productId, '', page);
+        await inquiryStore.changeInquiryPageNumber(productId, '', page);
 
         const { inquiries } = inquiryStore;
 
