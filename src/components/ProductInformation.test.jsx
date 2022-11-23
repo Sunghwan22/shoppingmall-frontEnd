@@ -39,8 +39,6 @@ const onClickResetOption = jest.fn();
 const onClickWishes = jest.fn();
 const onClickAddCart = jest.fn();
 
-jest.spyOn(window, 'alert').mockImplementation(() => {});
-
 const context = describe;
 
 describe(('상품 상세 페이지'), () => {

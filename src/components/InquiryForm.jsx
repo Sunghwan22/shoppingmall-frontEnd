@@ -1,40 +1,37 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
-import { inquiryStore } from '../stores/InquiryStore';
 
 export default function InquiryForm(
-  { productId },
+  { onClickRegister, onClickCancel },
 ) {
   const {
     register, handleSubmit, formState: { errors },
   } = useForm();
-
-  const navigate = useNavigate();
-
-  const [accessToken] = useLocalStorage('accessToken', '');
 
   const onSubmit = async (data) => {
     const { content, isSecret } = data;
 
     const inquiryInformation = { content, isSecret };
 
-    inquiryStore.createInquiry(productId, accessToken, inquiryInformation);
-
-    navigate(`/products/${productId}`);
+    onClickRegister(inquiryInformation);
   };
 
   const handleClickCancel = () => {
-    navigate(`/products/${productId}`);
+    onClickCancel();
   };
 
   return (
     <div>
       <h2>상품 Q&A 작성하기</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <label
+          htmlFor="write-inquiry-form"
+        >
+          문의 내용
+        </label>
         <textarea
+          id="write-inquiry-form"
           rows="5"
           cols="100"
           maxLength="1000"
@@ -42,7 +39,7 @@ export default function InquiryForm(
             'content',
             {
               required: {
-                value: true, message: '한 글자 이상 입력해주세요',
+                value: true, message: '문의하실 내용을 입력해주세요',
               },
             },
           )}
@@ -74,8 +71,8 @@ export default function InquiryForm(
           취소
         </button>
       </form>
-      {errors.inquiryContent
-        ? <p>{errors.inquiryContent.message}</p> : null}
+      {errors.content
+        ? <p>{errors.content.message}</p> : null}
     </div>
   );
 }

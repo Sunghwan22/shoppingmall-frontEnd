@@ -17,6 +17,7 @@ export default function ProductInquiries(
 
   const handleClickPageNumber = (number) => {
     onClickInquiryPageNumbers(number);
+    setInquiryDetail(!inquiryDetail);
   };
 
   const handleClickInquiry = (inquiryId) => {
@@ -100,6 +101,7 @@ export default function ProductInquiries(
               type="button"
               onClick={() => handleClickPageNumber(number)}
               id={`inquiry-pageNumber${number}`}
+              data-testid={`inquiry-pageNumber${number}`}
             >
               {number}
             </button>

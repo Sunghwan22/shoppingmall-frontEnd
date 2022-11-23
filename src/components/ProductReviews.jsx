@@ -91,6 +91,7 @@ export default function ProductReviews(
                 type="button"
                 onClick={() => handleClickPageNumber(number)}
                 id={`review-pageNumber${number}`}
+                data-testid={`review-pageNumber${number}`}
               >
                 {number}
               </button>

@@ -4,17 +4,18 @@ export default function InquiryDetail(
   return (
     <div>
       <p>{inquiry.content}</p>
-      {inquiry.answers
-        ? inquiry.answers.map((answer) => (
-          <ul>
-            <li key={answer.id}>
-              답변
-              {' '}
-              {answer.comment}
-            </li>
+      <ul>
+        {inquiry.answers ? inquiry.answers.map((answer) => (
+          <li key={answer.id}>
+            답변
+            {' '}
+            {answer.comment}
             <p>{answer.createdAt}</p>
-          </ul>
-        )) : null}
+          </li>
+
+        ))
+          : <p>작성된 답변이 없습니다</p>}
+      </ul>
     </div>
   );
 }
