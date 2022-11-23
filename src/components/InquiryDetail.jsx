@@ -12,7 +12,6 @@ export default function InquiryDetail(
             {answer.comment}
             <p>{answer.createdAt}</p>
           </li>
-
         ))
           : <p>작성된 답변이 없습니다</p>}
       </ul>

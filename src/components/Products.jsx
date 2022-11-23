@@ -36,13 +36,11 @@ export default function Products(
               onClick={() => handleClickProduct(product.id)}
             >
               <img
-                src={product.productImages.find((productImage) => (
-                  productImage.isThumbnailImage === true
-                )).url}
+                src={product.productImage.url}
                 alt="productThumbnailImages"
                 width="50px"
               />
-              <p>{product.productName}</p>
+              <p>{product.name}</p>
               <p>
                 {numberFormat(product.price)}
                 원
@@ -51,6 +49,11 @@ export default function Products(
                 {' '}
                 {numberFormat(product.deliveryFee)}
                 원
+              </p>
+              <p>
+                구매건수
+                {' '}
+                {numberFormat(product.cumulativeSales)}
               </p>
               <p>
                 리뷰
@@ -70,7 +73,7 @@ export default function Products(
               >
                 찜하기
                 {' '}
-                {numberFormat(product.wishNumbers)}
+                {numberFormat(product.wishNumber)}
               </button>
             </p>
           </li>
@@ -82,6 +85,7 @@ export default function Products(
             <button
               type="button"
               onClick={() => handleClickPageNumber(number)}
+              id={`products-pageNumber${number}`}
             >
               {number}
             </button>

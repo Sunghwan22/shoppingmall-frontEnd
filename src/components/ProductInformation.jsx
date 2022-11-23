@@ -155,10 +155,14 @@ const BuyButton = styled.button`
 
   border-radius: 5px;
 
-  :hover {
-    background: linear-gradient(269.99deg,
+/*   
+  linear-gradient(269.99deg,
     rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    rgb(232, 116, 250) 99.99%); */
+  :hover {
+    
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 
@@ -184,9 +188,8 @@ const WishButton = styled.button`
   border-radius: 3px;
 
   :hover {
-    background: linear-gradient(269.99deg,
-    rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 
@@ -206,9 +209,9 @@ const CartButton = styled.button`
   border-radius: 3px;
 
   :hover {
-    background: linear-gradient(269.99deg,
-    rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%);
+    
+    background:
+    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
 `;
 

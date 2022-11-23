@@ -1,5 +1,5 @@
 import {
-  act, fireEvent, render, screen, waitFor,
+  fireEvent, render, screen, waitFor,
 } from '@testing-library/react';
 import ProductDetailPage from './ProductDetailPage';
 

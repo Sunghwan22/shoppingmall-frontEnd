@@ -69,8 +69,6 @@ export default class ProductStore {
 
     this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
 
-    this.totalProductsNumber = data.totalProductsNumber;
-
     this.publish();
   }
 

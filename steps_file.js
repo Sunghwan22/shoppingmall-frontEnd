@@ -25,10 +25,6 @@ module.exports = function () {
       this.amOnPage(`${backdoorBaseUrl}/setup-answer`);
     },
 
-    setupProducts() {
-      this.amOnPage(`${backdoorBaseUrl}/setup-products`);
-    },
-
     login() {
       // todo 나중에 로그인 구현하면 바꿔야함
 
