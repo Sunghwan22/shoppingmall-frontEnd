@@ -41,6 +41,38 @@ Scenario('갯수 변경하기', ({ I }) => {
   I.see('29,000원');
 });
 
+// Scenario('상품 구매하기', ({ I }) => {
+//   I.amOnPage('/product/1');
+
+//   I.click('select[name="product-option"]');
+
+//   I.selectOption('product-option', '블랙 + 4,000원');
+
+//   I.click('구매하기');
+
+//   I.see('주문/결제');
+// });
+
+Scenario('로그인을 하지 않고 구매하기', ({ I }) => {
+  I.amOnPage('/product/1');
+
+  I.click('select[name="product-option"]');
+
+  I.selectOption('product-option', '블랙 + 4,000원');
+
+  I.click('구매하기');
+
+  I.see('로그인이 필요한 서비스 입니다 로그인 하시겠습니까?');
+});
+
+Scenario('옵션을 선택하지 않고 구매하기', ({ I }) => {
+  I.amOnPage('/product/1');
+
+  I.click('구매하기');
+
+  I.see('옵션을 선택해주세요');
+});
+
 // Scenario('상품 찜하기', ({ I }) => {
 //   // todo 로그인 구현하고 테스트 해야함
 

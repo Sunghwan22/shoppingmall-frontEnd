@@ -41,6 +41,8 @@ export default class ProductStore {
 
     this.options = this.product.options;
 
+    this.resetQuantityAndTotalPayment();
+
     this.publish();
   }
 
@@ -60,6 +62,16 @@ export default class ProductStore {
     );
 
     this.publish();
+  }
+
+  async checkOption() {
+    if (Object.keys(this.selectedProductOption).length === 0
+    || this.selectedProductOption === '옵션을 선택해주세요'
+        || this.guideMessage === '옵션 미선택') {
+      this.guideMessage = '옵션을 선택해주세요';
+
+      this.publish();
+    }
   }
 
   async fetchProducts() {
@@ -117,6 +129,8 @@ export default class ProductStore {
   }
 
   resetQuantityAndTotalPayment() {
+    this.selectedProductOption = {};
+
     this.totalPayment = 0;
     this.quantity = 1;
 
