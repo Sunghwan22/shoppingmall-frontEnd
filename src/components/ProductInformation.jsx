@@ -209,7 +209,6 @@ const CartButton = styled.button`
   border-radius: 3px;
 
   :hover {
-    
     background:
     linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
 }
@@ -220,11 +219,15 @@ export default function ProductInformation(
     product, quantity, totalPayment, thumbnailImage, options,
     onClickSelectOption, onClickAddQuantity, onClickReduceQuantity,
     onClickResetOption, onClickWishes, onClickAddCart, productWishes,
-    guideMessage,
+    onClickPurchase, guideMessage,
   },
 
 ) {
   const [selectedOption, setSelectedOption] = useState(false);
+
+  const handleClickOrder = () => {
+    onClickPurchase();
+  };
 
   const handleClickOption = (event) => {
     const { value } = event.target;
@@ -345,7 +348,6 @@ export default function ProductInformation(
         </ProductOption>
         {selectedOption ? (
           <PayInformation>
-
             <MinusButton
               type="button"
               name="minusQuantity-button"
@@ -372,6 +374,7 @@ export default function ProductInformation(
         ) : null}
         <BuyButton
           type="button"
+          onClick={handleClickOrder}
         >
           구매하기
         </BuyButton>
@@ -393,7 +396,6 @@ export default function ProductInformation(
         </ButtonBox>
         {guideMessage === '옵션을 선택해주세요'
           ? <p>옵션을 선택해주세요</p> : null}
-
       </ProductInforamtionBox>
     </Container>
   );

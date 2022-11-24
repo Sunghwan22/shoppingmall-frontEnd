@@ -1,5 +1,10 @@
+import Postcode from '../components/Postcode';
+
 export default function HomePage() {
   return (
-    <p>Hello, world</p>
+    <div>
+      <p>Hello, world</p>
+      <Postcode />
+    </div>
   );
 }

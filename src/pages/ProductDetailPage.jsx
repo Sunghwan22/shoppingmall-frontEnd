@@ -48,7 +48,7 @@ export default function ProductDetailPage() {
 
   const {
     product, totalPayment, quantity, options, thumbnailImage,
-    subProductImages, guideMessage,
+    subProductImages, guideMessage, selectedProductOption,
   } = productStore;
 
   const {
@@ -62,6 +62,31 @@ export default function ProductDetailPage() {
   } = inquiryStore;
 
   const { productWishes } = wishStore;
+
+  const onClickPurchase = () => {
+    if (!selectedProductOption) {
+      return;
+    }
+
+    if (Object.keys(selectedProductOption).length === 0) {
+      productStore.checkOption();
+      return;
+    }
+
+    if (!accessToken) {
+      setLoginConfirm(true);
+      return;
+    }
+
+    navigate('/orderForm', {
+      state: {
+        product,
+        quantity,
+        selectedProductOption,
+        totalPayment,
+      },
+    });
+  };
 
   const onClickSelectOption = (productOption) => {
     const amount = productOption.addAmount;
@@ -186,6 +211,7 @@ export default function ProductDetailPage() {
         onClickResetOption={onClickResetOption}
         onClickWishes={onClickWishes}
         onClickAddCart={onClickAddCart}
+        onClickPurchase={onClickPurchase}
         guideMessage={guideMessage}
       />
       {isBestReviewDetail ? (

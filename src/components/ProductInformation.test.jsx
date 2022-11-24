@@ -38,18 +38,32 @@ const onClickReduceQuantity = jest.fn();
 const onClickResetOption = jest.fn();
 const onClickWishes = jest.fn();
 const onClickAddCart = jest.fn();
+const onClickPurchase = jest.fn();
 
 const context = describe;
 
 describe(('상품 상세 페이지'), () => {
+  function renderProductDetail() {
+    render(<ProductInformation
+      product={product}
+      onClickSelectOption={onClickSelectOption}
+      totalPayment={totalPayment}
+      quantity={quantity}
+      options={options}
+      thumbnailImage={thumbnailImage}
+      productWishes={productWishes}
+      onClickResetOption={onClickResetOption}
+      onClickAddCart={onClickAddCart}
+      onClickWishes={onClickWishes}
+      onClickAddQuantity={onClickAddQuantity}
+      onClickReduceQuantity={onClickReduceQuantity}
+      onClickPurchase={onClickPurchase}
+    />);
+  }
+
   context(('상품 정보 확인'), () => {
     it('상품 이미지와 가격 확인', async () => {
-      render(<ProductInformation
-        product={product}
-        thumbnailImage={thumbnailImage}
-        options={options}
-        productWishes={productWishes}
-      />);
+      renderProductDetail();
 
       screen.getByText('Product Info');
       screen.getByText(/애플/);
@@ -61,15 +75,7 @@ describe(('상품 상세 페이지'), () => {
     });
 
     it('상품 옵션 선택하기', () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-      />);
+      renderProductDetail();
 
       fireEvent.change(screen.getByLabelText('상품 옵션'), {
         target: { value: '{"addAmount":3000,"description":"블랙"}' },
@@ -80,17 +86,17 @@ describe(('상품 상세 페이지'), () => {
       );
     });
 
+    it('상품 구매하기 버튼 클릭시 onClickPurchase함수 실행', () => {
+      renderProductDetail();
+
+      screen.getByText('구매하기');
+      fireEvent.click(screen.getByText('구매하기'));
+
+      expect(onClickPurchase).toBeCalled();
+    });
+
     it('상품 옵션 초기화 하기', async () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-        onClickResetOption={onClickResetOption}
-      />);
+      renderProductDetail();
 
       fireEvent.change(screen.getByLabelText('상품 옵션'), {
         target: { value: '{"addAmount":3000,"description":"블랙"}' },
@@ -108,17 +114,7 @@ describe(('상품 상세 페이지'), () => {
     });
 
     it('장바구니 추가 하기', () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-        onClickResetOption={onClickResetOption}
-        onClickAddCart={onClickAddCart}
-      />);
+      renderProductDetail();
 
       fireEvent.change(screen.getByLabelText('상품 옵션'), {
         target: { value: '{"addAmount":3000,"description":"블랙"}' },
@@ -130,17 +126,7 @@ describe(('상품 상세 페이지'), () => {
     });
 
     it('옵션을 추가 하지 않고 장바구니 추가 하기', async () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-        onClickResetOption={onClickResetOption}
-        onClickAddCart={onClickAddCart}
-      />);
+      renderProductDetail();
 
       fireEvent.click(screen.getByText('장바구니'));
 
@@ -150,18 +136,7 @@ describe(('상품 상세 페이지'), () => {
 
   context(('상품 찜하기'), () => {
     it('찜하기 목록에 추가', () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-        onClickResetOption={onClickResetOption}
-        onClickAddCart={onClickAddCart}
-        onClickWishes={onClickWishes}
-      />);
+      renderProductDetail();
 
       fireEvent.click(screen.getByRole('button', { name: /찜하기 / }));
 
@@ -171,20 +146,7 @@ describe(('상품 상세 페이지'), () => {
 
   context(('상품 수량 조정하기'), () => {
     it('상품 수량 +', () => {
-      render(<ProductInformation
-        product={product}
-        onClickSelectOption={onClickSelectOption}
-        totalPayment={totalPayment}
-        quantity={quantity}
-        options={options}
-        thumbnailImage={thumbnailImage}
-        productWishes={productWishes}
-        onClickResetOption={onClickResetOption}
-        onClickAddCart={onClickAddCart}
-        onClickWishes={onClickWishes}
-        onClickAddQuantity={onClickAddQuantity}
-        onClickReduceQuantity={onClickReduceQuantity}
-      />);
+      renderProductDetail();
 
       fireEvent.change(screen.getByLabelText('상품 옵션'), {
         target: { value: '{"addAmount":3000,"description":"블랙"}' },

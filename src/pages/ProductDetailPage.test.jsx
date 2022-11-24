@@ -27,6 +27,7 @@ let options;
 let thumbnailImage;
 let subProductImages;
 let guideMessage;
+let selectedProductOption;
 
 const addQuantity = jest.fn();
 const reduceQuantity = jest.fn();
@@ -49,6 +50,7 @@ jest.mock('../hooks/useProductStore', () => () => ({
   addCartItem,
   fetchProduct,
   selectOption,
+  selectedProductOption,
 }));
 
 let reviews;
@@ -126,6 +128,10 @@ describe('ProductDetailPage', () => {
     render((
       <ProductDetailPage />
     ));
+  }
+
+  function clearAccessToken() {
+    localStorage.setItem('accessToken', '');
   }
 
   context('상품 상세 페이지 접속 시 상품 정보 가져오기', () => {
@@ -359,14 +365,55 @@ describe('ProductDetailPage', () => {
     inquiryPageNumbers = [1, 2];
   });
 
-  it('상품 정보를 가져오기 위한 fetchProduct 실행', () => {
+  it('상품 정보를 가져오기 위한 fetchProduct 실행', async () => {
     renderProductDetailPage();
 
     expect(fetchProduct).toBeCalled();
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(fetchProduct).toBeCalled();
     });
+  });
+
+  it('로그인 하지 않고 구매하기 버튼 클릭', () => {
+    clearAccessToken();
+
+    renderProductDetailPage();
+
+    fireEvent.change(screen.getByLabelText('상품 옵션'), {
+      target: { value: '{"addAmount":3000,"description":"블랙"}' },
+    });
+
+    fireEvent.click(screen.getByText('구매하기'));
+
+    expect(navigate).not.toBeCalledWith('/orderSheet');
+  });
+
+  it('옵션을 선택 하지 않고 구매하기 버튼 클릭', () => {
+    clearAccessToken();
+
+    renderProductDetailPage();
+
+    fireEvent.click(screen.getByText('구매하기'));
+
+    screen.getByText('옵션을 선택해주세요');
+    expect(navigate).not.toBeCalledWith('/orderSheet');
+  });
+
+  it('상품 구매하기 버튼 클릭시 결제페이지로 이동', () => {
+    selectedProductOption = { addAmount: 3000, description: '블랙' };
+
+    localStorage.setItem('accessToken', JSON.stringify('ACCESS TOKEN'));
+
+    renderProductDetailPage();
+
+    fireEvent.change(screen.getByLabelText('상품 옵션'), {
+      target: { value: '{"addAmount":3000,"description":"블랙"}' },
+    });
+
+    fireEvent.click(screen.getByText('구매하기'));
+
+    expect(navigate).toBeCalled();
   });
 
   it('상품 옵션을 선택 후 다시 초기화', async () => {
@@ -402,6 +449,8 @@ describe('ProductDetailPage', () => {
   });
 
   it('로그인 하지 않고 상품 옵션 선택 후 장바구니 추가', async () => {
+    clearAccessToken();
+
     renderProductDetailPage();
 
     fireEvent.change(screen.getByLabelText('상품 옵션'), {
@@ -519,23 +568,25 @@ describe('ProductDetailPage', () => {
 
   context('로그인 하지 않고 상품 문의 작성하기', () => {
     it('로그인을 하지 않았다는 메시지를 볼 수 있음', async () => {
-      localStorage.setItem('accessToken', '');
+      clearAccessToken();
 
       renderProductDetailPage();
 
       fireEvent.click(screen.getByText('상품 Q&A작성하기'));
 
-      expect(navigate).not.toBeCalled();
+      expect(navigate).not.toBeCalledWith('/write/inquiry');
     });
   });
 
   context('로그인 하지 않고 나의 Q & A찾기 버튼 클릭', () => {
     it('로그인을 하지 않았다는 메시지를 볼 수 있음', () => {
+      clearAccessToken();
+
       renderProductDetailPage();
 
       fireEvent.click(screen.getByText('나의 Q & A보기'));
 
-      expect(navigate).not.toBeCalled();
+      expect(navigate).not.toBeCalledWith('/mypage');
     });
   });
 
