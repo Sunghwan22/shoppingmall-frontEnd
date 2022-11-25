@@ -1,16 +1,6 @@
-import { useEffect } from 'react';
+import useStore from './useStore';
 import { inquiryStore } from '../stores/InquiryStore';
 
-import useForceUpdate from './useForceUpdate';
-
 export default function useInquiryStore() {
-  const forceUpdate = useForceUpdate();
-
-  useEffect(() => {
-    inquiryStore.subscribe(forceUpdate);
-
-    return () => inquiryStore.unSubscribe(forceUpdate);
-  }, []);
-
-  return inquiryStore;
+  return useStore(inquiryStore);
 }

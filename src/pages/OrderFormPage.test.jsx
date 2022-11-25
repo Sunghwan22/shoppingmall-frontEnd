@@ -57,6 +57,7 @@ describe('OrderFormPage', () => {
       addAmount: 4000, description: '블랙',
     };
   });
+
   it('주문할 상품에 대한 정보를 확인 할 수 있다.', () => {
     renderOrderFormPage();
 

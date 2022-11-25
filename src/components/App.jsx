@@ -4,6 +4,7 @@ import { ModalProvider } from 'styled-react-modal';
 import { Reset } from 'styled-reset';
 import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
+import LoginFormPage from '../pages/LoginFormPage';
 import OrderFormPage from '../pages/OrderFormPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
 import ProductsPage from '../pages/ProductsPage';
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/inquiry/write" element={<InquiryFormPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/orderForm" element={<OrderFormPage />} />
+            <Route path="/login" element={<LoginFormPage />} />
           </Routes>
         </Main>
       </ModalProvider>

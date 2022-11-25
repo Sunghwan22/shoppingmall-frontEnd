@@ -1,8 +1,11 @@
 /* eslint-disable max-len */
 import { inquiryApiService } from '../services/InquiryApiService';
+import Store from './Store';
 
-export default class InquiryStore {
+export default class InquiryStore extends Store {
   constructor() {
+    super();
+
     this.inquiries = [];
     this.myInquiries = [];
     this.inquiry = {};
@@ -76,22 +79,6 @@ export default class InquiryStore {
     this.inquiry = await inquiryApiService.createInquiry(productId, accessToken, inquiryInformation);
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

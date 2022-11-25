@@ -25,9 +25,13 @@ module.exports = function () {
       this.amOnPage(`${backdoorBaseUrl}/setup-answer`);
     },
 
-    login() {
-      // todo 나중에 로그인 구현하면 바꿔야함
-
+    setupUser() {
+      this.amOnPage(`${backdoorBaseUrl}/setup-user`);
     },
+
+    // login() {
+    //   // todo 나중에 로그인 구현하면 바꿔야함
+
+    // },
   });
 };

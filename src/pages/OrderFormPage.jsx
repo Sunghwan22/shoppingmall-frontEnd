@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import OrderAddress from '../components/OrderAddress';
 import OrderProduct from '../components/OrderProduct';
 
 export default function OrderFormPage() {
@@ -16,7 +17,7 @@ export default function OrderFormPage() {
         totalPayment={totalPayment}
         selectedProductOption={selectedProductOption}
       />
-
+      <OrderAddress />
     </div>
   );
 }

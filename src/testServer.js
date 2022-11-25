@@ -597,6 +597,35 @@ const server = setupServer(
       message: '로그인 후 이용가능한 서비스 입니다',
     }));
   }),
+
+  rest.post(`${baseurl}/session`, async (req, res, ctx) => {
+    const { identifier, password } = await req.json();
+    if (identifier === 'identifier' && password === 'password') {
+      return res(ctx.json({
+        accessToken: 'ACCESS.TOKEN',
+        name: 'Tester',
+        phoneNumber: '010-3144-7938',
+        address: {
+          zonecode: 44637,
+          fullAddress: '울산광역시 남구 정광로 3번길 20',
+          jibunAddress: '울산광역시 남구 무거동 1233-12번지',
+          detailAddress: '2층 왼쪽집',
+        },
+      }));
+    }
+    return res(ctx.status(400));
+  }),
+
+  rest.get(`${baseurl}/session/me`, async (req, res, ctx) => res(ctx.json({
+    name: 'Tester',
+    phoneNumber: '010-3144-7938',
+    address: {
+      zonecode: 44637,
+      fullAddress: '울산광역시 남구 정광로 3번길 20',
+      jibunAddress: '울산광역시 남구 무거동 1233-12번지',
+      detailAddress: '2층 왼쪽집',
+    },
+  }))),
 );
 
 export default server;

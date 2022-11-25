@@ -1,10 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import config from '../../config';
+import APIService from './APIService';
 
 const baseurl = config.apiBaseUrl;
 
-export default class InquiryApiService {
+export default class InquiryApiService extends APIService {
+  constructor() {
+    super();
+  }
+
   async fetchInquiries(productId, accessToken) {
     const url = `${baseurl}/inquiries/products/${productId}`;
 

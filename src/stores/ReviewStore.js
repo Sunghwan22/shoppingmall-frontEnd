@@ -1,8 +1,11 @@
 /* eslint-disable max-len */
 import { reviewApiService } from '../services/ReviewApiService';
+import Store from './Store';
 
-export default class ReviewStore {
+export default class ReviewStore extends Store {
   constructor() {
+    super();
+
     this.reviews = [];
     this.review = {};
 
@@ -102,22 +105,6 @@ export default class ReviewStore {
     this.isBestReviewDetail = false;
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

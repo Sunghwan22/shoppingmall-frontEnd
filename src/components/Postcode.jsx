@@ -1,8 +1,13 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 export default function Postcode() {
   const open = useDaumPostcodePopup();
+
+  const [zonecode, setZonecode] = useState('');
+  const [roadAddress, setLoadAddress] = useState('');
+  const [jibunAddress, setJibunAddress] = useState('');
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -17,12 +22,9 @@ export default function Postcode() {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
 
-      console.log(data);
-      console.log(data.zonecode); // 우편번호
-      console.log(fullAddress); // 풀주소
-
-      // 상세주소
-      // 참고사항은 본인이 직접 입력하는 것으로
+      setZonecode(data.zonecode);
+      setLoadAddress(fullAddress);
+      setJibunAddress(data.jibunAddress);
     }
   };
 
@@ -33,8 +35,33 @@ export default function Postcode() {
   };
 
   return (
-    <button type="button" onClick={handleClick}>
-      Open
-    </button>
+    <div>
+      <label htmlFor="zone-code" />
+      <input
+        id="zone-code"
+        placeholder="우편번호"
+        disabled
+        value={zonecode}
+      />
+      <button type="button" onClick={handleClick}>
+        우편번호 찾기
+      </button>
+      <p>
+        <label htmlFor="road-address" />
+        <input
+          id="road-address"
+          placeholder="도로명주소"
+          disabled
+          value={roadAddress}
+        />
+        <label htmlFor="jibun-address" />
+        <input
+          id="jibun-address"
+          placeholder="지번주소"
+          disabled
+          value={jibunAddress}
+        />
+      </p>
+    </div>
   );
 }

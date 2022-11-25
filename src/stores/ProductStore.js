@@ -1,9 +1,12 @@
 /* eslint-disable max-len */
 import { cartService } from '../services/CartService';
 import { productApiService } from '../services/ProductApiService';
+import Store from './Store';
 
-export default class ProductStore {
+export default class ProductStore extends Store {
   constructor() {
+    super();
+
     this.product = {};
     this.products = [];
 
@@ -137,22 +140,6 @@ export default class ProductStore {
     this.guideMessage = '옵션 미선택';
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

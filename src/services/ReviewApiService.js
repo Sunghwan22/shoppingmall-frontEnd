@@ -1,10 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import config from '../../config';
+import APIService from './APIService';
 
 const baseurl = config.apiBaseUrl;
 
-export default class ReviewApiService {
+export default class ReviewApiService extends APIService {
   async fetchRecommendation(accessToken, reviewId) {
     const url = `${baseurl}/reviews/${reviewId}/recommendations`;
 
