@@ -5,6 +5,14 @@ import config from '../../config';
 const baseurl = config.apiBaseUrl;
 
 export default class UserAPIService {
+  constructor() {
+    this.accessToken = '';
+  }
+
+  setAccessToken(accessToken) {
+    this.accessToken = accessToken;
+  }
+
   async fetchUser() {
     const url = `${baseurl}/session/me`;
     const { data } = await axios.get(url, {
@@ -12,6 +20,7 @@ export default class UserAPIService {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
+
     const { name, phoneNumber, address } = data;
 
     return { name, phoneNumber, address };

@@ -6,6 +6,10 @@ export default class APIService {
   setAccessToken(accessToken) {
     this.accessToken = accessToken;
   }
+
+  getAccessToken() {
+    return this.accessToken;
+  }
 }
 
 export const apiService = new APIService();

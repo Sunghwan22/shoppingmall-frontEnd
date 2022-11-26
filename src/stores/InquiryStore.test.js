@@ -13,7 +13,7 @@ describe('InquiryStore', () => {
     it('로그인 하지 않은 상태로 fetchInquiry함수 호출', async () => {
       const productId = 1;
 
-      await inquiryStore.fetchInquiries(productId, '');
+      await inquiryStore.fetchInquiries(productId);
 
       const { inquiries } = inquiryStore;
 
@@ -26,7 +26,7 @@ describe('InquiryStore', () => {
       it('로그인 상태로 fetchInquiry함수 호출 본인이 쓴 게시물은 볼 수 있음', async () => {
         const productId = 1;
 
-        await inquiryStore.fetchInquiries(productId, 'AccessToken');
+        await inquiryStore.fetchInquiries(productId, 'ACCESS.TOKEN');
 
         const { inquiries } = inquiryStore;
 
