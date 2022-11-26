@@ -1,21 +1,26 @@
 import Postcode from './Postcode';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-export default function OrderAddress() {
+export default function OrderAddress(
+  { name, phoneNumber, address },
+
+) {
   return (
     <div>
       <h2>배송 정보</h2>
       <p>
         수령인
         {' '}
-        받는 사람 이름
+        {name}
       </p>
       <p>
         전화 번호
         {' '}
-        010-3144-7938
+        {phoneNumber}
       </p>
-      <Postcode />
+      <Postcode
+        address={address}
+      />
       <p>
         <label htmlFor="detail-address" />
         <input

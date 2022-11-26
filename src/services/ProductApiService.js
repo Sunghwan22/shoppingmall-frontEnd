@@ -13,15 +13,7 @@ export default class ProductApiService {
     return data;
   }
 
-  async fetchProducts() {
-    const url = `${baseurl}/products`;
-
-    const { data } = await axios.get(url);
-
-    return data;
-  }
-
-  async changePageNumber(number) {
+  async fetchProducts(number) {
     const url = `${baseurl}/products`;
 
     const { data } = await axios.get(url, {
@@ -30,8 +22,20 @@ export default class ProductApiService {
       },
     });
 
-    return data.products;
+    return data;
   }
+
+  // async changePageNumber(number) {
+  //   const url = `${baseurl}/products`;
+
+  //   const { data } = await axios.get(url, {
+  //     params: {
+  //       page: number,
+  //     },
+  //   });
+
+  //   return data.products;
+  // }
 }
 
 export const productApiService = new ProductApiService();

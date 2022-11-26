@@ -17,7 +17,7 @@ export default function ProductInquiries(
 
   const handleClickPageNumber = (number) => {
     onClickInquiryPageNumbers(number);
-    setInquiryDetail(!inquiryDetail);
+    setInquiryDetail(false);
   };
 
   const handleClickInquiry = (inquiryId) => {

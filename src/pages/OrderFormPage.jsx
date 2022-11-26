@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 import OrderAddress from '../components/OrderAddress';
 import OrderProduct from '../components/OrderProduct';
 import useUserStore from '../hooks/useUserStore';
@@ -9,13 +10,13 @@ export default function OrderFormPage() {
 
   const userStore = useUserStore();
 
+  const [accessToken] = useLocalStorage('accessToken', '');
+
   useEffect(() => {
-    userStore.fetchUser();
+    userStore.fetchUser(accessToken);
   }, []);
 
   const { name, phoneNumber, address } = userStore;
-
-  console.log(name, phoneNumber, address);
 
   const {
     product, quantity, totalPayment, selectedProductOption,
@@ -29,7 +30,11 @@ export default function OrderFormPage() {
         totalPayment={totalPayment}
         selectedProductOption={selectedProductOption}
       />
-      <OrderAddress />
+      <OrderAddress
+        name={name}
+        phoneNumber={phoneNumber}
+        address={address}
+      />
     </div>
   );
 }

@@ -77,8 +77,8 @@ export default class ProductStore extends Store {
     }
   }
 
-  async fetchProducts() {
-    const data = await productApiService.fetchProducts();
+  async fetchProducts({ page = 1 }) {
+    const data = await productApiService.fetchProducts(page);
 
     this.products = data.products;
 

@@ -18,7 +18,9 @@ export default class InquiryStore extends Store {
     this.blankAccessToken = '';
   }
 
-  async fetchInquiries(productId, accessToken, page = 1) {
+  async fetchInquiries({ productId, accessToken, page = 1 }) {
+    console.log(page);
+
     const data = await inquiryApiService.fetchInquiries(productId, accessToken, page);
 
     this.inquiries = data.inquiries;
@@ -38,8 +40,8 @@ export default class InquiryStore extends Store {
   //   this.publish();
   // }
 
-  async fetchMyInquiries(productId, accessToken) {
-    const data = await inquiryApiService.fetchMyInquiries(productId, accessToken);
+  async fetchMyInquiries({ productId, accessToken, page = 1 }) {
+    const data = await inquiryApiService.fetchMyInquiries(productId, accessToken, page);
 
     this.myInquiries = data.inquiries;
 

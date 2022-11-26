@@ -13,8 +13,8 @@ export default class UserStore extends Store {
     this.errorMessage = '';
   }
 
-  async fetchUser() {
-    const { name, phoneNumber, address } = await userApiService.fetchUser();
+  async fetchUser(accessToken) {
+    const { name, phoneNumber, address } = await userApiService.fetchUser(accessToken);
 
     this.name = name;
     this.phoneNumber = phoneNumber;

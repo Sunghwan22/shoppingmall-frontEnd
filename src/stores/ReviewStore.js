@@ -36,9 +36,9 @@ export default class ReviewStore extends Store {
       this.errorMessage = message;
     }
 
-    await this.fetchBestReviews(productId);
+    await this.fetchBestReviews({ productId });
 
-    await this.fetchReviews(productId);
+    await this.fetchReviews({ productId });
 
     this.publish();
   }
@@ -59,20 +59,20 @@ export default class ReviewStore extends Store {
     this.publish();
   }
 
-  async changePageNumber(productId, number) {
-    this.reviews = await reviewApiService.changePage(productId, number);
+  // async changePageNumber(productId, number) {
+  //   this.reviews = await reviewApiService.changePage(productId, number);
 
-    this.publish();
-  }
+  //   this.publish();
+  // }
 
-  async changeBestReviewPageNumber(productId, number) {
-    this.bestReviews = await reviewApiService.changeBestReviewPage(productId, number);
+  // async changeBestReviewPageNumber(productId, number) {
+  //   this.bestReviews = await reviewApiService.changeBestReviewPage(productId, number);
 
-    this.publish();
-  }
+  //   this.publish();
+  // }
 
-  async fetchReviews(productId) {
-    const data = await reviewApiService.fetchReviews(productId);
+  async fetchReviews({ productId, page = 1 }) {
+    const data = await reviewApiService.fetchReviews(productId, page);
 
     this.reviews = data.reviews;
 
@@ -85,8 +85,8 @@ export default class ReviewStore extends Store {
     this.publish();
   }
 
-  async fetchBestReviews(productId) {
-    const data = await reviewApiService.fetchBestReviews(productId);
+  async fetchBestReviews({ productId, page = 1 }) {
+    const data = await reviewApiService.fetchBestReviews(productId, page);
 
     this.bestReviews = data.reviews;
 

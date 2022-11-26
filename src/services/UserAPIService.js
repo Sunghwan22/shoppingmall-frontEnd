@@ -13,11 +13,11 @@ export default class UserAPIService {
     this.accessToken = accessToken;
   }
 
-  async fetchUser() {
+  async fetchUser(accessToken) {
     const url = `${baseurl}/session/me`;
     const { data } = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 

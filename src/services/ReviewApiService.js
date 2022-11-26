@@ -20,23 +20,7 @@ export default class ReviewApiService extends APIService {
     return recommendations;
   }
 
-  async fetchReviews(productId) {
-    const url = `${baseurl}/reviews/products/${productId}`;
-
-    const { data } = await axios.get(url);
-
-    return data;
-  }
-
-  async fetchBestReviews(productId) {
-    const url = `${baseurl}/reviews/best/products/${productId}`;
-
-    const { data } = await axios.get(url);
-
-    return data;
-  }
-
-  async changePage(productId, number) {
+  async fetchReviews(productId, number) {
     const url = `${baseurl}/reviews/products/${productId}`;
 
     const { data } = await axios.get(url, {
@@ -45,12 +29,10 @@ export default class ReviewApiService extends APIService {
       },
     });
 
-    const { reviews } = data;
-
-    return reviews;
+    return data;
   }
 
-  async changeBestReviewPage(productId, number) {
+  async fetchBestReviews(productId, number) {
     const url = `${baseurl}/reviews/best/products/${productId}`;
 
     const { data } = await axios.get(url, {
@@ -59,9 +41,7 @@ export default class ReviewApiService extends APIService {
       },
     });
 
-    const { reviews } = data;
-
-    return reviews;
+    return data;
   }
 
   async fetchReview(reviewId) {

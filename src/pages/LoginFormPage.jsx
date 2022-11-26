@@ -20,9 +20,7 @@ export default function LoginFormPage() {
     const accessToken = await userStore.login({ identifier, password });
 
     if (accessToken) {
-      setAccessToken('accessToken', accessToken);
-      apiService.setAccessToken(accessToken);
-      userApiService.setAccessToken(accessToken);
+      setAccessToken(accessToken);
       navigate('/');
     }
 

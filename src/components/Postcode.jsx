@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
+
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-export default function Postcode() {
+export default function Postcode(
+  { address },
+) {
   const open = useDaumPostcodePopup();
 
-  const [zonecode, setZonecode] = useState('');
-  const [roadAddress, setLoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
+  const [zonecode, setZonecode] = useState(address.zoneCode);
+  const [roadAddress, setLoadAddress] = useState(address.fullAddress);
+  const [jibunAddress, setJibunAddress] = useState(address.jibunAddress);
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -33,6 +36,10 @@ export default function Postcode() {
       { onComplete: handleComplete },
     );
   };
+
+  if (!address.zoneCode) {
+    return <p>now loading</p>;
+  }
 
   return (
     <div>

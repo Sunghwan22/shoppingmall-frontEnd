@@ -16,7 +16,7 @@ export default function ProductsPage() {
   const wishStore = useWishStore();
 
   useEffect(() => {
-    productStore.fetchProducts();
+    productStore.fetchProducts({ page: 1 });
   }, []);
 
   const { products, pageNumbers } = productStore;
@@ -26,7 +26,7 @@ export default function ProductsPage() {
   };
 
   const onClickPageNumbers = (number) => {
-    productStore.changeProductsPageNumber(number);
+    productStore.fetchProducts({ page: number });
   };
 
   const onClickWishes = (productId) => {
