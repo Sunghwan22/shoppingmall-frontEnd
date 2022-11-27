@@ -19,9 +19,7 @@ export default class InquiryStore extends Store {
   }
 
   async fetchInquiries({ productId, accessToken, page = 1 }) {
-    console.log(page);
-
-    const data = await inquiryApiService.fetchInquiries(productId, accessToken, page);
+    const data = await inquiryApiService.fetchInquiries({ productId, accessToken, page });
 
     this.inquiries = data.inquiries;
 

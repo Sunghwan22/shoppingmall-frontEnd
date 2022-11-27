@@ -72,7 +72,7 @@ export default class ReviewStore extends Store {
   // }
 
   async fetchReviews({ productId, page = 1 }) {
-    const data = await reviewApiService.fetchReviews(productId, page);
+    const data = await reviewApiService.fetchReviews({ productId, page });
 
     this.reviews = data.reviews;
 
@@ -86,7 +86,7 @@ export default class ReviewStore extends Store {
   }
 
   async fetchBestReviews({ productId, page = 1 }) {
-    const data = await reviewApiService.fetchBestReviews(productId, page);
+    const data = await reviewApiService.fetchBestReviews({ productId, page });
 
     this.bestReviews = data.reviews;
 

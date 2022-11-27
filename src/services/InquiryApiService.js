@@ -6,7 +6,7 @@ import APIService from './APIService';
 const baseurl = config.apiBaseUrl;
 
 export default class InquiryApiService extends APIService {
-  async fetchInquiries(productId, accessToken, number) {
+  async fetchInquiries({ productId, accessToken, number }) {
     if (accessToken === undefined) {
       const url = `${baseurl}/inquiries/products/${productId}`;
 
@@ -66,19 +66,6 @@ export default class InquiryApiService extends APIService {
 
     return data;
   }
-
-  // async changeMyInquiryPageNumber(productId, accessToken, number) {
-  //   const url = `${baseurl}/inquiries/products/${productId}/users`;
-
-  //   const { data } = await axios.get(url, {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-
-  //   });
-
-  //   return data;
-  // }
 
   async createInquiry(productId, accessToken, inquiryInformation) {
     const url = `${baseurl}/inquiries/products/${productId}`;

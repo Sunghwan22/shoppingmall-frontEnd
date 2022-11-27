@@ -24,18 +24,6 @@ export default class ProductApiService {
 
     return data;
   }
-
-  // async changePageNumber(number) {
-  //   const url = `${baseurl}/products`;
-
-  //   const { data } = await axios.get(url, {
-  //     params: {
-  //       page: number,
-  //     },
-  //   });
-
-  //   return data.products;
-  // }
 }
 
 export const productApiService = new ProductApiService();

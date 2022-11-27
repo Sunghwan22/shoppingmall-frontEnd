@@ -5,14 +5,10 @@ export default class Store {
 
   subscribe(listener) {
     this.listeners.add(listener);
-
-    this.publish();
   }
 
   unsubscribe(listener) {
     this.listeners.delete(listener);
-
-    this.publish();
   }
 
   publish() {

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 export default function Postcode(
-  { address },
+  { address, onChangeAddress },
 ) {
   const open = useDaumPostcodePopup();
 
@@ -28,6 +28,15 @@ export default function Postcode(
       setZonecode(data.zonecode);
       setLoadAddress(fullAddress);
       setJibunAddress(data.jibunAddress);
+
+      onChangeAddress(
+        {
+          zonecode: data.zonecode,
+          fullAddress,
+          jibunAddress: data.jibunAddress,
+          detailAddress: address.detailAddress,
+        },
+      );
     }
   };
 
@@ -37,7 +46,7 @@ export default function Postcode(
     );
   };
 
-  if (!address.zoneCode) {
+  if (!address.zoneCode || !address.fullAddress || !address.jibunAddress) {
     return <p>now loading</p>;
   }
 
@@ -49,6 +58,7 @@ export default function Postcode(
         placeholder="우편번호"
         disabled
         value={zonecode}
+        // defaultValue={address.zoneCode}
       />
       <button type="button" onClick={handleClick}>
         우편번호 찾기
@@ -60,6 +70,7 @@ export default function Postcode(
           placeholder="도로명주소"
           disabled
           value={roadAddress}
+          // defaultValue={address.fullAddress}
         />
         <label htmlFor="jibun-address" />
         <input
@@ -67,6 +78,7 @@ export default function Postcode(
           placeholder="지번주소"
           disabled
           value={jibunAddress}
+          // defaultValue={address.jibunAddress}
         />
       </p>
     </div>
