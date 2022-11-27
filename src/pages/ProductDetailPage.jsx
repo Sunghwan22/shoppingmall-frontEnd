@@ -41,8 +41,8 @@ export default function ProductDetailPage() {
   useEffect(() => {
     productStore.fetchProduct(productId);
     wishStore.fetchProductWishes(productId);
-    reviewStore.fetchReviews({ productId, page: 1 });
-    reviewStore.fetchBestReviews({ productId, page: 1 });
+    reviewStore.fetchReviews({ productId });
+    reviewStore.fetchBestReviews({ productId });
     inquiryStore.fetchInquiries({ productId, accessToken });
   }, []);
 

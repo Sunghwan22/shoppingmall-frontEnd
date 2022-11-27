@@ -6,7 +6,7 @@ import APIService from './APIService';
 const baseurl = config.apiBaseUrl;
 
 export default class InquiryApiService extends APIService {
-  async fetchInquiries({ productId, accessToken, number }) {
+  async fetchInquiries({ productId, accessToken, page }) {
     if (accessToken === undefined) {
       const url = `${baseurl}/inquiries/products/${productId}`;
 
@@ -16,7 +16,7 @@ export default class InquiryApiService extends APIService {
         },
 
         params: {
-          page: number,
+          page,
         },
       });
 
@@ -30,7 +30,7 @@ export default class InquiryApiService extends APIService {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        page: number,
+        page,
       },
     });
 

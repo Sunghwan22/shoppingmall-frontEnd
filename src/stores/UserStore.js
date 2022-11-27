@@ -14,6 +14,8 @@ export default class UserStore extends Store {
   }
 
   async fetchUser(accessToken) {
+    console.log('콘솔로그');
+
     const { name, phoneNumber, address } = await userApiService.fetchUser(accessToken);
 
     this.name = name;

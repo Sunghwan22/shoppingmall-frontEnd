@@ -6,6 +6,7 @@ export default class OrderFormStore extends Store {
 
     this.newAddress = {};
     this.deliveryRequest = '';
+    this.detailAddress = '';
   }
 
   changeAddress(address) {
@@ -21,7 +22,7 @@ export default class OrderFormStore extends Store {
   }
 
   changeDetailAddress(detailAddress) {
-    this.newAddress.detailAddress = detailAddress;
+    this.detailAddress = detailAddress;
 
     this.publish();
   }

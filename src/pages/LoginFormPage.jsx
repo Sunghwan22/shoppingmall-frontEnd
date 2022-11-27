@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import LoginForm from '../components/LoginForm';
 import useUserStore from '../hooks/useUserStore';
+import { apiService } from '../services/APIService';
 
 export default function LoginFormPage() {
   const userStore = useUserStore();
@@ -19,6 +20,7 @@ export default function LoginFormPage() {
 
     if (accessToken) {
       setAccessToken(accessToken);
+      apiService.setAccessToken(accessToken);
       navigate('/');
     }
 

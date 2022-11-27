@@ -4,7 +4,7 @@ import Postcode from './Postcode';
 export default function OrderAddress(
   {
     name, phoneNumber, address, onChangeAddress, onChangedetailAddress,
-    newAddress, onChnageDeliveryRequest,
+    onChangeDeliveryRequest, detailAddress,
   },
 ) {
   const handleChangeDetailAddress = (event) => {
@@ -16,7 +16,7 @@ export default function OrderAddress(
   const handleChangeDeliveryRequest = (event) => {
     const { value } = event.target;
 
-    onChnageDeliveryRequest(value);
+    onChangeDeliveryRequest(value);
   };
 
   if (!address.detailAddress) {
@@ -45,8 +45,7 @@ export default function OrderAddress(
         <input
           id="detail-address"
           placeholder="상세주소"
-          value={newAddress.detailAddress}
-          defaultValue={address.detailAddress}
+          value={detailAddress}
           onChange={(event) => handleChangeDetailAddress(event)}
         />
       </p>
