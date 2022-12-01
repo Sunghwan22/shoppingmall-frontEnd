@@ -11,9 +11,6 @@ export default class CartService {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      params: {
-        productId,
-      },
     });
 
     return data;

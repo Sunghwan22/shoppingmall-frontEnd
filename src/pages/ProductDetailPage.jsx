@@ -122,6 +122,8 @@ export default function ProductDetailPage() {
     }
 
     productStore.addCartItem(productId, accessToken);
+
+    navigate('/cart');
   };
 
   const onClickRecommendation = (reviewId) => {
