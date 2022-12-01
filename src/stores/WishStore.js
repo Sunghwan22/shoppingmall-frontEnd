@@ -1,7 +1,10 @@
 import { wishApiService } from '../services/WishApiService';
+import Store from './Store';
 
-export default class WishStore {
+export default class WishStore extends Store {
   constructor() {
+    super();
+
     this.productWishes = [];
 
     this.listeners = new Set();
@@ -22,22 +25,6 @@ export default class WishStore {
     }
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

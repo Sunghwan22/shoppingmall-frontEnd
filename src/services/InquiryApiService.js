@@ -1,51 +1,44 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import config from '../../config';
+import APIService from './APIService';
 
 const baseurl = config.apiBaseUrl;
 
-export default class InquiryApiService {
-  async fetchInquiries(productId, accessToken) {
-    const url = `${baseurl}/inquiries/products/${productId}`;
+export default class InquiryApiService extends APIService {
+  async fetchInquiries({ productId, accessToken, page }) {
+    if (accessToken === undefined) {
+      const url = `${baseurl}/products/${productId}/inquiries`;
 
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${''}`,
+        },
 
-    return data;
-  }
+        params: {
+          page,
+        },
+      });
 
-  async changePageNumber(productId, accessToken, number) {
-    const url = `${baseurl}/inquiries/products/${productId}`;
+      return data;
+    }
+
+    const url = `${baseurl}/products/${productId}/inquiries`;
 
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        page: number,
+        page,
       },
     });
 
     return data;
   }
 
-  async fetchMyInquiries(productId, accessToken) {
-    const url = `${baseurl}/inquiries/products/${productId}/users`;
-
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    return data;
-  }
-
-  async changeMyInquiryPageNumber(productId, accessToken, number) {
-    const url = `${baseurl}/inquiries/products/${productId}/users`;
+  async fetchMyInquiries(productId, accessToken, number) {
+    const url = `${baseurl}/products/${productId}/inquiries/user/me`;
 
     const { data } = await axios.get(url, {
       headers: {
@@ -60,7 +53,7 @@ export default class InquiryApiService {
   }
 
   async createInquiry(productId, accessToken, inquiryInformation) {
-    const url = `${baseurl}/inquiries/products/${productId}`;
+    const url = `${baseurl}/products/${productId}/inquiries`;
 
     const { data } = await axios.post(url, { ...inquiryInformation }, {
       headers: {

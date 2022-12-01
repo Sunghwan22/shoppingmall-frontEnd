@@ -28,7 +28,7 @@ const server = setupServer(
   rest.get(`${baseurl}/products`, async (request, response, context) => {
     const page = await request.url.searchParams.get('page');
 
-    if (!page) {
+    if (page === '1') {
       return response(context.json({
         products: [
           {
@@ -106,7 +106,7 @@ const server = setupServer(
     }));
   }),
 
-  rest.get(`${baseurl}/reviews/products/1`, async (request, response, context) => {
+  rest.get(`${baseurl}/products/1/reviews`, async (request, response, context) => {
     const page = await request.url.searchParams.get('page');
 
     if (page === '1') {
@@ -233,7 +233,7 @@ const server = setupServer(
     return response(context.status(400));
   }),
 
-  rest.get(`${baseurl}/reviews/best/products/1`, async (request, response, context) => {
+  rest.get(`${baseurl}/products/1/reviews/best`, async (request, response, context) => {
     const page = await request.url.searchParams.get('page');
 
     if (page === '1') {
@@ -317,7 +317,7 @@ const server = setupServer(
       }));
     }
 
-    if (!page) {
+    if (page === '3') {
       return response(context.json({
         reviews: [
           {
@@ -396,12 +396,12 @@ const server = setupServer(
     }));
   }),
 
-  rest.get(`${baseurl}/inquiries/products/1`, async (request, response, context) => {
+  rest.get(`${baseurl}/products/1/inquiries`, async (request, response, context) => {
     const page = await request.url.searchParams.get('page');
     const accessToken = await request.headers.get('Authorization')
       .substring('Bearer '.length);
 
-    if (!page && !accessToken) {
+    if (!accessToken && page === '1') {
       return response(context.json({
         inquiries: [
           {
@@ -428,7 +428,7 @@ const server = setupServer(
       }));
     }
 
-    if (!page && accessToken) {
+    if (accessToken && page === '1') {
       return response(context.json({
         inquiries: [
           {
@@ -512,12 +512,12 @@ const server = setupServer(
     return response(context.status(400));
   }),
 
-  rest.get(`${baseurl}/inquiries/products/1/users`, async (request, response, context) => {
+  rest.get(`${baseurl}/products/1/inquiries/user/me`, async (request, response, context) => {
     const page = await request.url.searchParams.get('page');
     const accessToken = await request.headers.get('Authorization')
       .substring('Bearer '.length);
 
-    if (!page) {
+    if (page === '1' && accessToken) {
       return response(context.json({
         inquiries: [
           {
@@ -577,7 +577,7 @@ const server = setupServer(
     return response(context.status(400));
   }),
 
-  rest.post(`${baseurl}/inquiries/products/1`, async (request, response, context) => {
+  rest.post(`${baseurl}/products/1/inquiries`, async (request, response, context) => {
     const accessToken = await request.headers.get('Authorization')
       .substring('Bearer '.length);
 
@@ -597,6 +597,33 @@ const server = setupServer(
       message: '로그인 후 이용가능한 서비스 입니다',
     }));
   }),
+
+  rest.post(`${baseurl}/session`, async (req, res, ctx) => {
+    const { identifier, password } = await req.json();
+    if (identifier === 'identifier' && password === 'password') {
+      return res(ctx.json({
+        accessToken: 'ACCESS.TOKEN',
+        name: 'Tester',
+        phoneNumber: '010-3144-7938',
+        address: {
+          zonecode: 44637,
+          fullAddress: '울산광역시 남구 정광로 3번길 20',
+          jibunAddress: '울산광역시 남구 무거동 1233-12번지',
+        },
+      }));
+    }
+    return res(ctx.status(400));
+  }),
+
+  rest.get(`${baseurl}/session/me`, async (req, res, ctx) => res(ctx.json({
+    name: 'Tester',
+    phoneNumber: '010-3144-7938',
+    address: {
+      zonecode: 44637,
+      fullAddress: '울산광역시 남구 정광로 3번길 20',
+      jibunAddress: '울산광역시 남구 무거동 1233-12번지',
+    },
+  }))),
 );
 
 export default server;

@@ -41,9 +41,9 @@ export default function ProductDetailPage() {
   useEffect(() => {
     productStore.fetchProduct(productId);
     wishStore.fetchProductWishes(productId);
-    reviewStore.fetchReviews(productId);
-    reviewStore.fetchBestReviews(productId);
-    inquiryStore.fetchInquiries(productId, accessToken);
+    reviewStore.fetchReviews({ productId });
+    reviewStore.fetchBestReviews({ productId });
+    inquiryStore.fetchInquiries({ productId, accessToken });
   }, []);
 
   const {
@@ -134,11 +134,11 @@ export default function ProductDetailPage() {
   };
 
   const onClickPageNumbers = (number) => {
-    reviewStore.changePageNumber(productId, number);
+    reviewStore.fetchReviews({ productId, page: number });
   };
 
   const onClickBestReviewPageNumbers = (number) => {
-    reviewStore.changeBestReviewPageNumber(productId, number);
+    reviewStore.fetchBestReviews({ productId, page: number });
   };
 
   const onClickBestReview = (reviewId) => {
@@ -158,7 +158,7 @@ export default function ProductDetailPage() {
   };
 
   const onClickInquiryPageNumbers = (number) => {
-    inquiryStore.changeInquiryPageNumber(productId, accessToken, number);
+    inquiryStore.fetchInquiries({ productId, accessToken, page: number });
   };
 
   const onClickInquiry = (inquiryId) => {

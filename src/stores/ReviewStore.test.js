@@ -13,7 +13,7 @@ describe('ReviewStore', () => {
     it('일반 리뷰를 fetchReviews함수로 API서버에서 불러옴', async () => {
       const productId = 1;
 
-      await reviewStore.fetchReviews(productId);
+      await reviewStore.fetchReviews({ productId });
 
       const { reviews } = reviewStore;
 
@@ -27,37 +27,7 @@ describe('ReviewStore', () => {
     it('베스트 리뷰를 fetchBestReviews함수로 API서버에서 불러옴', async () => {
       const productId = 1;
 
-      await reviewStore.fetchBestReviews(productId);
-
-      const { bestReviews } = reviewStore;
-
-      expect(bestReviews.length).toBe(2);
-      expect(bestReviews[0].isBestReview).toBeTruthy();
-      expect(bestReviews[1].isBestReview).toBeTruthy();
-    });
-  });
-
-  context('1페이지의 일반리뷰 불러오기', () => {
-    it('일반 리뷰를 changePageNumber함수로 API서버에서 불러옴', async () => {
-      const productId = 1;
-      const page = 1;
-
-      await reviewStore.changePageNumber(productId, page);
-
-      const { reviews } = reviewStore;
-
-      expect(reviews.length).toBe(2);
-      expect(reviews[0].isBestReview).toBeFalsy();
-      expect(reviews[1].isBestReview).toBeFalsy();
-    });
-  });
-
-  context('1페이지의 베스트리뷰 불러오기', () => {
-    it('베스트 리뷰를 changeBestReviewPage함수로 API서버에서 불러옴', async () => {
-      const productId = 1;
-      const page = 1;
-
-      await reviewStore.changeBestReviewPageNumber(productId, page);
+      await reviewStore.fetchBestReviews({ productId });
 
       const { bestReviews } = reviewStore;
 
@@ -102,51 +72,36 @@ describe('ReviewStore', () => {
       const productId = 1;
       const reviewId = 5;
 
-      await reviewStore.fetchBestReviews(productId);
+      await reviewStore.fetchBestReviews({ productId });
 
       await reviewStore.fetchRecommendation('AccessToken', reviewId, productId);
 
       const { bestReviews } = reviewStore;
 
       expect(bestReviews.length).toBe(2);
-      expect(bestReviews[0].id).toBe(5);
+      expect(bestReviews[0].id).toBe(1);
       expect(bestReviews[0].isBestReview).toBeTruthy();
       expect(bestReviews[1].isBestReview).toBeTruthy();
 
       expect(bestReviews[0].recommendations.length).toBe(1);
     });
-
-    it('일반 리뷰 중 첫번쨰 리뷰에 추천', async () => {
-      const productId = 1;
-      const reviewId = 5;
-
-      await reviewStore.fetchReviews(productId);
-
-      await reviewStore.fetchRecommendation('AccessToken', reviewId, productId);
-
-      const { reviews } = reviewStore;
-
-      expect(reviews.length).toBe(2);
-      expect(reviews[0].id).toBe(5);
-      expect(reviews[0].isBestReview).toBeFalsy();
-      expect(reviews[1].isBestReview).toBeFalsy();
-
-      expect(reviews[0].recommendations.length).toBe(1);
-    });
   });
 
-  context('리뷰상세페이지 보기', () => {
-    it('리뷰 디테일을 트루로 설정', async () => {
-      const productId = 1;
-      const page = 1;
+  it('일반 리뷰 중 첫번쨰 리뷰에 추천', async () => {
+    const productId = 1;
+    const reviewId = 5;
 
-      await reviewStore.changePageNumber(productId, page);
+    await reviewStore.fetchReviews({ productId });
 
-      const { reviews } = reviewStore;
+    await reviewStore.fetchRecommendation('AccessToken', reviewId, productId);
 
-      expect(reviews.length).toBe(2);
-      expect(reviews[0].isBestReview).toBeFalsy();
-      expect(reviews[1].isBestReview).toBeFalsy();
-    });
+    const { reviews } = reviewStore;
+
+    expect(reviews.length).toBe(2);
+    expect(reviews[0].id).toBe(1);
+    expect(reviews[0].isBestReview).toBeFalsy();
+    expect(reviews[1].isBestReview).toBeFalsy();
+
+    expect(reviews[0].recommendations.length).toBe(1);
   });
 });

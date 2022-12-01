@@ -1,9 +1,12 @@
 /* eslint-disable max-len */
 import { cartService } from '../services/CartService';
 import { productApiService } from '../services/ProductApiService';
+import Store from './Store';
 
-export default class ProductStore {
+export default class ProductStore extends Store {
   constructor() {
+    super();
+
     this.product = {};
     this.products = [];
 
@@ -59,6 +62,7 @@ export default class ProductStore {
       accessToken,
       this.quantity,
       this.selectedOption,
+      this.totalPayment,
     );
 
     this.publish();
@@ -74,18 +78,12 @@ export default class ProductStore {
     }
   }
 
-  async fetchProducts() {
-    const data = await productApiService.fetchProducts();
+  async fetchProducts({ page = 1 }) {
+    const data = await productApiService.fetchProducts({ page });
 
     this.products = data.products;
 
     this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
-
-    this.publish();
-  }
-
-  async changeProductsPageNumber(number) {
-    this.products = await productApiService.changePageNumber(number);
 
     this.publish();
   }
@@ -137,22 +135,6 @@ export default class ProductStore {
     this.guideMessage = '옵션 미선택';
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

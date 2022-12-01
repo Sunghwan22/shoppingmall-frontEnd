@@ -1,10 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios';
 import config from '../../config';
+import APIService from './APIService';
 
 const baseurl = config.apiBaseUrl;
 
-export default class ReviewApiService {
+export default class ReviewApiService extends APIService {
   async fetchRecommendation(accessToken, reviewId) {
     const url = `${baseurl}/reviews/${reviewId}/recommendations`;
 
@@ -19,48 +20,28 @@ export default class ReviewApiService {
     return recommendations;
   }
 
-  async fetchReviews(productId) {
-    const url = `${baseurl}/reviews/products/${productId}`;
+  async fetchReviews({ productId, page }) {
+    const url = `${baseurl}/products/${productId}/reviews`;
 
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(url, {
+      params: {
+        page,
+      },
+    });
 
     return data;
   }
 
-  async fetchBestReviews(productId) {
-    const url = `${baseurl}/reviews/best/products/${productId}`;
+  async fetchBestReviews({ productId, page }) {
+    const url = `${baseurl}/products/${productId}/reviews/best`;
 
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(url, {
+      params: {
+        page,
+      },
+    });
 
     return data;
-  }
-
-  async changePage(productId, number) {
-    const url = `${baseurl}/reviews/products/${productId}`;
-
-    const { data } = await axios.get(url, {
-      params: {
-        page: number,
-      },
-    });
-
-    const { reviews } = data;
-
-    return reviews;
-  }
-
-  async changeBestReviewPage(productId, number) {
-    const url = `${baseurl}/reviews/best/products/${productId}`;
-
-    const { data } = await axios.get(url, {
-      params: {
-        page: number,
-      },
-    });
-
-    const { reviews } = data;
-
-    return reviews;
   }
 
   async fetchReview(reviewId) {

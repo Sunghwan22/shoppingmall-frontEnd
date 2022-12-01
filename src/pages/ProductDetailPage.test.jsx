@@ -506,7 +506,7 @@ describe('ProductDetailPage', () => {
 
       fireEvent.click(screen.getByTestId('bestReview-pageNumber1'));
 
-      expect(changeBestReviewPageNumber).toBeCalled();
+      expect(fetchBestReviews).toBeCalled();
     });
 
     it('일반 리뷰 2페이지로 전환하기', async () => {
@@ -516,7 +516,7 @@ describe('ProductDetailPage', () => {
 
       fireEvent.click(screen.getByTestId('review-pageNumber2'));
 
-      expect(changePageNumber).toBeCalled();
+      expect(fetchReviews).toBeCalled();
     });
   });
 
@@ -557,12 +557,12 @@ describe('ProductDetailPage', () => {
   });
 
   context('상품 문의 다음 페이지를 보기 위해서 2페이지 클릭', () => {
-    it('changePageNumber함수 실행', () => {
+    it('fetchInquiries함수 실행', () => {
       renderProductDetailPage();
 
       fireEvent.click(screen.getByTestId('inquiry-pageNumber2'));
 
-      expect(changeBestReviewPageNumber).toBeCalled();
+      expect(fetchInquiries).toBeCalled();
     });
   });
 

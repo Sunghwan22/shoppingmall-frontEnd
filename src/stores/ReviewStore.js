@@ -1,8 +1,11 @@
 /* eslint-disable max-len */
 import { reviewApiService } from '../services/ReviewApiService';
+import Store from './Store';
 
-export default class ReviewStore {
+export default class ReviewStore extends Store {
   constructor() {
+    super();
+
     this.reviews = [];
     this.review = {};
 
@@ -33,9 +36,9 @@ export default class ReviewStore {
       this.errorMessage = message;
     }
 
-    await this.fetchBestReviews(productId);
+    await this.fetchBestReviews({ productId });
 
-    await this.fetchReviews(productId);
+    await this.fetchReviews({ productId });
 
     this.publish();
   }
@@ -56,20 +59,8 @@ export default class ReviewStore {
     this.publish();
   }
 
-  async changePageNumber(productId, number) {
-    this.reviews = await reviewApiService.changePage(productId, number);
-
-    this.publish();
-  }
-
-  async changeBestReviewPageNumber(productId, number) {
-    this.bestReviews = await reviewApiService.changeBestReviewPage(productId, number);
-
-    this.publish();
-  }
-
-  async fetchReviews(productId) {
-    const data = await reviewApiService.fetchReviews(productId);
+  async fetchReviews({ productId, page = 1 }) {
+    const data = await reviewApiService.fetchReviews({ productId, page });
 
     this.reviews = data.reviews;
 
@@ -82,8 +73,8 @@ export default class ReviewStore {
     this.publish();
   }
 
-  async fetchBestReviews(productId) {
-    const data = await reviewApiService.fetchBestReviews(productId);
+  async fetchBestReviews({ productId, page = 1 }) {
+    const data = await reviewApiService.fetchBestReviews({ productId, page });
 
     this.bestReviews = data.reviews;
 
@@ -102,22 +93,6 @@ export default class ReviewStore {
     this.isBestReviewDetail = false;
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

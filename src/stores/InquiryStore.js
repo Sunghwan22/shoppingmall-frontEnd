@@ -1,8 +1,11 @@
 /* eslint-disable max-len */
 import { inquiryApiService } from '../services/InquiryApiService';
+import Store from './Store';
 
-export default class InquiryStore {
+export default class InquiryStore extends Store {
   constructor() {
+    super();
+
     this.inquiries = [];
     this.myInquiries = [];
     this.inquiry = {};
@@ -15,21 +18,8 @@ export default class InquiryStore {
     this.blankAccessToken = '';
   }
 
-  async fetchInquiries(productId, accessToken) {
-    if (accessToken === undefined) {
-      const data = await inquiryApiService.fetchInquiries(productId, this.blankAccessToken);
-
-      this.inquiries = data.inquiries;
-
-      this.totalInquiryNumber = data.totalInquiryNumber;
-
-      this.inquiryPageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
-
-      this.publish();
-      return;
-    }
-
-    const data = await inquiryApiService.fetchInquiries(productId, accessToken);
+  async fetchInquiries({ productId, accessToken, page = 1 }) {
+    const data = await inquiryApiService.fetchInquiries({ productId, accessToken, page });
 
     this.inquiries = data.inquiries;
 
@@ -40,28 +30,12 @@ export default class InquiryStore {
     this.publish();
   }
 
-  async changeInquiryPageNumber(productId, accessToken, number) {
-    const data = await inquiryApiService.changePageNumber(productId, accessToken, number);
-
-    this.inquiries = data.inquiries;
-
-    this.publish();
-  }
-
-  async fetchMyInquiries(productId, accessToken) {
-    const data = await inquiryApiService.fetchMyInquiries(productId, accessToken);
+  async fetchMyInquiries({ productId, accessToken, page = 1 }) {
+    const data = await inquiryApiService.fetchMyInquiries(productId, accessToken, page);
 
     this.myInquiries = data.inquiries;
 
     this.myInquiriesPageNumbers = data.pageNumbers;
-
-    this.publish();
-  }
-
-  async changeMyInquiryPageNumber(productId, accessToken, number) {
-    const data = await inquiryApiService.changeMyInquiryPageNumber(productId, accessToken, number);
-
-    this.myInquiries = data.inquiries;
 
     this.publish();
   }
@@ -76,22 +50,6 @@ export default class InquiryStore {
     this.inquiry = await inquiryApiService.createInquiry(productId, accessToken, inquiryInformation);
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-
-    this.publish();
-  }
-
-  unSubscribe(listener) {
-    this.listeners.delete(listener);
-
-    this.publish();
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 
