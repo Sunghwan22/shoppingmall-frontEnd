@@ -19,7 +19,6 @@ describe('UserStore', () => {
           zonecode: 44637,
           fullAddress: '울산광역시 남구 정광로 3번길 20',
           jibunAddress: '울산광역시 남구 무거동 1233-12번지',
-          detailAddress: '2층 왼쪽집',
         },
       );
     });
@@ -37,7 +36,7 @@ describe('fetchUser', () => {
         zonecode: 44637,
         fullAddress: '울산광역시 남구 정광로 3번길 20',
         jibunAddress: '울산광역시 남구 무거동 1233-12번지',
-        detailAddress: '2층 왼쪽집',
+
       },
     );
   });

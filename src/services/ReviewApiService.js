@@ -21,7 +21,7 @@ export default class ReviewApiService extends APIService {
   }
 
   async fetchReviews({ productId, page }) {
-    const url = `${baseurl}/reviews/products/${productId}`;
+    const url = `${baseurl}/products/${productId}/reviews`;
 
     const { data } = await axios.get(url, {
       params: {
@@ -33,7 +33,7 @@ export default class ReviewApiService extends APIService {
   }
 
   async fetchBestReviews({ productId, page }) {
-    const url = `${baseurl}/reviews/best/products/${productId}`;
+    const url = `${baseurl}/products/${productId}/reviews/best`;
 
     const { data } = await axios.get(url, {
       params: {

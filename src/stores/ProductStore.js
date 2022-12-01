@@ -62,6 +62,7 @@ export default class ProductStore extends Store {
       accessToken,
       this.quantity,
       this.selectedOption,
+      this.totalPayment,
     );
 
     this.publish();
@@ -78,17 +79,11 @@ export default class ProductStore extends Store {
   }
 
   async fetchProducts({ page = 1 }) {
-    const data = await productApiService.fetchProducts(page);
+    const data = await productApiService.fetchProducts({ page });
 
     this.products = data.products;
 
     this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
-
-    this.publish();
-  }
-
-  async changeProductsPageNumber(number) {
-    this.products = await productApiService.changePageNumber(number);
 
     this.publish();
   }

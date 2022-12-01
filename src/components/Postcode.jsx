@@ -38,6 +38,29 @@ export default function Postcode(
         },
       );
     }
+
+    if (data.addressType === 'J') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+
+      setZonecode(data.zonecode);
+      setLoadAddress(fullAddress);
+      setJibunAddress(data.jibunAddress);
+
+      onChangeAddress(
+        {
+          zonecode: data.zonecode,
+          fullAddress,
+          jibunAddress: data.jibunAddress,
+          detailAddress: address.detailAddress,
+        },
+      );
+    }
   };
 
   const handleClick = () => {
@@ -70,7 +93,6 @@ export default function Postcode(
           placeholder="도로명주소"
           disabled
           value={roadAddress}
-          // defaultValue={address.fullAddress}
         />
         <label htmlFor="jibun-address" />
         <input
@@ -78,7 +100,6 @@ export default function Postcode(
           placeholder="지번주소"
           disabled
           value={jibunAddress}
-          // defaultValue={address.jibunAddress}
         />
       </p>
     </div>

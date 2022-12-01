@@ -110,12 +110,12 @@ describe('ProductsPage', () => {
   });
 
   context('상품 목록 페이지 전환', () => {
-    it('changeProductsPageNumber함수 실행', () => {
+    it('fetchProducts함수 실행', () => {
       renderProductsPage();
 
       fireEvent.click(screen.getByText('2'));
 
-      expect(changeProductsPageNumber).toBeCalledWith(2);
+      expect(fetchProducts).toBeCalledWith({ page: 2 });
     });
   });
 });

@@ -123,7 +123,7 @@ describe('productStore', () => {
 
   context('상품 목록 불러오기', () => {
     it('fetchProducts함수 실행', async () => {
-      await productStore.fetchProducts();
+      await productStore.fetchProducts({ page: 1 });
 
       const { products } = productStore;
 
@@ -136,7 +136,7 @@ describe('productStore', () => {
 
   context('상품 목록 페이지 전환하기', () => {
     it('2페이지에 있는 상품을 보여줌 ', async () => {
-      await productStore.changeProductsPageNumber(2);
+      await productStore.fetchProducts({ page: 2 });
 
       const { products } = productStore;
 

@@ -301,7 +301,7 @@ export default function ProductInformation(
               누적 판매
             </p>
             <p>
-              {product.cumulativeSales}
+              {product.purchasesNumber}
             </p>
           </ProductCumulativeSales>
           <ProductDeleveryFee>

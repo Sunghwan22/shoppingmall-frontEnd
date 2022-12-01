@@ -13,7 +13,7 @@ describe('InquiryStore', () => {
     it('로그인 하지 않은 상태로 fetchInquiry함수 호출', async () => {
       const productId = 1;
 
-      await inquiryStore.fetchInquiries(productId);
+      await inquiryStore.fetchInquiries({ productId, accessToken: undefined });
 
       const { inquiries } = inquiryStore;
 
@@ -26,7 +26,7 @@ describe('InquiryStore', () => {
       it('로그인 상태로 fetchInquiry함수 호출 본인이 쓴 게시물은 볼 수 있음', async () => {
         const productId = 1;
 
-        await inquiryStore.fetchInquiries(productId, 'ACCESS.TOKEN');
+        await inquiryStore.fetchInquiries({ productId, accessToken: 'ACCESS.TOKEN' });
 
         const { inquiries } = inquiryStore;
 
@@ -41,7 +41,7 @@ describe('InquiryStore', () => {
         const productId = 1;
         const page = 2;
 
-        await inquiryStore.changeInquiryPageNumber(productId, 'AccessToken', page);
+        await inquiryStore.fetchInquiries({ productId, accessToken: 'AccessToken', page });
 
         const { inquiries } = inquiryStore;
 
@@ -58,7 +58,7 @@ describe('InquiryStore', () => {
         const productId = 1;
         const page = 2;
 
-        await inquiryStore.changeInquiryPageNumber(productId, '', page);
+        await inquiryStore.fetchInquiries({ productId, accessToken: undefined, page });
 
         const { inquiries } = inquiryStore;
 
@@ -74,23 +74,7 @@ describe('InquiryStore', () => {
       it('로그인 상태로 fetchMyInquiry함수 호출 본인이 쓴 게시물은 볼 수 있음', async () => {
         const productId = 1;
 
-        await inquiryStore.fetchMyInquiries(productId, 'AccessToken');
-
-        const { myInquiries } = inquiryStore;
-
-        expect(myInquiries.length).toBe(2);
-        expect(myInquiries[0].content).toBe('내가 작성한 글');
-        expect(myInquiries[0].isSecret).toBeTruthy();
-        expect(myInquiries[1].content).toBe('진짜 내가 쓴 글임');
-        expect(myInquiries[1].isSecret).toBeTruthy();
-      });
-    });
-
-    context('내가 작성한 문의 확인', () => {
-      it('로그인 상태로 fetchMyInquiry함수 호출 본인이 쓴 게시물은 볼 수 있음', async () => {
-        const productId = 1;
-
-        await inquiryStore.fetchMyInquiries(productId, 'AccessToken');
+        await inquiryStore.fetchMyInquiries({ productId, accessToken: 'AccessToken' });
 
         const { myInquiries } = inquiryStore;
 
@@ -107,24 +91,7 @@ describe('InquiryStore', () => {
         const productId = 1;
         const page = 2;
 
-        await inquiryStore.changeMyInquiryPageNumber(productId, 'AccessToken', page);
-
-        const { myInquiries } = inquiryStore;
-
-        expect(myInquiries.length).toBe(2);
-        expect(myInquiries[0].content).toBe('내가 작성한 글');
-        expect(myInquiries[0].isSecret).toBeTruthy();
-        expect(myInquiries[1].content).toBe('진짜 내가 쓴 글임');
-        expect(myInquiries[1].isSecret).toBeTruthy();
-      });
-    });
-
-    context('내가 작성한 문의 페이지 이동 ', () => {
-      it('로그인 상태로 changePageNumber함수 호출 본인이 쓴 게시물은 볼 수 있음', async () => {
-        const productId = 1;
-        const page = 2;
-
-        await inquiryStore.changeMyInquiryPageNumber(productId, 'AccessToken', page);
+        await inquiryStore.fetchMyInquiries({ productId, accessToken: 'AccessToken', page });
 
         const { myInquiries } = inquiryStore;
 

@@ -8,7 +8,7 @@ const baseurl = config.apiBaseUrl;
 export default class InquiryApiService extends APIService {
   async fetchInquiries({ productId, accessToken, page }) {
     if (accessToken === undefined) {
-      const url = `${baseurl}/inquiries/products/${productId}`;
+      const url = `${baseurl}/products/${productId}/inquiries`;
 
       const { data } = await axios.get(url, {
         headers: {
@@ -23,7 +23,7 @@ export default class InquiryApiService extends APIService {
       return data;
     }
 
-    const url = `${baseurl}/inquiries/products/${productId}`;
+    const url = `${baseurl}/products/${productId}/inquiries`;
 
     const { data } = await axios.get(url, {
       headers: {
@@ -37,23 +37,8 @@ export default class InquiryApiService extends APIService {
     return data;
   }
 
-  // async changePageNumber(productId, accessToken, number) {
-  //   const url = `${baseurl}/inquiries/products/${productId}`;
-
-  //   const { data } = await axios.get(url, {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //     params: {
-  //       page: number,
-  //     },
-  //   });
-
-  //   return data;
-  // }
-
   async fetchMyInquiries(productId, accessToken, number) {
-    const url = `${baseurl}/inquiries/products/${productId}/users`;
+    const url = `${baseurl}/products/${productId}/inquiries/user/me`;
 
     const { data } = await axios.get(url, {
       headers: {
@@ -68,7 +53,7 @@ export default class InquiryApiService extends APIService {
   }
 
   async createInquiry(productId, accessToken, inquiryInformation) {
-    const url = `${baseurl}/inquiries/products/${productId}`;
+    const url = `${baseurl}/products/${productId}/inquiries`;
 
     const { data } = await axios.post(url, { ...inquiryInformation }, {
       headers: {

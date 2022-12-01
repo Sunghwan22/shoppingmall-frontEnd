@@ -59,18 +59,6 @@ export default class ReviewStore extends Store {
     this.publish();
   }
 
-  // async changePageNumber(productId, number) {
-  //   this.reviews = await reviewApiService.changePage(productId, number);
-
-  //   this.publish();
-  // }
-
-  // async changeBestReviewPageNumber(productId, number) {
-  //   this.bestReviews = await reviewApiService.changeBestReviewPage(productId, number);
-
-  //   this.publish();
-  // }
-
   async fetchReviews({ productId, page = 1 }) {
     const data = await reviewApiService.fetchReviews({ productId, page });
 

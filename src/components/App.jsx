@@ -11,6 +11,7 @@ import ProductsPage from '../pages/ProductsPage';
 import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
+import OrderSuccess from './OrderSuccess';
 
 const Main = styled.main`
   min-width: 768px;
@@ -33,6 +34,9 @@ export default function App() {
             <Route path="/inquiry/write" element={<InquiryFormPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/orderForm" element={<OrderFormPage />} />
+            <Route path="/order/success" element={<OrderSuccess />} />
+            <Route path="/order/cancel" element={<OrderSuccess />} />
+            <Route path="/order/fail" element={<OrderSuccess />} />
             <Route path="/login" element={<LoginFormPage />} />
           </Routes>
         </Main>

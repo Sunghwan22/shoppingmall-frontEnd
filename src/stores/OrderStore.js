@@ -4,30 +4,44 @@ import Store from './Store';
 export default class OrderStore extends Store {
   constructor() {
     super();
+
+    this.paymentResult = {};
   }
 
   async requestOrder({
     name,
     phoneNumber,
-    product,
+    productId,
     quantity,
     orderPayment,
     address,
     deliveryRequest,
     detailAddress,
+    selectedProductOption,
   }, accessToken) {
     const orderInformation = {
       name,
       phoneNumber,
-      product,
+      productId,
+      address,
       quantity,
       orderPayment,
-      address,
       deliveryRequest,
       detailAddress,
+      selectedProductOption,
     };
 
-    await orderApiService.createOrder(orderInformation, accessToken);
+    const data = await orderApiService.createOrder(orderInformation, accessToken);
+
+    this.publish();
+
+    return data.kakaoPayUrl;
+  }
+
+  async fetchPayResult(pgToken) {
+    const data = await orderApiService.fetchPayResult(pgToken);
+
+    this.paymentResult = data;
 
     this.publish();
   }

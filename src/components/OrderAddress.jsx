@@ -19,8 +19,8 @@ export default function OrderAddress(
     onChangeDeliveryRequest(value);
   };
 
-  if (!address.detailAddress) {
-    return <p>Low loading</p>;
+  if (!address.zoneCode) {
+    return <p>now loading</p>;
   }
 
   return (

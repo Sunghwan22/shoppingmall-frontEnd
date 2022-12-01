@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import OrderAddress from '../components/OrderAddress';
 import OrderProduct from '../components/OrderProduct';
@@ -10,7 +10,6 @@ import numberFormat from '../utils/NumberFormat';
 
 export default function OrderFormPage() {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const userStore = useUserStore();
   const orderFormStore = useOrderFormStore();
@@ -43,30 +42,42 @@ export default function OrderFormPage() {
     orderFormStore.changeDeliveryRequest(request);
   };
 
-  const handleClickPayment = () => {
+  const handleClickPayment = async () => {
     if (!detailAddress) {
       return;
     }
 
     if (!Object.keys(newAddress).length === 0) {
-      orderStore.requestOrder({
+      const kakaoPayUrl = await orderStore.requestOrder({
         name,
         phoneNumber,
-        product,
+        productId: product.id,
         quantity,
         orderPayment,
         newAddress,
         deliveryRequest,
         detailAddress,
+        selectedProductOption: selectedProductOption.description,
       }, accessToken);
+
+      window.location.href = kakaoPayUrl;
+
       return;
     }
 
-    orderStore.requestOrder({
-      name, phoneNumber, product, quantity, orderPayment, address, deliveryRequest, detailAddress,
+    const kakaoPayUrl = await orderStore.requestOrder({
+      name,
+      phoneNumber,
+      productId: product.id,
+      quantity,
+      orderPayment,
+      address,
+      deliveryRequest,
+      detailAddress,
+      selectedProductOption: selectedProductOption.description,
     }, accessToken);
 
-    navigate('/orderConfirmPage');
+    window.location.href = kakaoPayUrl;
   };
 
   return (

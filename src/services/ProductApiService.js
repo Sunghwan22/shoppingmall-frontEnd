@@ -13,12 +13,12 @@ export default class ProductApiService {
     return data;
   }
 
-  async fetchProducts(number) {
+  async fetchProducts({ page }) {
     const url = `${baseurl}/products`;
 
     const { data } = await axios.get(url, {
       params: {
-        page: number,
+        page,
       },
     });
 
