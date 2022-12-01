@@ -115,13 +115,22 @@ export default function ProductDetailPage() {
     wishStore.createWishes(productId, accessToken);
   };
 
-  const onClickAddCart = () => {
+  const onClickAddCart = async () => {
     if (!accessToken) {
       setLoginConfirm(true);
       return;
     }
 
-    productStore.addCartItem(productId, accessToken);
+    if (!selectedProductOption) {
+      return;
+    }
+
+    if (Object.keys(selectedProductOption).length === 0) {
+      productStore.checkOption();
+      return;
+    }
+
+    await productStore.addCartItem(productId, accessToken);
 
     navigate('/cart');
   };
