@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ModalProvider } from 'styled-react-modal';
 import { Reset } from 'styled-reset';
 import CartPage from '../pages/CartPage';
+import EditOrderFormPage from '../pages/EditOrderFormPage';
 import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
 import LoginFormPage from '../pages/LoginFormPage';
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/order/fail" element={<OrderSuccess />} />
             <Route path="/login" element={<LoginFormPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/edit-orderForm" element={<EditOrderFormPage />} />
           </Routes>
         </Main>
       </ModalProvider>

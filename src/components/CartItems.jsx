@@ -1,31 +1,51 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import styled from 'styled-components';
 import numberFormat from '../utils/NumberFormat';
 
-export default function CartItems(
-  { cartItems },
-) {
-  const handleClickAllcheck = () => {
+const PageList = styled.ul`
+    display: flex;
+`;
 
+export default function CartItems(
+  {
+    cartItems,
+    checkItems,
+    pageNumbers,
+    onClickSingleCheck,
+    onClickWholeCheck,
+    onClickDeleteCartItem,
+    onClickCartItem,
+    onClickPageNumber,
+    onClickOrder,
+    onClickEditOrder,
+  },
+) {
+  const handleClickAllcheck = (checked) => {
+    onClickWholeCheck(checked);
   };
 
   const handleClickDelete = () => {
-
+    onClickDeleteCartItem();
   };
 
-  const handleClickSelect = () => {
-
+  const handleClickSingleCheck = (checked, cartItemId) => {
+    onClickSingleCheck(checked, cartItemId);
   };
 
   const handleClickCartItem = (productId) => {
-
+    onClickCartItem(productId);
   };
 
   const handleClickEditOrder = (cartItemId) => {
-
+    onClickEditOrder(cartItemId);
   };
 
-  const handleClickOrder = () => {
+  const handleClickOrder = (cartItemId) => {
+    onClickOrder(cartItemId);
+  };
 
+  const handleClickPageNumber = (number) => {
+    onClickPageNumber(number);
   };
 
   return (
@@ -36,7 +56,8 @@ export default function CartItems(
         </label>
         <input
           type="checkbox"
-          onChange={handleClickAllcheck}
+          onChange={(event) => handleClickAllcheck(event.target.checked)}
+          checked={checkItems.length === cartItems.length}
         />
         <button
           type="button"
@@ -49,7 +70,8 @@ export default function CartItems(
         <li key={cartItem.id}>
           <input
             type="checkbox"
-            onClick={handleClickSelect}
+            onClick={(event) => handleClickSingleCheck(event.target.checked, cartItem.id)}
+            checked={!!checkItems.includes(cartItem.id)}
           />
           <button
             type="button"
@@ -89,13 +111,25 @@ export default function CartItems(
           원
           <button
             type="button"
-            onClick={handleClickOrder}
+            onClick={() => handleClickOrder(cartItem.id)}
           >
             주문하기
-
           </button>
         </li>
       ))}
+      <PageList>
+        {pageNumbers.map((number) => (
+          <li key={number}>
+            <button
+              type="button"
+              onClick={() => handleClickPageNumber(number)}
+              id={`cartItems-pageNumber${number}`}
+            >
+              {number}
+            </button>
+          </li>
+        ))}
+      </PageList>
     </div>
   );
 }

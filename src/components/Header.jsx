@@ -52,7 +52,7 @@ export default function Header() {
           {accessToken ? (
             <MenuList>
               <li>
-                <Link to="/shoppingBasket">장바구니</Link>
+                <Link to="/cart">장바구니</Link>
               </li>
               <li>
                 <img

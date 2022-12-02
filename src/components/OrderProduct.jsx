@@ -1,8 +1,12 @@
 import numberFormat from '../utils/NumberFormat';
 
 export default function OrderProduct({
-  product, quantity, totalPayment, selectedProductOption,
+  image, description, productName
+  , quantity, totalPayment, deliveryFee,
 }) {
+  // 상품 정보가 배열로 들어가야 하고
+  // 주문한 상품은 스토어에서 set이 되어야 한다.
+
   return (
     <div>
       <table>
@@ -18,18 +22,16 @@ export default function OrderProduct({
           <tr>
             <td>
               <img
-                src={product.productImages.find((productImage) => (
-                  productImage.thumbnailImage === true
-                )).url}
+                src={image}
                 alt="productImage"
                 width="150px"
               />
-              {product.productName}
+              {productName}
               /
-              {selectedProductOption.description}
+              {description}
             </td>
             <td>
-              {numberFormat(product.deliveryFee)}
+              {numberFormat(deliveryFee)}
               원
             </td>
             <td>

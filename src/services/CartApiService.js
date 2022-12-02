@@ -7,8 +7,6 @@ export default class CartApiService {
   async createCartItem(productId, accessToken, quantity, option, totalPayment) {
     const url = `${baseurl}/carts/products/${productId}/cartItems`;
 
-    console.log(totalPayment);
-
     const { data } = await axios.post(url, { quantity, option, totalPayment }, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -31,6 +29,14 @@ export default class CartApiService {
     });
 
     return data;
+  }
+
+  async deleteCartItems(cartItemsId) {
+    console.log(cartItemsId);
+
+    const url = `${baseurl}/carts/cartItems`;
+
+    await axios.delete(url, { data: { cartItemsId } });
   }
 }
 

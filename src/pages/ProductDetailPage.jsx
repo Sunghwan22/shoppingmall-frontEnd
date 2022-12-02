@@ -80,10 +80,13 @@ export default function ProductDetailPage() {
 
     navigate('/orderForm', {
       state: {
-        product,
+        image: thumbnailImage.url,
+        description: selectedProductOption.description,
+        productName: product.productName,
+        deliveryFee: product.deliveryFee,
         quantity,
-        selectedProductOption,
         totalPayment,
+        productId: product.id,
       },
     });
   };
