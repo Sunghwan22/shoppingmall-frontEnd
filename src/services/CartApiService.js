@@ -32,11 +32,31 @@ export default class CartApiService {
   }
 
   async deleteCartItems(cartItemsId) {
-    console.log(cartItemsId);
-
     const url = `${baseurl}/carts/cartItems`;
 
     await axios.delete(url, { data: { cartItemsId } });
+  }
+
+  async fetchCartItem(cartItemId) {
+    const url = `${baseurl}/carts/cartItems/${cartItemId}`;
+
+    const { data } = await axios.get(url);
+
+    return data;
+  }
+
+  async updateCartItem(
+    cartItemId,
+    addAmount,
+    description,
+    quantity,
+    totalPrice,
+  ) {
+    const url = `${baseurl}/carts/cartItems/${cartItemId}`;
+
+    await axios.patch(url, {
+      addAmount, description, quantity, totalPrice,
+    });
   }
 }
 

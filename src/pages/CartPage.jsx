@@ -2,21 +2,28 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
-import UseCartStore from '../hooks/UseCartStore';
+import useCartStore from '../hooks/useCartStore';
 
 export default function CartPage() {
   const navigate = useNavigate();
 
   const [accessToken] = useLocalStorage('accessToken', '');
 
-  const cartStore = UseCartStore();
+  const cartStore = useCartStore();
+
+  const { currentPage } = cartStore;
 
   useEffect(() => {
+    if (currentPage) {
+      cartStore.fetchCartItems({ accessToken, page: currentPage });
+      return;
+    }
+
     cartStore.fetchCartItems({ accessToken });
   }, []);
 
   const {
-    cartItems, checkItems, pageNumbers, currentPage,
+    cartItems, checkItems, pageNumbers,
   } = cartStore;
 
   if (!cartItems.length) {
@@ -60,12 +67,9 @@ export default function CartPage() {
   };
 
   const onClickEditOrder = (cartItemId) => {
-    const cartItem = cartItems.find((element) => element.id === cartItemId);
-
     navigate('/edit-orderForm', {
       state: {
-        cartItem,
-        currentPage,
+        cartItemId,
       },
     });
   };
