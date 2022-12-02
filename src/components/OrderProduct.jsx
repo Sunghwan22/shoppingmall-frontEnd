@@ -4,9 +4,6 @@ export default function OrderProduct({
   image, description, productName
   , quantity, totalPayment, deliveryFee,
 }) {
-  // 상품 정보가 배열로 들어가야 하고
-  // 주문한 상품은 스토어에서 set이 되어야 한다.
-
   return (
     <div>
       <table>

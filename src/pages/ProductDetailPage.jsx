@@ -135,7 +135,7 @@ export default function ProductDetailPage() {
 
     await productStore.addCartItem(productId, accessToken);
 
-    navigate('/cart');
+    // navigate('/cart');
   };
 
   const onClickRecommendation = (reviewId) => {

@@ -10,8 +10,17 @@ export default class CartStore extends Store {
 
     this.cartItemsTotalNumber = 0;
     this.pageNumbers = [];
-
     this.currentPage = 1;
+
+    this.selectedProductOption = {};
+    this.guideMessage = '';
+
+    this.productPrice = 0;
+    this.totalPrice = 0;
+    this.quantity = 1;
+
+    this.cartItem = {};
+    this.options = [];
   }
 
   async fetchCartItems({ accessToken, page = 1 }) {
@@ -59,9 +68,16 @@ export default class CartStore extends Store {
 
     this.publish();
 
+    if (this.cartItems.length !== 1) {
+      await this.fetchCartItems({
+        accessToken,
+        page: this.currentPage,
+      });
+    }
+
     await this.fetchCartItems({
       accessToken,
-      page: this.currentPage,
+      page: this.currentPage - 1,
     });
 
     this.checkItems = [];
@@ -69,12 +85,82 @@ export default class CartStore extends Store {
     this.publish();
   }
 
-  async findCartItem(cartItemId) {
-    const cartItem = await this.cartItems.find((element) => element.id === cartItemId);
+  async fetchCartItem(cartItemId) {
+    const data = await cartApiService.fetchCartItem(cartItemId);
 
-    console.log(cartItem);
+    this.cartItem = data.cartItem;
 
-    return cartItem;
+    this.options = data.options;
+
+    this.productPrice = data.price;
+
+    this.publish();
+  }
+
+  async updateCartItem(cartItemId) {
+    if (Object.keys(this.selectedProductOption).length === 0
+      || this.selectedProductOption === '옵션을 선택해주세요'
+          || this.guideMessage === '옵션 미선택') {
+      this.guideMessage = '옵션을 선택해주세요';
+
+      this.publish();
+      return;
+    }
+
+    await cartApiService.updateCartItem(
+      cartItemId,
+      this.selectedProductOption.addAmount,
+      this.selectedProductOption.description,
+      this.quantity,
+      this.totalPrice,
+    );
+
+    this.publish();
+  }
+
+  selectOption(productOption) {
+    this.totalPrice = this.productPrice + productOption.addAmount;
+
+    this.selectOptionPrice = this.productPrice + productOption.addAmount;
+
+    this.quantity = 1;
+
+    this.selectedProductOption = productOption;
+
+    this.guideMessage = '';
+
+    this.publish();
+  }
+
+  addQuantity() {
+    this.quantity += 1;
+
+    this.totalPrice += this.selectOptionPrice;
+
+    this.publish();
+  }
+
+  reduceQuantity() {
+    if (this.quantity === 1) {
+      return;
+    }
+
+    this.quantity -= 1;
+
+    this.totalPrice -= this.selectOptionPrice;
+
+    this.publish();
+  }
+
+  resetQuantityAndTotalPayment() {
+    this.selectedProductOption = {};
+
+    this.totalPrice = 0;
+    this.quantity = 1;
+
+    this.guideMessage = '옵션 미선택';
+
+    this.publish();
   }
 }
 
