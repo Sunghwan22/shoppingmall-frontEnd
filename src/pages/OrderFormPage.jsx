@@ -25,10 +25,16 @@ export default function OrderFormPage() {
   const { newAddress, deliveryRequest, detailAddress } = orderFormStore;
 
   const {
-    product, quantity, totalPayment, selectedProductOption,
+    image,
+    description,
+    productName,
+    deliveryFee,
+    quantity,
+    totalPayment,
+    productId,
   } = location.state;
 
-  const orderPayment = totalPayment + product.deliveryFee;
+  const orderPayment = totalPayment + deliveryFee;
 
   const onChangeAddress = (changedAddress) => {
     orderFormStore.changeAddress(changedAddress);
@@ -51,13 +57,13 @@ export default function OrderFormPage() {
       const kakaoPayUrl = await orderStore.requestOrder({
         name,
         phoneNumber,
-        productId: product.id,
+        productId,
         quantity,
         orderPayment,
         newAddress,
         deliveryRequest,
         detailAddress,
-        selectedProductOption: selectedProductOption.description,
+        description,
       }, accessToken);
 
       window.location.href = kakaoPayUrl;
@@ -68,13 +74,13 @@ export default function OrderFormPage() {
     const kakaoPayUrl = await orderStore.requestOrder({
       name,
       phoneNumber,
-      productId: product.id,
+      productId,
       quantity,
       orderPayment,
       address,
       deliveryRequest,
       detailAddress,
-      selectedProductOption: selectedProductOption.description,
+      description,
     }, accessToken);
 
     window.location.href = kakaoPayUrl;
@@ -83,10 +89,12 @@ export default function OrderFormPage() {
   return (
     <div>
       <OrderProduct
-        product={product}
+        image={image}
+        deliveryFee={deliveryFee}
+        description={description}
+        productName={productName}
         quantity={quantity}
         totalPayment={totalPayment}
-        selectedProductOption={selectedProductOption}
       />
       <OrderAddress
         name={name}

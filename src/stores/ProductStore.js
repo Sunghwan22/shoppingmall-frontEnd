@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { cartService } from '../services/CartService';
+import { cartApiService } from '../services/CartApiService';
 import { productApiService } from '../services/ProductApiService';
 import Store from './Store';
 
@@ -57,11 +57,11 @@ export default class ProductStore extends Store {
       return;
     }
 
-    await cartService.createCartItem(
+    await cartApiService.createCartItem(
       productId,
       accessToken,
       this.quantity,
-      this.selectedOption,
+      this.selectedProductOption,
       this.totalPayment,
     );
 

@@ -80,10 +80,13 @@ export default function ProductDetailPage() {
 
     navigate('/orderForm', {
       state: {
-        product,
+        image: thumbnailImage.url,
+        description: selectedProductOption.description,
+        productName: product.productName,
+        deliveryFee: product.deliveryFee,
         quantity,
-        selectedProductOption,
         totalPayment,
+        productId: product.id,
       },
     });
   };
@@ -115,13 +118,24 @@ export default function ProductDetailPage() {
     wishStore.createWishes(productId, accessToken);
   };
 
-  const onClickAddCart = () => {
+  const onClickAddCart = async () => {
     if (!accessToken) {
       setLoginConfirm(true);
       return;
     }
 
-    productStore.addCartItem(productId, accessToken);
+    if (!selectedProductOption) {
+      return;
+    }
+
+    if (Object.keys(selectedProductOption).length === 0) {
+      productStore.checkOption();
+      return;
+    }
+
+    await productStore.addCartItem(productId, accessToken);
+
+    navigate('/cart');
   };
 
   const onClickRecommendation = (reviewId) => {
