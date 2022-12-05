@@ -11,31 +11,27 @@ export default class OrderStore extends Store {
   async requestOrder({
     name,
     phoneNumber,
-    productId,
-    quantity,
-    orderPayment,
+    orderProducts,
+    totalOrderPayment,
     address,
     deliveryRequest,
     detailAddress,
-    selectedProductOption,
   }, accessToken) {
     const orderInformation = {
       name,
       phoneNumber,
-      productId,
+      orderProducts,
+      totalOrderPayment,
       address,
-      quantity,
-      orderPayment,
       deliveryRequest,
       detailAddress,
-      selectedProductOption,
     };
 
-    const data = await orderApiService.createOrder(orderInformation, accessToken);
+    const kakaoPayUrl = await orderApiService.createOrder(orderInformation, accessToken);
 
     this.publish();
 
-    return data.kakaoPayUrl;
+    return kakaoPayUrl;
   }
 
   async fetchPayResult(pgToken) {

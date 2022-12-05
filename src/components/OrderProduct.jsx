@@ -1,9 +1,12 @@
 import numberFormat from '../utils/NumberFormat';
 
 export default function OrderProduct({
-  image, description, productName
-  , quantity, totalPayment, deliveryFee,
+  orderProducts,
 }) {
+  if (!orderProducts.length) {
+    return <p>now Loading</p>;
+  }
+
   return (
     <div>
       <table>
@@ -16,30 +19,32 @@ export default function OrderProduct({
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <img
-                src={image}
-                alt="productImage"
-                width="150px"
-              />
-              {productName}
-              /
-              {description}
-            </td>
-            <td>
-              {numberFormat(deliveryFee)}
-              원
-            </td>
-            <td>
-              {quantity}
-              개
-            </td>
-            <td>
-              {numberFormat(totalPayment)}
-              원
-            </td>
-          </tr>
+          {orderProducts.map((orderProduct) => (
+            <tr key={orderProduct.id}>
+              <td>
+                <img
+                  src={orderProduct.image}
+                  alt="productImage"
+                  width="150px"
+                />
+                {orderProduct.productName}
+                /
+                {orderProduct.description}
+              </td>
+              <td>
+                {numberFormat(orderProduct.deliveryFee)}
+                원
+              </td>
+              <td>
+                {orderProduct.quantity}
+                개
+              </td>
+              <td>
+                {numberFormat(orderProduct.totalPayment)}
+                원
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

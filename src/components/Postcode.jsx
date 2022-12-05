@@ -8,9 +8,9 @@ export default function Postcode(
 ) {
   const open = useDaumPostcodePopup();
 
-  const [zonecode, setZonecode] = useState(address.zoneCode);
-  const [roadAddress, setLoadAddress] = useState(address.fullAddress);
-  const [jibunAddress, setJibunAddress] = useState(address.jibunAddress);
+  const [zonecode, setZonecode] = useState(address.zoneCode || '');
+  const [roadAddress, setLoadAddress] = useState(address.fullAddress || '');
+  const [jibunAddress, setJibunAddress] = useState(address.jibunAddress || '');
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -69,9 +69,9 @@ export default function Postcode(
     );
   };
 
-  if (!address.zoneCode || !address.fullAddress || !address.jibunAddress) {
-    return <p>now loading</p>;
-  }
+  // if (!address.zoneCode || !address.fullAddress || !address.jibunAddress) {
+  //   return <p>now loading</p>;
+  // }
 
   return (
     <div>
@@ -81,7 +81,6 @@ export default function Postcode(
         placeholder="우편번호"
         disabled
         value={zonecode}
-        // defaultValue={address.zoneCode}
       />
       <button type="button" onClick={handleClick}>
         우편번호 찾기

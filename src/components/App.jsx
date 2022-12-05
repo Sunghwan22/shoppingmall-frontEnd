@@ -6,10 +6,12 @@ import CartPage from '../pages/CartPage';
 import EditOrderFormPage from '../pages/EditOrderFormPage';
 import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
+import KakaoRedirectPage from '../pages/KakaoRedirectPage';
 import LoginFormPage from '../pages/LoginFormPage';
 import OrderFormPage from '../pages/OrderFormPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
 import ProductsPage from '../pages/ProductsPage';
+import SignUpFormPage from '../pages/SignUpFormPage';
 import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/login" element={<LoginFormPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/edit-orderForm" element={<EditOrderFormPage />} />
+            <Route path="/oauth/callback/kakao" element={<KakaoRedirectPage />} />
+            <Route path="/signUp" element={<SignUpFormPage />} />
           </Routes>
         </Main>
       </ModalProvider>

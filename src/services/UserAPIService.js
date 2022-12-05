@@ -38,6 +38,18 @@ export default class UserAPIService {
       address: data.address,
     };
   }
+
+  async kakaoLogin(oauthCode) {
+    const url = `${baseurl}/oauth/kakao-token`;
+
+    const { data } = await axios.get(url, {
+      params: {
+        oauthCode,
+      },
+    });
+
+    return data;
+  }
 }
 
 export const userApiService = new UserAPIService();

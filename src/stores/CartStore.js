@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { cartApiService } from '../services/CartApiService';
 import Store from './Store';
 
@@ -8,9 +9,7 @@ export default class CartStore extends Store {
     this.cartItems = [];
     this.checkItems = [];
 
-    this.cartItemsTotalNumber = 0;
-    this.pageNumbers = [];
-    this.currentPage = 1;
+    this.totalNumber = 0;
 
     this.selectedProductOption = {};
     this.guideMessage = '';
@@ -21,18 +20,20 @@ export default class CartStore extends Store {
 
     this.cartItem = {};
     this.options = [];
+
+    this.checkedCartItem = [];
+
+    this.totalCartItemPrice = 0;
+    this.totalDeliveryFee = 0;
+    this.orderAmount = 0;
   }
 
-  async fetchCartItems({ accessToken, page = 1 }) {
-    const data = await cartApiService.fetchCartItems({ accessToken, page });
+  async fetchCartItems(accessToken) {
+    const data = await cartApiService.fetchCartItems(accessToken);
 
     this.cartItems = data.cartItems;
 
-    this.cartItemsTotalNumber = data.totalNumbers;
-
-    this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
-
-    this.currentPage = page;
+    this.totalNumber = data.totalNumber;
 
     this.publish();
   }
@@ -45,6 +46,14 @@ export default class CartStore extends Store {
     if (!checked) {
       this.checkItems = this.checkItems.filter((element) => element !== cartItemId);
     }
+
+    this.checkedCartItem = this.checkItems.map((checkItem) => (
+      this.cartItems.find((cartItem) => cartItem.id === checkItem)));
+
+    this.totalCartItemPrice = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.totalPayment, 0);
+    this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
+
+    this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
 
     this.publish();
   }
@@ -60,6 +69,14 @@ export default class CartStore extends Store {
       this.checkItems = [];
     }
 
+    this.checkedCartItem = this.checkItems.map((checkItem) => (
+      this.cartItems.find((cartItem) => cartItem.id === checkItem)));
+
+    this.totalCartItemPrice = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.totalPayment, 0);
+    this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
+
+    this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
+
     this.publish();
   }
 
@@ -68,17 +85,7 @@ export default class CartStore extends Store {
 
     this.publish();
 
-    if (this.cartItems.length !== 1) {
-      await this.fetchCartItems({
-        accessToken,
-        page: this.currentPage,
-      });
-    }
-
-    await this.fetchCartItems({
-      accessToken,
-      page: this.currentPage - 1,
-    });
+    await this.fetchCartItems(accessToken);
 
     this.checkItems = [];
 

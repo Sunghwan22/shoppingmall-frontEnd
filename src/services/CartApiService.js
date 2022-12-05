@@ -16,17 +16,16 @@ export default class CartApiService {
     return data;
   }
 
-  async fetchCartItems({ accessToken, page }) {
+  async fetchCartItems(accessToken) {
     const url = `${baseurl}/carts`;
 
     const { data } = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      params: {
-        page,
-      },
     });
+
+    console.log(data);
 
     return data;
   }

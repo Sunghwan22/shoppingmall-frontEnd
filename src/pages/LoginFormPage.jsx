@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import LoginForm from '../components/LoginForm';
 import useUserStore from '../hooks/useUserStore';
+import kakaoLoginConfig from '../kakaoLoginConfig';
 import { apiService } from '../services/APIService';
 
 export default function LoginFormPage() {
@@ -33,11 +34,23 @@ export default function LoginFormPage() {
     navigate('/signup');
   };
 
+  const handleClickKakaoLogin = () => {
+    window.location.href = kakaoLoginConfig.kakaoAuthUrl;
+  };
+
   return (
-    <LoginForm
-      onClickLogin={onClickLogin}
-      onClickSignup={onClickSignup}
-      errorMessage={errorMessage}
-    />
+    <div>
+      <LoginForm
+        onClickLogin={onClickLogin}
+        onClickSignup={onClickSignup}
+        errorMessage={errorMessage}
+      />
+      <button
+        type="button"
+        onClick={handleClickKakaoLogin}
+      >
+        카카오 로그인
+      </button>
+    </div>
   );
 }
