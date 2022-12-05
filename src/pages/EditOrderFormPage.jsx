@@ -9,7 +9,7 @@ export default function EditOrderFormPage() {
 
   const cartStore = useCartStore();
 
-  const { cartItemId, currentPage } = location.state;
+  const { cartItemId } = location.state;
 
   useEffect(() => {
     cartStore.fetchCartItem(cartItemId);

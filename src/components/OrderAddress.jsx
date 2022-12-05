@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Postcode from './Postcode';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -7,6 +8,8 @@ export default function OrderAddress(
     onChangeDeliveryRequest, detailAddress,
   },
 ) {
+  const [editRecipient, setEditRecipient] = useState(false);
+
   const handleChangeDetailAddress = (event) => {
     const { value } = event.target;
 
@@ -19,9 +22,9 @@ export default function OrderAddress(
     onChangeDeliveryRequest(value);
   };
 
-  if (!address.zoneCode) {
-    return <p>now loading</p>;
-  }
+  const handleClickEditRecipient = () => {
+
+  };
 
   return (
     <div>
@@ -31,11 +34,18 @@ export default function OrderAddress(
         {' '}
         {name}
       </p>
+
       <p>
         전화 번호
         {' '}
         {phoneNumber}
       </p>
+      <button
+        type="button"
+        onClick={handleClickEditRecipient}
+      >
+        정보 수정
+      </button>
       <Postcode
         address={address}
         onChangeAddress={onChangeAddress}

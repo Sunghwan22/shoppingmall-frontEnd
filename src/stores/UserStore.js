@@ -42,6 +42,14 @@ export default class UserStore extends Store {
       this.publish();
     }
   }
+
+  async sendAuthcode(authCode) {
+    const data = await userApiService.kakaoLogin(authCode);
+
+    this.publish();
+
+    return data;
+  }
 }
 
 export const userStore = new UserStore();

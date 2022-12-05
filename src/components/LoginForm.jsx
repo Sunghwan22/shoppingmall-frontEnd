@@ -3,7 +3,9 @@
 import { useForm } from 'react-hook-form';
 
 export default function LoginForm(
-  { onClickLogin, onClickSignup, errorMessage },
+  {
+    onClickLogin, onClickSignup, errorMessage,
+  },
 ) {
   const { register, handleSubmit, formState: { errors } } = useForm();
 

@@ -78,15 +78,20 @@ export default function ProductDetailPage() {
       return;
     }
 
+    const orderProduct = {
+      image: thumbnailImage.url,
+      description: selectedProductOption.description,
+      name: product.productName,
+      deliveryFee: product.deliveryFee,
+      quantity,
+      totalPayment,
+      productId: product.id,
+    };
+
     navigate('/orderForm', {
       state: {
-        image: thumbnailImage.url,
-        description: selectedProductOption.description,
-        productName: product.productName,
-        deliveryFee: product.deliveryFee,
-        quantity,
-        totalPayment,
-        productId: product.id,
+        orderProducts: [orderProduct],
+        totalOrderPayment: totalPayment + product.deliveryFee,
       },
     });
   };

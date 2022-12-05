@@ -1,21 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import styled from 'styled-components';
 import numberFormat from '../utils/NumberFormat';
-
-const PageList = styled.ul`
-    display: flex;
-`;
 
 export default function CartItems(
   {
     cartItems,
     checkItems,
-    pageNumbers,
     onClickSingleCheck,
     onClickWholeCheck,
     onClickDeleteCartItem,
     onClickCartItem,
-    onClickPageNumber,
     onClickOrder,
     onClickEditOrder,
   },
@@ -42,10 +35,6 @@ export default function CartItems(
 
   const handleClickOrder = (cartItemId) => {
     onClickOrder(cartItemId);
-  };
-
-  const handleClickPageNumber = (number) => {
-    onClickPageNumber(number);
   };
 
   return (
@@ -78,7 +67,7 @@ export default function CartItems(
             onClick={() => handleClickCartItem(cartItem.productId)}
           >
             <img
-              src={cartItem.cartItemImage.url}
+              src={cartItem.image}
               alt="productImage"
               width="100px"
             />
@@ -117,19 +106,6 @@ export default function CartItems(
           </button>
         </li>
       ))}
-      <PageList>
-        {pageNumbers.map((number) => (
-          <li key={number}>
-            <button
-              type="button"
-              onClick={() => handleClickPageNumber(number)}
-              id={`cartItems-pageNumber${number}`}
-            >
-              {number}
-            </button>
-          </li>
-        ))}
-      </PageList>
     </div>
   );
 }

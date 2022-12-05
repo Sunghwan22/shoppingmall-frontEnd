@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import OrderAddress from '../components/OrderAddress';
 import OrderProduct from '../components/OrderProduct';
@@ -7,6 +8,17 @@ import useOrderFormStore from '../hooks/UseOrderFormStore';
 import useOrderStore from '../hooks/useOrderStore';
 import useUserStore from '../hooks/useUserStore';
 import numberFormat from '../utils/NumberFormat';
+import Image from '../assets/payment_icon_yellow_large.png';
+
+const KakaoPayButton = styled.button`
+  background: url(${Image});
+  background-repeat: no-repeat;
+  background-size : contain;
+  padding : 1em;
+  border: none;
+  cursor: pointer;
+  color: transparent;
+`;
 
 export default function OrderFormPage() {
   const location = useLocation();
@@ -25,16 +37,9 @@ export default function OrderFormPage() {
   const { newAddress, deliveryRequest, detailAddress } = orderFormStore;
 
   const {
-    image,
-    description,
-    productName,
-    deliveryFee,
-    quantity,
-    totalPayment,
-    productId,
+    orderProducts,
+    totalOrderPayment,
   } = location.state;
-
-  const orderPayment = totalPayment + deliveryFee;
 
   const onChangeAddress = (changedAddress) => {
     orderFormStore.changeAddress(changedAddress);
@@ -49,7 +54,11 @@ export default function OrderFormPage() {
   };
 
   const handleClickPayment = async () => {
-    if (!detailAddress) {
+    if (!detailAddress || !name || !phoneNumber) {
+      return;
+    }
+
+    if (!newAddress && !address) {
       return;
     }
 
@@ -57,13 +66,11 @@ export default function OrderFormPage() {
       const kakaoPayUrl = await orderStore.requestOrder({
         name,
         phoneNumber,
-        productId,
-        quantity,
-        orderPayment,
+        orderProducts,
+        totalOrderPayment,
         newAddress,
         deliveryRequest,
         detailAddress,
-        description,
       }, accessToken);
 
       window.location.href = kakaoPayUrl;
@@ -74,13 +81,11 @@ export default function OrderFormPage() {
     const kakaoPayUrl = await orderStore.requestOrder({
       name,
       phoneNumber,
-      productId,
-      quantity,
-      orderPayment,
+      orderProducts,
+      totalOrderPayment,
       address,
       deliveryRequest,
       detailAddress,
-      description,
     }, accessToken);
 
     window.location.href = kakaoPayUrl;
@@ -89,12 +94,7 @@ export default function OrderFormPage() {
   return (
     <div>
       <OrderProduct
-        image={image}
-        deliveryFee={deliveryFee}
-        description={description}
-        productName={productName}
-        quantity={quantity}
-        totalPayment={totalPayment}
+        orderProducts={orderProducts}
       />
       <OrderAddress
         name={name}
@@ -106,17 +106,17 @@ export default function OrderFormPage() {
         onChangeDeliveryRequest={onChangeDeliveryRequest}
       />
       <p>
-        결제금액
+        총 결제금액
         {' '}
-        {numberFormat(orderPayment)}
+        {numberFormat(totalOrderPayment)}
         원
       </p>
-      <button
+      <KakaoPayButton
         type="button"
         onClick={handleClickPayment}
       >
         결제하기
-      </button>
+      </KakaoPayButton>
     </div>
   );
 }

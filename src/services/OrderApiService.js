@@ -13,8 +13,6 @@ export default class OrderApiService {
       },
     });
 
-    console.log(data);
-
     return data;
   }
 

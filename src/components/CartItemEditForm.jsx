@@ -99,7 +99,6 @@ export default function CartItemEditForm(
   };
 
   const handleClickCancel = () => {
-    // 밸리데이션 처리를 해야한다.
     onClickCancel();
   };
 
@@ -107,11 +106,9 @@ export default function CartItemEditForm(
     onClickConfirm();
   };
 
-  if (!cartItem.cartItemImage) {
+  if (!cartItem.image) {
     return <p>now loading</p>;
   }
-
-  console.log(cartItem);
 
   return (
     <div>
@@ -122,7 +119,7 @@ export default function CartItemEditForm(
           <tr>
             <td>
               <img
-                src={cartItem.cartItemImage.url}
+                src={cartItem.image}
                 alt="productImage"
                 width="150px"
               />

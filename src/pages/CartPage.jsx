@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
 import useCartStore from '../hooks/useCartStore';
+import numberFormat from '../utils/NumberFormat';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -11,19 +12,13 @@ export default function CartPage() {
 
   const cartStore = useCartStore();
 
-  const { currentPage } = cartStore;
-
   useEffect(() => {
-    if (currentPage) {
-      cartStore.fetchCartItems({ accessToken, page: currentPage });
-      return;
-    }
-
-    cartStore.fetchCartItems({ accessToken });
+    cartStore.fetchCartItems(accessToken);
   }, []);
 
   const {
-    cartItems, checkItems, pageNumbers,
+    cartItems, checkItems, totalCartItemPrice, totalDeliveryFee, orderAmount,
+    checkedCartItem,
   } = cartStore;
 
   if (!cartItems.length) {
@@ -46,8 +41,17 @@ export default function CartPage() {
     navigate(`/product/${productId}`);
   };
 
-  const onClickPageNumber = (number) => {
-    cartStore.fetchCartItems({ accessToken, page: number });
+  const handleClickTotalOrder = () => {
+    if (!checkItems.length) {
+      return;
+    }
+
+    navigate('/orderForm', {
+      state: {
+        orderProducts: [...checkedCartItem],
+        totalOrderPayment: orderAmount,
+      },
+    });
   };
 
   const onClickOrder = async (cartItemId) => {
@@ -55,13 +59,8 @@ export default function CartPage() {
 
     navigate('/orderForm', {
       state: {
-        image: cartItem.cartItemImage.url,
-        quantity: cartItem.quantity,
-        totalPayment: cartItem.totalPayment,
-        description: cartItem.description,
-        deliveryFee: cartItem.deliveryFee,
-        productName: cartItem.name,
-        productId: cartItem.productId,
+        orderProducts: [cartItem],
+        totalOrderPayment: cartItem.totalPayment + cartItem.deliveryFee,
       },
     });
   };
@@ -79,15 +78,40 @@ export default function CartPage() {
       <CartItems
         cartItems={cartItems}
         checkItems={checkItems}
-        pageNumbers={pageNumbers}
         onClickSingleCheck={onClickSingleCheck}
         onClickWholeCheck={onClickWholeCheck}
         onClickDeleteCartItem={onClickDeleteCartItem}
         onClickCartItem={onClickCartItem}
-        onClickPageNumber={onClickPageNumber}
         onClickOrder={onClickOrder}
         onClickEditOrder={onClickEditOrder}
       />
+      <div>
+        <p>
+          선택상품금액
+          {numberFormat(totalCartItemPrice)}
+          원
+        </p>
+        <p>
+          총 배송비
+          {numberFormat(totalDeliveryFee)}
+          원
+        </p>
+        <p>
+          주문금액
+          {numberFormat(orderAmount)}
+          원
+        </p>
+        <button
+          type="button"
+          onClick={handleClickTotalOrder}
+        >
+          총
+          {checkedCartItem.length}
+          건
+          {' '}
+          주문하기
+        </button>
+      </div>
     </div>
   );
 }
