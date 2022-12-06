@@ -6,8 +6,6 @@ export default class WishStore extends Store {
     super();
 
     this.productWishes = [];
-
-    this.listeners = new Set();
   }
 
   async fetchProductWishes(productId) {

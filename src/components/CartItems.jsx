@@ -37,6 +37,10 @@ export default function CartItems(
     onClickOrder(cartItemId);
   };
 
+  if (!cartItems.length) {
+    return <p>장바구니에 추가된 상품이 없습니다</p>;
+  }
+
   return (
     <div>
       <div>

@@ -47,13 +47,7 @@ export default class CartStore extends Store {
       this.checkItems = this.checkItems.filter((element) => element !== cartItemId);
     }
 
-    this.checkedCartItem = this.checkItems.map((checkItem) => (
-      this.cartItems.find((cartItem) => cartItem.id === checkItem)));
-
-    this.totalCartItemPrice = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.totalPayment, 0);
-    this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
-
-    this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
+    this.calculateAmount();
 
     this.publish();
   }
@@ -69,13 +63,7 @@ export default class CartStore extends Store {
       this.checkItems = [];
     }
 
-    this.checkedCartItem = this.checkItems.map((checkItem) => (
-      this.cartItems.find((cartItem) => cartItem.id === checkItem)));
-
-    this.totalCartItemPrice = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.totalPayment, 0);
-    this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
-
-    this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
+    this.calculateAmount();
 
     this.publish();
   }
@@ -88,6 +76,8 @@ export default class CartStore extends Store {
     await this.fetchCartItems(accessToken);
 
     this.checkItems = [];
+
+    this.calculateAmount();
 
     this.publish();
   }
@@ -166,6 +156,18 @@ export default class CartStore extends Store {
     this.quantity = 1;
 
     this.guideMessage = '옵션 미선택';
+
+    this.publish();
+  }
+
+  calculateAmount() {
+    this.checkedCartItem = this.checkItems.map((checkItem) => (
+      this.cartItems.find((cartItem) => cartItem.id === checkItem)));
+
+    this.totalCartItemPrice = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.totalPayment, 0);
+    this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
+
+    this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
 
     this.publish();
   }
