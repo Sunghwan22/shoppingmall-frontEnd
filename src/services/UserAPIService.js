@@ -21,9 +21,11 @@ export default class UserAPIService {
       },
     });
 
-    const { name, phoneNumber, address } = data;
+    console.log(data);
 
-    return { name, phoneNumber, address };
+    const { recipient, phoneNumber, address } = data;
+
+    return { recipient, phoneNumber, address };
   }
 
   async postSession({ identifier, password }) {
@@ -49,6 +51,16 @@ export default class UserAPIService {
     });
 
     return data;
+  }
+
+  async updateAddress(deliveryInformation, accessToken) {
+    const url = `${baseurl}/users/address`;
+
+    await axios.patch(url, deliveryInformation, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
 }
 

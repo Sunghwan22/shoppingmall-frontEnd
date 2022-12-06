@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ModalProvider } from 'styled-react-modal';
 import { Reset } from 'styled-reset';
 import CartPage from '../pages/CartPage';
+import EditOrderAddressPage from '../pages/EditOrderAddressPage';
 import EditOrderFormPage from '../pages/EditOrderFormPage';
 import HomePage from '../pages/HomePage';
 import InquiryFormPage from '../pages/InquiryFormPage';
@@ -11,7 +12,6 @@ import LoginFormPage from '../pages/LoginFormPage';
 import OrderFormPage from '../pages/OrderFormPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
 import ProductsPage from '../pages/ProductsPage';
-import SignUpFormPage from '../pages/SignUpFormPage';
 import GlobalStyle from '../styles/GlobalStyle';
 
 import Header from './Header';
@@ -45,7 +45,7 @@ export default function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/edit-orderForm" element={<EditOrderFormPage />} />
             <Route path="/oauth/callback/kakao" element={<KakaoRedirectPage />} />
-            <Route path="/signUp" element={<SignUpFormPage />} />
+            <Route path="/edit-orderAddress" element={<EditOrderAddressPage />} />
           </Routes>
         </Main>
       </ModalProvider>

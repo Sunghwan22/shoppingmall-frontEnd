@@ -1,21 +1,9 @@
-import { useState } from 'react';
-import Postcode from './Postcode';
-
 /* eslint-disable jsx-a11y/label-has-associated-control */
 export default function OrderAddress(
   {
-    name, phoneNumber, address, onChangeAddress, onChangedetailAddress,
-    onChangeDeliveryRequest, detailAddress,
+    recipient, phoneNumber, address, onChangeDeliveryRequest, onClickEditAddress,
   },
 ) {
-  const [editRecipient, setEditRecipient] = useState(false);
-
-  const handleChangeDetailAddress = (event) => {
-    const { value } = event.target;
-
-    onChangedetailAddress(value);
-  };
-
   const handleChangeDeliveryRequest = (event) => {
     const { value } = event.target;
 
@@ -23,7 +11,7 @@ export default function OrderAddress(
   };
 
   const handleClickEditRecipient = () => {
-
+    onClickEditAddress();
   };
 
   return (
@@ -32,9 +20,8 @@ export default function OrderAddress(
       <p>
         수령인
         {' '}
-        {name}
+        {recipient}
       </p>
-
       <p>
         전화 번호
         {' '}
@@ -46,19 +33,15 @@ export default function OrderAddress(
       >
         정보 수정
       </button>
-      <Postcode
-        address={address}
-        onChangeAddress={onChangeAddress}
-      />
-      <p>
-        <label htmlFor="detail-address" />
-        <input
-          id="detail-address"
-          placeholder="상세주소"
-          value={detailAddress}
-          onChange={(event) => handleChangeDetailAddress(event)}
-        />
-      </p>
+      <div>
+        <p>
+          배송지 정보
+        </p>
+        {address.zoneCode === 0
+          ? <p>배송지 정보가 없습니다</p>
+          : `(${address.zoneCode})${address.fullAddress} ${address.detailAddress}`}
+        <p />
+      </div>
       <p>
         <label htmlFor="requests" />
         <input
