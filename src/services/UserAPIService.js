@@ -21,8 +21,6 @@ export default class UserAPIService {
       },
     });
 
-    console.log(data);
-
     const { recipient, phoneNumber, address } = data;
 
     return { recipient, phoneNumber, address };

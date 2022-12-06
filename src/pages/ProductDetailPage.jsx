@@ -63,6 +63,8 @@ export default function ProductDetailPage() {
 
   const { productWishes } = wishStore;
 
+  const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct');
+
   const onClickPurchase = () => {
     if (!selectedProductOption) {
       return;

@@ -1,19 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
+import SelectOptionModal from '../components/SelectOptionModal';
+import WishItems from '../components/WishItems';
 import useCartStore from '../hooks/useCartStore';
+import useProductStore from '../hooks/useProductStore';
+import useWishItemStore from '../hooks/useWishItemStore';
 import numberFormat from '../utils/NumberFormat';
 
 export default function CartPage() {
   const navigate = useNavigate();
 
+  const [selectOption, setSelectOption] = useState(false);
+
   const [accessToken] = useLocalStorage('accessToken', '');
 
   const cartStore = useCartStore();
+  const wishItemStore = useWishItemStore();
+  const productStore = useProductStore();
 
   useEffect(() => {
     cartStore.fetchCartItems(accessToken);
+    wishItemStore.fetchWishItems(accessToken);
   }, []);
 
   const {
@@ -21,9 +30,12 @@ export default function CartPage() {
     checkedCartItem,
   } = cartStore;
 
-  if (!cartItems.length) {
-    return <p>장바구니에 추가된 상품이 없습니다</p>;
-  }
+  const { wishItems } = wishItemStore;
+
+  const {
+    product, totalPayment, quantity,
+    guideMessage, selectedProductOption,
+  } = productStore;
 
   const onClickSingleCheck = (checked, cartItemId) => {
     cartStore.Singlecheck(checked, cartItemId);
@@ -39,6 +51,11 @@ export default function CartPage() {
 
   const onClickCartItem = (productId) => {
     navigate(`/product/${productId}`);
+  };
+
+  const onClickaddCart = (productId) => {
+    setSelectOption(true);
+    productStore.fetchProduct(productId);
   };
 
   const handleClickTotalOrder = () => {
@@ -71,6 +88,47 @@ export default function CartPage() {
         cartItemId,
       },
     });
+  };
+
+  const onClickAddCartItem = async (productId) => {
+    if (!selectedProductOption) {
+      return;
+    }
+
+    if (Object.keys(selectedProductOption).length === 0) {
+      productStore.checkOption();
+      return;
+    }
+
+    await productStore.addCartItem(productId, accessToken);
+
+    setSelectOption(false);
+
+    await wishItemStore.deleteWishItem(productId, accessToken);
+
+    await cartStore.fetchCartItems(accessToken);
+  };
+
+  const onClickSelectOption = (productOption) => {
+    const amount = productOption.addAmount;
+
+    productStore.selectOption(amount, productOption);
+  };
+
+  const onClickAddQuantity = () => {
+    productStore.addQuantity();
+  };
+
+  const onClickReduceQuantity = () => {
+    productStore.reduceQuantity();
+  };
+
+  const onClickResetOption = () => {
+    productStore.resetQuantityAndTotalPayment();
+  };
+
+  const onClickCancel = () => {
+    setSelectOption(false);
   };
 
   return (
@@ -111,6 +169,27 @@ export default function CartPage() {
           {' '}
           주문하기
         </button>
+        <WishItems
+          wishItems={wishItems}
+          onClickaddCart={onClickaddCart}
+        />
+        {selectOption
+          ? (
+            <SelectOptionModal
+              product={product}
+              totalPayment={totalPayment}
+              quantity={quantity}
+              onClickCancel={onClickCancel}
+              selectedProductOption={selectedProductOption}
+              guideMessage={guideMessage}
+              onClickSelectOption={onClickSelectOption}
+              onClickAddQuantity={onClickAddQuantity}
+              onClickReduceQuantity={onClickReduceQuantity}
+              onClickResetOption={onClickResetOption}
+              onClickAddCartItem={onClickAddCartItem}
+            />
+          )
+          : null}
       </div>
     </div>
   );

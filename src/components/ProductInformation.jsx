@@ -22,7 +22,7 @@ const Image = styled.img`
     height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
-    padding-bottom: 5em;
+    padding-bottom: 5em;    
 `;
 
 const H2 = styled.h2`
