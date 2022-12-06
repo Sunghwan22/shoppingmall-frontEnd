@@ -9,22 +9,20 @@ export default class OrderStore extends Store {
   }
 
   async requestOrder({
-    name,
+    recipient,
     phoneNumber,
     orderProducts,
     totalOrderPayment,
     address,
     deliveryRequest,
-    detailAddress,
   }, accessToken) {
     const orderInformation = {
-      name,
+      recipient,
       phoneNumber,
       orderProducts,
       totalOrderPayment,
       address,
       deliveryRequest,
-      detailAddress,
     };
 
     const kakaoPayUrl = await orderApiService.createOrder(orderInformation, accessToken);

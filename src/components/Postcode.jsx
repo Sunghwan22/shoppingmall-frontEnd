@@ -1,16 +1,15 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-export default function Postcode(
-  { address, onChangeAddress },
-) {
+export default function Postcode() {
   const open = useDaumPostcodePopup();
 
-  const [zonecode, setZonecode] = useState(address.zoneCode || '');
-  const [roadAddress, setLoadAddress] = useState(address.fullAddress || '');
-  const [jibunAddress, setJibunAddress] = useState(address.jibunAddress || '');
+  const [zonecode, setZonecode] = useState('');
+  const [roadAddress, setLoadAddress] = useState('');
+  const [jibunAddress, setJibunAddress] = useState('');
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -28,15 +27,6 @@ export default function Postcode(
       setZonecode(data.zonecode);
       setLoadAddress(fullAddress);
       setJibunAddress(data.jibunAddress);
-
-      onChangeAddress(
-        {
-          zonecode: data.zonecode,
-          fullAddress,
-          jibunAddress: data.jibunAddress,
-          detailAddress: address.detailAddress,
-        },
-      );
     }
 
     if (data.addressType === 'J') {
@@ -51,15 +41,6 @@ export default function Postcode(
       setZonecode(data.zonecode);
       setLoadAddress(fullAddress);
       setJibunAddress(data.jibunAddress);
-
-      onChangeAddress(
-        {
-          zonecode: data.zonecode,
-          fullAddress,
-          jibunAddress: data.jibunAddress,
-          detailAddress: address.detailAddress,
-        },
-      );
     }
   };
 
@@ -68,10 +49,6 @@ export default function Postcode(
       { onComplete: handleComplete },
     );
   };
-
-  // if (!address.zoneCode || !address.fullAddress || !address.jibunAddress) {
-  //   return <p>now loading</p>;
-  // }
 
   return (
     <div>

@@ -25,8 +25,6 @@ export default class CartApiService {
       },
     });
 
-    console.log(data);
-
     return data;
   }
 

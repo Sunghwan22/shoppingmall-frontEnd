@@ -6,9 +6,10 @@ export default class UserStore extends Store {
   constructor() {
     super();
 
-    this.name = '';
+    this.recipient = '';
     this.phoneNumber = '';
     this.address = {};
+    this.editAddress = {};
 
     this.errorMessage = '';
   }
@@ -16,9 +17,9 @@ export default class UserStore extends Store {
   async fetchUser(accessToken) {
     console.log('임시방편');
 
-    const { name, phoneNumber, address } = await userApiService.fetchUser(accessToken);
+    const { recipient, phoneNumber, address } = await userApiService.fetchUser(accessToken);
 
-    this.name = name;
+    this.recipient = recipient;
     this.phoneNumber = phoneNumber;
     this.address = address;
 
@@ -41,6 +42,18 @@ export default class UserStore extends Store {
       this.errorMessage = error.message;
       this.publish();
     }
+  }
+
+  async editUserInformation({
+    recipient, phoneNumber, detailAddress, zonecode, roadAddress, jibunAddress,
+  }, accessToken) {
+    const deliveryInformation = {
+      recipient, phoneNumber, detailAddress, zonecode, roadAddress, jibunAddress,
+    };
+
+    await userApiService.updateAddress(deliveryInformation, accessToken);
+
+    this.publish();
   }
 
   async sendAuthcode(authCode) {

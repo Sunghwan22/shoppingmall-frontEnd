@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import OrderAddress from '../components/OrderAddress';
@@ -27,14 +27,16 @@ export default function OrderFormPage() {
   const orderFormStore = useOrderFormStore();
   const orderStore = useOrderStore();
 
+  const navigate = useNavigate();
+
   const [accessToken] = useLocalStorage('accessToken', '');
 
   useEffect(() => {
     userStore.fetchUser(accessToken);
   }, []);
 
-  const { name, phoneNumber, address } = userStore;
-  const { newAddress, deliveryRequest, detailAddress } = orderFormStore;
+  const { phoneNumber, address, recipient } = userStore;
+  const { deliveryRequest } = orderFormStore;
 
   const {
     orderProducts,
@@ -45,50 +47,31 @@ export default function OrderFormPage() {
     orderFormStore.changeAddress(changedAddress);
   };
 
-  const onChangedetailAddress = (changedDetailAddress) => {
-    orderFormStore.changeDetailAddress(changedDetailAddress);
-  };
-
   const onChangeDeliveryRequest = (request) => {
     orderFormStore.changeDeliveryRequest(request);
   };
 
   const handleClickPayment = async () => {
-    if (!detailAddress || !name || !phoneNumber) {
-      return;
-    }
-
-    if (!newAddress && !address) {
-      return;
-    }
-
-    if (!Object.keys(newAddress).length === 0) {
-      const kakaoPayUrl = await orderStore.requestOrder({
-        name,
-        phoneNumber,
-        orderProducts,
-        totalOrderPayment,
-        newAddress,
-        deliveryRequest,
-        detailAddress,
-      }, accessToken);
-
-      window.location.href = kakaoPayUrl;
-
+    if (!recipient || !phoneNumber
+      || !address.zoneCode || !address.fullAddress
+      || !address.detailAddress) {
       return;
     }
 
     const kakaoPayUrl = await orderStore.requestOrder({
-      name,
+      recipient,
       phoneNumber,
       orderProducts,
       totalOrderPayment,
       address,
       deliveryRequest,
-      detailAddress,
     }, accessToken);
 
     window.location.href = kakaoPayUrl;
+  };
+
+  const onClickEditAddress = () => {
+    navigate('/edit-orderAddress');
   };
 
   return (
@@ -97,13 +80,12 @@ export default function OrderFormPage() {
         orderProducts={orderProducts}
       />
       <OrderAddress
-        name={name}
+        recipient={recipient}
         phoneNumber={phoneNumber}
         address={address}
         onChangeAddress={onChangeAddress}
-        detailAddress={detailAddress}
-        onChangedetailAddress={onChangedetailAddress}
         onChangeDeliveryRequest={onChangeDeliveryRequest}
+        onClickEditAddress={onClickEditAddress}
       />
       <p>
         총 결제금액
