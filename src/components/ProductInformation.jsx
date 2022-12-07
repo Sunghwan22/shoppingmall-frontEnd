@@ -107,7 +107,6 @@ const MinusButton = styled.button`
   margin-right: .5em;
   cursor: pointer;
   
-
   :hover {
     background-color: #adadad;
     color: white;

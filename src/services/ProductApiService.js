@@ -2,6 +2,8 @@
 import axios from 'axios';
 import config from '../../config';
 
+const qs = require('qs');
+
 const baseurl = config.apiBaseUrl;
 
 export default class ProductApiService {
@@ -47,6 +49,23 @@ export default class ProductApiService {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+  }
+
+  async fetchRecentViewItems(productIds) {
+    const url = `${baseurl}/recentViewItems`;
+
+    const { data } = await axios.get(url, {
+      params: {
+        productIds,
+      },
+      paramsSerializer: {
+        serialize: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
+      },
+    });
+
+    const { recentViewItems } = data;
+
+    return recentViewItems;
   }
 }
 
