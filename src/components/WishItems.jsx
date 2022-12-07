@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 15%;
+  padding-right: 15%;
   margin-top: 5%;
 `;
 
@@ -87,6 +87,12 @@ const Item = styled.button`
   cursor: pointer;
 `;
 
+const GuideMessage = styled.p`
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 5%;
+`;
+
 export default function WishItems(
   { wishItems, onClickWishItemaddCart, onClickCartItem },
 ) {
@@ -99,7 +105,7 @@ export default function WishItems(
   };
 
   if (!wishItems.length) {
-    return <p>찜한 상품이 없습니다!</p>;
+    return <GuideMessage>찜한 상품이 없습니다!</GuideMessage>;
   }
 
   return (

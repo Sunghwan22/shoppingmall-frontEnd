@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 15%;
+  padding-right: 15%;
   margin-top: 5%;
-  padding-bottom: 15%;
+  padding-bottom: 5%;
 `;
 
 const List = styled.ul`
@@ -88,6 +88,12 @@ const Item = styled.button`
   cursor: pointer;
 `;
 
+const GuideMessage = styled.p`
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 5%;
+`;
+
 export default function RecentProducts(
   { recentViewItems, onClickRecentItemaddCart, onClickCartItem },
 ) {
@@ -100,12 +106,12 @@ export default function RecentProducts(
   };
 
   if (!recentViewItems.length) {
-    return <p>now Loading...</p>;
+    return <GuideMessage>최근 본 상품이 없습니다</GuideMessage>;
   }
 
   return (
     <Container>
-      <Description>최근 본 상품을 담아보세요</Description>
+      <Description>최근 본 상품을 담아보세요!</Description>
       <List>
         {recentViewItems.map((recentWishItem) => (
           <ListItem key={recentWishItem.id}>

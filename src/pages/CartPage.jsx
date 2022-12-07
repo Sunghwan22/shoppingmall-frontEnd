@@ -16,6 +16,70 @@ const Container = styled.div`
   width: 100%;
 `;
 
+const BottomBanner = styled.div`
+    width: 100%;
+    position: fixed;
+    bottom: 0%;
+    height: 50px;
+    background-color: #03c75a;
+`;
+
+const PriceBox = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 15%;
+  padding-right: 15%;
+
+  button {
+    display: flex;
+    padding-left: 3em;
+    padding-right: 3em;
+    padding-top: .7em;
+    padding-bottom: .7em;
+    border-radius: 4px;
+    border: none;
+    background-color: #FFFFFF;
+    cursor: pointer;
+  }
+`;
+
+const PriceInformation = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p:first-child {
+      color: white;
+      padding-right: .7em;
+      font-size: .9em;
+      font-weight:400;
+    }
+
+    p:nth-child(2) {
+      color: white;
+      font-weight: bold;
+    }
+
+    p:last-child {
+      color: white;
+      font-weight: normal;
+      font-size: .9em;
+      padding-right: 3em;
+    }
+`;
+
+const Count = styled.div`
+      width: 12px;
+      height: 12px;
+      font-size: .5em;
+      color: white;
+      border-radius: 50%;
+      border: none;
+      background-color:  #03c75a;
+`;
+
 export default function CartPage() {
   const navigate = useNavigate();
 
@@ -36,8 +100,7 @@ export default function CartPage() {
   }, []);
 
   const {
-    cartItems, checkItems, totalCartItemPrice, totalDeliveryFee, orderAmount,
-    checkedCartItem, productType,
+    cartItems, checkItems, orderAmount, checkedCartItem, productType,
   } = cartStore;
 
   const { wishItems } = wishItemStore;
@@ -174,33 +237,32 @@ export default function CartPage() {
         onClickOrder={onClickOrder}
         onClickEditOrder={onClickEditOrder}
       />
-      <div>
-        <p>
-          선택상품금액
-          {numberFormat(totalCartItemPrice)}
-          원
-        </p>
-        <p>
-          총 배송비
-          {numberFormat(totalDeliveryFee)}
-          원
-        </p>
-        <p>
-          주문금액
-          {numberFormat(orderAmount)}
-          원
-        </p>
-        <button
-          type="button"
-          onClick={handleClickTotalOrder}
-        >
-          총
-          {checkedCartItem.length}
-          건
-          {' '}
-          주문하기
-        </button>
-      </div>
+      <BottomBanner>
+        <PriceBox>
+          <PriceInformation>
+            <p>
+              총 주문금액
+            </p>
+            <p>
+              {numberFormat(orderAmount)}
+            </p>
+            <p>
+              원
+            </p>
+          </PriceInformation>
+          <button
+            type="button"
+            onClick={handleClickTotalOrder}
+          >
+            총
+            {' '}
+            주문하기
+            <Count>
+              {checkedCartItem.length}
+            </Count>
+          </button>
+        </PriceBox>
+      </BottomBanner>
       <WishItems
         wishItems={wishItems}
         onClickWishItemaddCart={onClickWishItemaddCart}
