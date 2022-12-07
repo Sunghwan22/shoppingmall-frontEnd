@@ -1,39 +1,148 @@
+import styled from 'styled-components';
 import numberFormat from '../utils/NumberFormat';
 
+const Container = styled.div`
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 5%;
+`;
+
+const List = styled.ul`
+  display: flex;
+  width: 100%;
+  overflow: scroll;
+  padding-top: 2.5%;
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-right: 1em;
+  border-radius: 5px;
+
+  &:hover{
+    -webkit-transform: translateY(-3px);
+    -ms-transform: translateY(-3px);
+    transform: translateY(-3px);
+    -webkit-box-shadow: 0 0 6px #999;
+    box-shadow: 0 0 6px #999;
+    -webkit-transition: all .5s ease-out;
+    transition: all .5s ease-out;
+  }
+`;
+
+const Image = styled.img`
+  border-radius: 5px;
+`;
+
+const Price = styled.p`
+  font-weight: bold;
+  color: #444444;
+`;
+
+const PriceBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-top: .5em;
+  padding-bottom: .3em;
+`;
+
+const Won = styled.p`
+  font-size: .8em;
+`;
+
+const ProductName = styled.p`
+  font-size: .8em;
+  color: #444444;
+  padding-bottom: .3em;
+  padding-top: .3em;
+`;
+
+const CartButton = styled.button`
+    padding-top: .7em;
+    padding-bottom: .7em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: 2px;
+    border: 1px solid #D9D9D9;
+    background-color: #FFFFFF;
+    cursor: pointer;
+`;
+
+const ButtonWrapper = styled.div`
+    width: 90%;
+    padding-left: 10%;
+`;
+
+const Description = styled.p`
+  font-weight: bold;
+`;
+
+const Item = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
 export default function WishItems(
-  { wishItems, onClickaddCart },
+  { wishItems, onClickWishItemaddCart, onClickCartItem },
 ) {
   const handleClickAddCart = (wishItemId) => {
-    onClickaddCart(wishItemId);
+    onClickWishItemaddCart(wishItemId);
   };
 
+  const handleClickProduct = (wishItemId) => {
+    onClickCartItem(wishItemId);
+  };
+
+  if (!wishItems.length) {
+    return <p>찜한 상품이 없습니다!</p>;
+  }
+
   return (
-    <div>
-      <p>XXX님이 찜한 상품을 담아보세요</p>
-      <ul>
+    <Container>
+      <Description>찜한 상품을 담아보세요!</Description>
+      <List>
         {wishItems.map((wishItem) => (
-          <li key={wishItem.id}>
-            <img
-              src={wishItem.productImages.find((productImage) => (
-                productImage.thumbnailImage === true
-              )).url}
-              alt="productImage"
-              width="100px"
-            />
-            <p>{wishItem.productName}</p>
-            <p>
-              {numberFormat(wishItem.price)}
-              원
-            </p>
-            <button
+          <ListItem
+            key={wishItem.id}
+          >
+            <Item
               type="button"
-              onClick={() => handleClickAddCart(wishItem.id)}
+              onClick={() => handleClickProduct(wishItem.id)}
             >
-              장바구니 추가
-            </button>
-          </li>
+              <Image
+                src={wishItem.productImages.find((productImage) => (
+                  productImage.thumbnailImage === true
+                )).url}
+                alt="productImage"
+                width="140"
+                height="130px"
+              />
+              <PriceBox>
+                <Price>
+                  {numberFormat(wishItem.price)}
+                </Price>
+                <Won>
+                  원
+                </Won>
+              </PriceBox>
+              <ProductName>{wishItem.productName}</ProductName>
+            </Item>
+            <ButtonWrapper>
+              <CartButton
+                type="button"
+                onClick={() => handleClickAddCart(wishItem.id)}
+              >
+                장바구니 추가
+              </CartButton>
+            </ButtonWrapper>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 }

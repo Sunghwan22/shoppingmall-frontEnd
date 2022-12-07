@@ -26,6 +26,8 @@ export default class CartStore extends Store {
     this.totalCartItemPrice = 0;
     this.totalDeliveryFee = 0;
     this.orderAmount = 0;
+
+    this.productType = '';
   }
 
   async fetchCartItems(accessToken) {
@@ -168,6 +170,18 @@ export default class CartStore extends Store {
     this.totalDeliveryFee = this.checkedCartItem.reduce((accumulator, cartItem) => accumulator + cartItem.deliveryFee, 0);
 
     this.orderAmount = this.totalCartItemPrice + this.totalDeliveryFee;
+
+    this.publish();
+  }
+
+  addWishItem() {
+    this.productType = 'wishItem';
+
+    this.publish();
+  }
+
+  addRecentViewItem() {
+    this.productType = 'recentViewItem';
 
     this.publish();
   }
