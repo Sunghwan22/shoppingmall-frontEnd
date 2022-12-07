@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
+import RecentProducts from '../components/RecentProducts';
 import SelectOptionModal from '../components/SelectOptionModal';
 import WishItems from '../components/WishItems';
 import useCartStore from '../hooks/useCartStore';
 import useProductStore from '../hooks/useProductStore';
+import useRecentViewItemStore from '../hooks/useRecentViewItemStore';
 import useWishItemStore from '../hooks/useWishItemStore';
 import numberFormat from '../utils/NumberFormat';
 
@@ -15,14 +17,17 @@ export default function CartPage() {
   const [selectOption, setSelectOption] = useState(false);
 
   const [accessToken] = useLocalStorage('accessToken', '');
+  const [recentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
 
   const cartStore = useCartStore();
   const wishItemStore = useWishItemStore();
   const productStore = useProductStore();
+  const recentViewItemStore = useRecentViewItemStore();
 
   useEffect(() => {
     cartStore.fetchCartItems(accessToken);
     wishItemStore.fetchWishItems(accessToken);
+    recentViewItemStore.fetchRecentViewItems(recentlyViewProduct);
   }, []);
 
   const {
@@ -36,6 +41,8 @@ export default function CartPage() {
     product, totalPayment, quantity,
     guideMessage, selectedProductOption,
   } = productStore;
+
+  const { recentViewItems } = recentViewItemStore;
 
   const onClickSingleCheck = (checked, cartItemId) => {
     cartStore.Singlecheck(checked, cartItemId);
@@ -169,6 +176,10 @@ export default function CartPage() {
           {' '}
           주문하기
         </button>
+        <RecentProducts
+          recentViewItems={recentViewItems}
+          onClickaddCart={onClickaddCart}
+        />
         <WishItems
           wishItems={wishItems}
           onClickaddCart={onClickaddCart}

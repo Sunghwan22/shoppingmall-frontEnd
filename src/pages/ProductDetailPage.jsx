@@ -35,6 +35,7 @@ export default function ProductDetailPage() {
 
   const [accessToken] = useLocalStorage('accessToken', '');
   const [loginConfirm, setLoginConfirm] = useState(false);
+  const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
 
   const navigate = useNavigate();
 
@@ -44,6 +45,23 @@ export default function ProductDetailPage() {
     reviewStore.fetchReviews({ productId });
     reviewStore.fetchBestReviews({ productId });
     inquiryStore.fetchInquiries({ productId, accessToken });
+
+    const productIdArray = JSON.parse(recentlyViewProduct);
+    if (!productIdArray.includes(productId)) {
+      if (productIdArray.length === 10) {
+        productIdArray.pop();
+      }
+      productIdArray.unshift(productId);
+    }
+
+    if (productIdArray.length !== 10) {
+      const deduplicationArray = productIdArray.filter((element) => element !== productId);
+      deduplicationArray.unshift(productId);
+      setRecentlyViewProduct(JSON.stringify(deduplicationArray));
+      return;
+    }
+
+    setRecentlyViewProduct(JSON.stringify(productIdArray));
   }, []);
 
   const {
@@ -62,8 +80,6 @@ export default function ProductDetailPage() {
   } = inquiryStore;
 
   const { productWishes } = wishStore;
-
-  const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct');
 
   const onClickPurchase = () => {
     if (!selectedProductOption) {

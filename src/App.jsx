@@ -2,20 +2,19 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { ModalProvider } from 'styled-react-modal';
 import { Reset } from 'styled-reset';
-import CartPage from '../pages/CartPage';
-import EditOrderAddressPage from '../pages/EditOrderAddressPage';
-import EditOrderFormPage from '../pages/EditOrderFormPage';
-import HomePage from '../pages/HomePage';
-import InquiryFormPage from '../pages/InquiryFormPage';
-import KakaoRedirectPage from '../pages/KakaoRedirectPage';
-import LoginFormPage from '../pages/LoginFormPage';
-import OrderFormPage from '../pages/OrderFormPage';
-import ProductDetailPage from '../pages/ProductDetailPage';
-import ProductsPage from '../pages/ProductsPage';
-import GlobalStyle from '../styles/GlobalStyle';
-
-import Header from './Header';
-import OrderSuccess from './OrderSuccess';
+import CartPage from './pages/CartPage';
+import EditOrderAddressPage from './pages/EditOrderAddressPage';
+import EditOrderFormPage from './pages/EditOrderFormPage';
+import HomePage from './pages/HomePage';
+import InquiryFormPage from './pages/InquiryFormPage';
+import KakaoRedirectPage from './pages/KakaoRedirectPage';
+import LoginFormPage from './pages/LoginFormPage';
+import OrderFormPage from './pages/OrderFormPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import ProductsPage from './pages/ProductsPage';
+import GlobalStyle from './styles/GlobalStyle';
+import Header from './components/Header';
+import OrderSuccess from './components/OrderSuccess';
 
 const Main = styled.main`
   min-width: 768px;
