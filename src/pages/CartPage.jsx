@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
 import RecentProducts from '../components/RecentProducts';
@@ -11,13 +12,17 @@ import useRecentViewItemStore from '../hooks/useRecentViewItemStore';
 import useWishItemStore from '../hooks/useWishItemStore';
 import numberFormat from '../utils/NumberFormat';
 
+const Container = styled.div`
+  width: 100%;
+`;
+
 export default function CartPage() {
   const navigate = useNavigate();
 
   const [selectOption, setSelectOption] = useState(false);
 
   const [accessToken] = useLocalStorage('accessToken', '');
-  const [recentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
+  const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
 
   const cartStore = useCartStore();
   const wishItemStore = useWishItemStore();
@@ -32,7 +37,7 @@ export default function CartPage() {
 
   const {
     cartItems, checkItems, totalCartItemPrice, totalDeliveryFee, orderAmount,
-    checkedCartItem,
+    checkedCartItem, productType,
   } = cartStore;
 
   const { wishItems } = wishItemStore;
@@ -60,9 +65,16 @@ export default function CartPage() {
     navigate(`/product/${productId}`);
   };
 
-  const onClickaddCart = (productId) => {
+  const onClickWishItemaddCart = async (productId) => {
     setSelectOption(true);
-    productStore.fetchProduct(productId);
+    cartStore.addWishItem();
+    await productStore.fetchProduct(productId);
+  };
+
+  const onClickRecentItemaddCart = async (productId) => {
+    setSelectOption(true);
+    cartStore.addRecentViewItem();
+    await productStore.fetchProduct(productId);
   };
 
   const handleClickTotalOrder = () => {
@@ -111,7 +123,19 @@ export default function CartPage() {
 
     setSelectOption(false);
 
-    await wishItemStore.deleteWishItem(productId, accessToken);
+    if (productType === 'recentViewItem') {
+      const deleteArray = JSON.parse(recentlyViewProduct).filter((viewProductId) => (
+        viewProductId !== productId
+      ));
+
+      setRecentlyViewProduct(JSON.stringify(deleteArray));
+
+      await recentViewItemStore.fetchRecentViewItems(recentlyViewProduct);
+    }
+
+    if (productType === 'wish') {
+      await wishItemStore.deleteWishItem(productId, accessToken);
+    }
 
     await cartStore.fetchCartItems(accessToken);
   };
@@ -139,7 +163,7 @@ export default function CartPage() {
   };
 
   return (
-    <div>
+    <Container>
       <CartItems
         cartItems={cartItems}
         checkItems={checkItems}
@@ -176,32 +200,34 @@ export default function CartPage() {
           {' '}
           주문하기
         </button>
-        <RecentProducts
-          recentViewItems={recentViewItems}
-          onClickaddCart={onClickaddCart}
-        />
-        <WishItems
-          wishItems={wishItems}
-          onClickaddCart={onClickaddCart}
-        />
-        {selectOption
-          ? (
-            <SelectOptionModal
-              product={product}
-              totalPayment={totalPayment}
-              quantity={quantity}
-              onClickCancel={onClickCancel}
-              selectedProductOption={selectedProductOption}
-              guideMessage={guideMessage}
-              onClickSelectOption={onClickSelectOption}
-              onClickAddQuantity={onClickAddQuantity}
-              onClickReduceQuantity={onClickReduceQuantity}
-              onClickResetOption={onClickResetOption}
-              onClickAddCartItem={onClickAddCartItem}
-            />
-          )
-          : null}
       </div>
-    </div>
+      <WishItems
+        wishItems={wishItems}
+        onClickWishItemaddCart={onClickWishItemaddCart}
+        onClickCartItem={onClickCartItem}
+      />
+      <RecentProducts
+        recentViewItems={recentViewItems}
+        onClickRecentItemaddCart={onClickRecentItemaddCart}
+        onClickCartItem={onClickCartItem}
+      />
+      {selectOption
+        ? (
+          <SelectOptionModal
+            product={product}
+            totalPayment={totalPayment}
+            quantity={quantity}
+            onClickCancel={onClickCancel}
+            selectedProductOption={selectedProductOption}
+            guideMessage={guideMessage}
+            onClickSelectOption={onClickSelectOption}
+            onClickAddQuantity={onClickAddQuantity}
+            onClickReduceQuantity={onClickReduceQuantity}
+            onClickResetOption={onClickResetOption}
+            onClickAddCartItem={onClickAddCartItem}
+          />
+        )
+        : null}
+    </Container>
   );
 }
