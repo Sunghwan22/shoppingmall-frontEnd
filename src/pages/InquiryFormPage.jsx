@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 
 import InquiryForm from '../components/InquiryForm';
 import LoginConfirmModal from '../components/LoginConfirmModal';
 import useInquiryStore from '../hooks/useInquiryStore';
+
+const Container = styled.div`
+    width: 100%;
+`;
 
 export default function InquiryFormPage() {
   const location = useLocation();
@@ -42,7 +47,7 @@ export default function InquiryFormPage() {
   };
 
   return (
-    <div>
+    <Container>
       <InquiryForm
         onClickRegister={onClickRegister}
         onClickCancel={onClickCancel}
@@ -53,6 +58,6 @@ export default function InquiryFormPage() {
           onClickStay={onClickStay}
         />
       ) : null}
-    </div>
+    </Container>
   );
 }

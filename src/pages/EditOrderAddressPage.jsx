@@ -1,7 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import EditOrderAddress from '../components/EditOrderAddress';
 import useUserStore from '../hooks/useUserStore';
+
+const Container = styled.div`
+    padding-inline: 15%;
+    padding-top: 3em;
+    width: 100%;
+`;
 
 export default function EditOrderAddressPage() {
   const userStore = useUserStore();
@@ -25,11 +32,11 @@ export default function EditOrderAddressPage() {
   };
 
   return (
-    <div>
+    <Container>
       <EditOrderAddress
         onClickUserInformation={onClickUserInformation}
         onClickCancel={onClickCancel}
       />
-    </div>
+    </Container>
   );
 }

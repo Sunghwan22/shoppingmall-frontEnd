@@ -5,6 +5,12 @@ const PageList = styled.ul`
     display: flex;
 `;
 
+const Container = styled.div`
+  width: 100%;
+  padding-inline: 15%;
+  padding-top: 5em;
+`;
+
 export default function Products(
   {
     products, onClickProduct, onClickPageNumbers, pageNumbers, onClickWishes,
@@ -27,7 +33,7 @@ export default function Products(
   }
 
   return (
-    <div>
+    <Container>
       <ul>
         {products.map((product) => (
           <li key={product.id}>
@@ -92,6 +98,6 @@ export default function Products(
           </li>
         ))}
       </PageList>
-    </div>
+    </Container>
   );
 }

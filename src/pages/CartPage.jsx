@@ -20,8 +20,9 @@ const BottomBanner = styled.div`
     width: 100%;
     position: fixed;
     bottom: 0%;
-    height: 50px;
-    background-color: #03c75a;
+    height: 80px;
+    background: linear-gradient(to left, #83a4d4, #b6fbff);
+    font-size: 1.6em;
 `;
 
 const PriceBox = styled.div`
@@ -36,12 +37,13 @@ const PriceBox = styled.div`
     display: flex;
     padding-left: 3em;
     padding-right: 3em;
-    padding-top: .7em;
-    padding-bottom: .7em;
+    padding-top: 1em;
+    padding-bottom: 1em;
     border-radius: 4px;
     border: none;
     background-color: #FFFFFF;
     cursor: pointer;
+    font-size: .7em;
   }
 `;
 
@@ -71,9 +73,9 @@ const PriceInformation = styled.div`
 `;
 
 const Count = styled.div`
-      width: 12px;
-      height: 12px;
-      font-size: .5em;
+      width: 20px;
+      height: 18px;
+      font-size: .8em;
       color: white;
       border-radius: 50%;
       border: none;

@@ -5,6 +5,7 @@ const Container = styled.div`
   padding-left: 15%;
   padding-right: 15%;
   margin-top: 5%;
+  font-size: 1.5em;
 `;
 
 const List = styled.ul`
@@ -62,6 +63,8 @@ const ProductName = styled.p`
 `;
 
 const CartButton = styled.button`
+    width: 100%;
+    font-size: .7em;
     padding-top: .7em;
     padding-bottom: .7em;
     padding-left: 1em;
@@ -85,6 +88,7 @@ const Item = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  font-size: .9em;
 `;
 
 const GuideMessage = styled.p`
@@ -125,8 +129,8 @@ export default function WishItems(
                   productImage.thumbnailImage === true
                 )).url}
                 alt="productImage"
-                width="140"
-                height="130px"
+                width="200px"
+                height="200px"
               />
               <PriceBox>
                 <Price>
