@@ -15,6 +15,7 @@ import ProductsPage from './pages/ProductsPage';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import OrderSuccess from './components/OrderSuccess';
+import SearchProductForm from './components/SearchProductForm';
 
 const Main = styled.main`
   min-width: 768px;
@@ -29,6 +30,7 @@ export default function App() {
       <Reset />
       <GlobalStyle />
       <Header />
+      <SearchProductForm />
       <ModalProvider>
         <Main>
           <Routes>

@@ -5,7 +5,7 @@ const Container = styled.div`
   padding-left: 15%;
   padding-right: 15%;
   margin-top: 5%;
-  padding-bottom: 5%;
+  padding-bottom: 10em;
 `;
 
 const List = styled.ul`
@@ -49,6 +49,7 @@ const PriceBox = styled.div`
   align-items: flex-end;
   padding-top: .5em;
   padding-bottom: .3em;
+  font-size: 1.5em;
 `;
 
 const Won = styled.p`
@@ -63,6 +64,7 @@ const ProductName = styled.p`
 `;
 
 const CartButton = styled.button`
+    width: 100%;
     padding-top: .7em;
     padding-bottom: .7em;
     padding-left: 1em;
@@ -71,6 +73,7 @@ const CartButton = styled.button`
     border: 1px solid #D9D9D9;
     background-color: #FFFFFF;
     cursor: pointer;
+    font-size: 1em;
 `;
 
 const ButtonWrapper = styled.div`
@@ -86,6 +89,7 @@ const Item = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  font-size: 1em;
 `;
 
 const GuideMessage = styled.p`
@@ -124,8 +128,8 @@ export default function RecentProducts(
                   productImage.thumbnailImage === true
                 )).url}
                 alt="productImage"
-                width="150px"
-                height="120px"
+                width="200px"
+                height="200px"
               />
               <PriceBox>
                 <Price>
