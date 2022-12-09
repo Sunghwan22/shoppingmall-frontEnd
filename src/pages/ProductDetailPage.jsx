@@ -18,7 +18,8 @@ import useWishStore from '../hooks/useWishStore';
 
 const Container = styled.div`
     width: 100%;
-    padding: 0 5vw 12vw 5vw;
+    padding-inline: 15%;
+    max-width: 2560px;
 `;
 
 export default function ProductDetailPage() {
@@ -251,22 +252,22 @@ export default function ProductDetailPage() {
         onClickPurchase={onClickPurchase}
         guideMessage={guideMessage}
       />
+      <ProductBestReviews
+        totalRating={totalRating}
+        bestReviews={bestReviews}
+        bestReviewPageNumbers={bestReviewPageNumbers}
+        onClickRecommendation={onClickRecommendation}
+        onClickBestReviewPageNumbers={onClickBestReviewPageNumbers}
+        totalReviewsNumber={totalReviewsNumber}
+        onClickBestReview={onClickBestReview}
+      />
+
       {isBestReviewDetail ? (
         <ReviewDetail
           review={review}
           onClickExitReviewDetail={onClickExitBestReviewDetail}
         />
-      ) : (
-        <ProductBestReviews
-          totalRating={totalRating}
-          bestReviews={bestReviews}
-          bestReviewPageNumbers={bestReviewPageNumbers}
-          onClickRecommendation={onClickRecommendation}
-          onClickBestReviewPageNumbers={onClickBestReviewPageNumbers}
-          totalReviewsNumber={totalReviewsNumber}
-          onClickBestReview={onClickBestReview}
-        />
-      )}
+      ) : null}
       <ProductDetailDescription
         product={product}
         subProductImages={subProductImages}

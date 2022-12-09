@@ -1,32 +1,29 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import styled from 'styled-components';
+import Heart from '../assets/Heart.png';
+import DarkHeart from '../assets/darkHeart.png';
 
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
    display: flex;
-   justify-content: center;
-   height: 500px;  
+   justify-content: space-between;
+   padding-inline: 15%;
    margin-top: 3em;
-   margin-left: 10%;
-   margin-right: 10%;
    margin-bottom: 5em;
-   border: dotted 1px #000;
 `;
 
 const Image = styled.img`
-    top: 10vw;
-    left: 15%;
-    width: 350px;
-    height: 100%;
-    background-size: contain;
+    width: 600px;
+    height: 600px;
+    background-size: cover;
     background-repeat: no-repeat;
     padding-bottom: 5em;    
 `;
 
 const H2 = styled.h2`
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: bold;
     padding-bottom: 1em;
 `;
@@ -34,45 +31,88 @@ const H2 = styled.h2`
 const BrandInformation = styled.div`
   display: flex;
   justify-content : space-between;
-`;
+  padding-bottom: 1em;
+
+  p:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
+ `;
 
 const ProductName = styled.div`
   text-align: start;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding-bottom: 1em;
 `;
 
 const ProductViews = styled.div`
-  font-size: .8em;
   display: flex;
   justify-content : space-between;
+  padding-bottom: 1em;
+
+  p:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
 `;
 
 const ProductDeleveryFee = styled.div`
   display: flex;
   justify-content : space-between;
+
+  padding-bottom: 1em;
+
+  p:first-child {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+  p {
+      font-size: 1.2em;
+    }
 `;
 
 const ProductCumulativeSales = styled.div`
   display: flex;
   justify-content : space-between;
+
+  padding-bottom: 1em;
+
+  p:first-child {
+  font-weight: bold;
+  font-size: 1.2em;
+}
 `;
 
 const ProductPrice = styled.div`
-  font-size: 1.2em;
+  display: flex;
+  justify-content : space-between;
+  padding-top: 1em;
+
+  p {
   font-weight: bold;
-  text-align: end;
-  padding-top: .7em;
+  font-size: 1.5em;
+  }
 `;
 
 const ProductInforamtion = styled.div`
   padding-top: 2em;
-  padding-right: 2em;
 `;
 
 const ProductInforamtionBox = styled.div`
-    width: 33%;
+    width: 60%;
     display: flex;
     flex-direction: column;
-    padding-left: 2em;
+    padding-left: 5em;
 
     p {
       padding-bottom: .7em;
@@ -80,6 +120,7 @@ const ProductInforamtionBox = styled.div`
 `;
 
 const ProductOption = styled.select`
+  font-size: 1.2em;
   width: 100%;
   padding: 0.3em;
   margin-bottom: 1em;
@@ -132,12 +173,13 @@ const PayMoeny = styled.p`
     justify-content: space-around;
     align-items: center;
 
+
     color: red;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.5em;
 
     span {
-      font-size: .5em;
+      font-size: .7em;
       color: #000;
     }
 `;
@@ -146,18 +188,12 @@ const BuyButton = styled.button`
    color: white;
    border: none;
    cursor: pointer;
-   background: linear-gradient(269.99deg,
-    rgb(167, 159, 255) 0.01%,
-    rgb(242, 159, 255) 99.99%);
+   background: #35992D;
+   padding-bottom: 1.2em;
+   padding-top: 1.2em;
 
-  padding : .6em 0;
+  border-radius: 1px;
 
-  border-radius: 5px;
-
-/*   
-  linear-gradient(269.99deg,
-    rgb(116, 104, 247) 0.01%,
-    rgb(232, 116, 250) 99.99%); */
   :hover {
     
     background:
@@ -167,50 +203,44 @@ const BuyButton = styled.button`
 
 const ButtonBox = styled.div`
     width: 100%;
+    display: flex;
+    align-items: center;
     padding-top: .3em;
 `;
 
 const WishButton = styled.button`
-  width: 49%;
-  color: white;
-   border: none;
-   cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 50%;
+    border: 1px solid #CCCCCC;
+    cursor: pointer;
 
-   background: linear-gradient(269.99deg,
-    rgb(213, 209, 255) 0.01%,
-    rgb(246, 194, 254) 99.99%);
+    background: transparent;
 
-  padding-top: .5em;
-  padding-bottom: .5em;
-  margin-right: .3em;
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
+    margin-right: .3em;
 
-  border-radius: 3px;
-
-  :hover {
-    background:
-    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
-}
+    span {
+      padding-left: 1em;
+    }
 `;
 
 const CartButton = styled.button`
-   width: 48%;
-  color: white;
-   border: none;
+  width: 48.8%;
+  border: 1px solid #CCCCCC;
    cursor: pointer;
 
-   background: linear-gradient(269.99deg,
-    rgb(213, 209, 255) 0.01%,
-    rgb(246, 194, 254) 99.99%);
+  background: transparent;
  
-  padding-top: .5em;
-  padding-bottom: .5em;
+  padding-top: 1.4em;
+  padding-bottom: 1.4em;
 
-  border-radius: 3px;
+`;
 
-  :hover {
-    background:
-    linear-gradient(92deg,#2ca2b4,#5598de 24%,#7f87ff 45%,#5391e8 76%,#3a82ff);
-}
+const HeartImage = styled.img`
+   background-size: cover;
 `;
 
 export default function ProductInformation(
@@ -268,6 +298,7 @@ export default function ProductInformation(
     <Container>
       <Image
         src={thumbnailImage.url}
+        // src="https://img.gqkorea.co.kr/gq/2021/10/style_616f710161913-819x1024.jpg"
         alt="productProfile"
       />
       <ProductInforamtionBox>
@@ -313,6 +344,9 @@ export default function ProductInformation(
             </p>
           </ProductDeleveryFee>
           <ProductPrice>
+            <p>
+              가격
+            </p>
             <p>
               {numberFormat(product.price)}
               원
@@ -382,9 +416,16 @@ export default function ProductInformation(
             type="button"
             onClick={handleClickWish}
           >
-            찜하기
-            {' '}
-            {productWishes.length}
+            <HeartImage
+              src={Heart}
+              alt="HeartImage"
+            />
+            <span>
+              찜하기
+            </span>
+            <span>
+              {productWishes.length}
+            </span>
           </WishButton>
           <CartButton
             type="button"

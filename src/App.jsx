@@ -19,7 +19,7 @@ import SearchProductForm from './components/SearchProductForm';
 
 const Main = styled.main`
   min-width: 768px;
-  max-width: 1920px;
+  max-width: 2560px;
   min-height: 100%;
   display: flex;
 `;

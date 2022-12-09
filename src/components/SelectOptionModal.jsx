@@ -6,7 +6,7 @@ import AddCartImage from '../assets/addcart.png';
 
 const StyledModal = Modal.styled`
     font-size : .8em;
-    width: 20rem;
+    width: 30%;
     height : 100%;
     display: flex;
     flex-direction : column;

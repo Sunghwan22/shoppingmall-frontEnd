@@ -1,9 +1,15 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
 import LoginForm from '../components/LoginForm';
 import useUserStore from '../hooks/useUserStore';
 import kakaoLoginConfig from '../kakaoLoginConfig';
 import { apiService } from '../services/APIService';
+
+const Container = styled.div`
+  width: 120%;
+  padding-left: 15%;
+`;
 
 export default function LoginFormPage() {
   const userStore = useUserStore();
@@ -34,23 +40,18 @@ export default function LoginFormPage() {
     navigate('/signup');
   };
 
-  const handleClickKakaoLogin = () => {
+  const onClickKakaoLogin = () => {
     window.location.href = kakaoLoginConfig.kakaoAuthUrl;
   };
 
   return (
-    <div>
+    <Container>
       <LoginForm
         onClickLogin={onClickLogin}
         onClickSignup={onClickSignup}
+        onClickKakaoLogin={onClickKakaoLogin}
         errorMessage={errorMessage}
       />
-      <button
-        type="button"
-        onClick={handleClickKakaoLogin}
-      >
-        카카오 로그인
-      </button>
-    </div>
+    </Container>
   );
 }

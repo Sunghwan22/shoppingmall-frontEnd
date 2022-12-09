@@ -4,6 +4,7 @@ import numberFormat from '../utils/NumberFormat';
 const Container = styled.div`
   padding-left: 15%;
   padding-right: 15%;
+  max-width: 2560px;
   margin-top: 5%;
   padding-bottom: 10em;
 `;
