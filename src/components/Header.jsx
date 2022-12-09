@@ -7,6 +7,7 @@ import CartImage from '../assets/shopping-cart.png';
 
 const Container = styled.div`
     width: 100%;
+    max-width: 2560px;
     padding-inline: 15%;
     padding-top: .1em;
     padding-bottom: .1em;
@@ -104,8 +105,9 @@ export default function Header() {
               <Link to="/">
                 <img
                   src={LogoImage}
+                  // src="https://cdn.discordapp.com/attachments/993065106659364874/1050660573404209232/vincentJoDean.png"
                   alt="logoImage"
-                  width="120px"
+                  width="200px"
                 />
               </Link>
             </div>

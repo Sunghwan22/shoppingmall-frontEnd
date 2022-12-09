@@ -16,14 +16,14 @@ const H2 = styled.h2`
 `;
 
 const Label = styled.label`
-    font-size: 1.5em;
+    font-size: 1.5em;    
     padding-right: .3em;
 `;
 
 const PhoneNumberLabel = styled.label`
     font-size: 1.5em;
     padding-right: .3em;
-    padding-left: 2em;   
+    padding-left: 2em;
 `;
 
 const RecipientInformation = styled.div`

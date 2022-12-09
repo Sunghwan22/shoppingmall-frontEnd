@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MagnifyingGlass from '../assets/Vector.png';
 
@@ -41,7 +41,7 @@ const Input = styled.input`
     padding-block: .3em;
     padding-left: 1em;
     padding-right : 1em;
-`;
+`; // path에 따라서 없애버리기
 
 const SearchButton = styled.button`
     display: flex;
@@ -66,6 +66,7 @@ export default function SearchProductForm() {
   } = useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onSubmit = (data) => {
     const { word } = data;
@@ -73,9 +74,15 @@ export default function SearchProductForm() {
     navigate(`/search/${word}`);
   };
 
+  const pathName = location.pathname.split('/')[1];
+
   const handleClickCategory = () => {
 
   };
+
+  if (pathName === 'product') {
+    return;
+  }
 
   return (
     <Container>
