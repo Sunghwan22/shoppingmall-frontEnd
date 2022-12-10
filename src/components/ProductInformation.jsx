@@ -236,7 +236,14 @@ const CartButton = styled.button`
  
   padding-top: 1.4em;
   padding-bottom: 1.4em;
+`;
 
+const GuideMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  font-size: 1.5em;
+  color: red;
+  padding-top: 2em;
 `;
 
 const HeartImage = styled.img`
@@ -435,7 +442,7 @@ export default function ProductInformation(
           </CartButton>
         </ButtonBox>
         {guideMessage === '옵션을 선택해주세요'
-          ? <p>옵션을 선택해주세요</p> : null}
+          ? <GuideMessage>옵션을 선택해주세요</GuideMessage> : null}
       </ProductInforamtionBox>
     </Container>
   );

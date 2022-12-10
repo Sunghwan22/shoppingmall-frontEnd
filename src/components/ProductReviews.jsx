@@ -4,6 +4,7 @@ import BallonImage from '../assets/Ballon.png';
 const Container = styled.div`
   padding-inline : 15%;
   padding-top: 2em;
+  
 `;
 
 const H2 = styled.h2`
@@ -87,6 +88,9 @@ const RatingPercentage = styled.div`
 
 const List = styled.ul`
   width: 100%;
+  padding-bottom: 2em;
+  margin-bottom: 3em;
+  border-bottom: 1px solid #D9D9D9;
 
   li {
     width: 100%;
