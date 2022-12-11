@@ -9,7 +9,7 @@ import KakaoLoginImage from '../assets/KakaoLoginLarge.png';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding-top: 15%;
+  padding-top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-  width: 30%;
+  width: 20%;
 `;
 
 const H2 = styled.h2`
@@ -99,7 +99,7 @@ const KakaoLoginButton = styled.button`
 
 export default function LoginForm(
   {
-    onClickLogin, onClickSignup, errorMessage, onClickKakaoLogin,
+    onClickLogin, errorMessage, onClickKakaoLogin,
   },
 ) {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -110,7 +110,6 @@ export default function LoginForm(
   };
 
   const handleClickSingup = () => {
-    onClickSignup();
   };
 
   const handleClickKakaoLogin = () => {

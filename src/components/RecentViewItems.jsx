@@ -1,12 +1,18 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import useRecentViewItemStore from '../hooks/useRecentViewItemStore';
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
-  padding-left: 15%;
-  padding-right: 15%;
-  max-width: 2560px;
-  margin-top: 5%;
-  padding-bottom: 10em;
+  width: 100%;
+`;
+
+const H2 = styled.h2`
+  font-size: 1.5em;
+  padding-bottom: 1em;
+  padding-top: 2em;
+  font-weight: bold;
 `;
 
 const List = styled.ul`
@@ -46,7 +52,7 @@ const Price = styled.p`
 
 const PriceBox = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
   padding-top: .5em;
   padding-bottom: .3em;
@@ -58,32 +64,16 @@ const Won = styled.p`
 `;
 
 const ProductName = styled.p`
-  font-size: .8em;
+  font-size: 1.2em;
   color: #444444;
   padding-bottom: .3em;
-  padding-top: .3em;
+  padding-top: .6em;
 `;
 
-const CartButton = styled.button`
-    width: 100%;
-    padding-top: .7em;
-    padding-bottom: .7em;
-    padding-left: 1em;
-    padding-right: 1em;
-    border-radius: 2px;
-    border: 1px solid #D9D9D9;
-    background-color: #FFFFFF;
-    cursor: pointer;
-    font-size: 1em;
-`;
-
-const ButtonWrapper = styled.div`
-    width: 90%;
-    padding-left: 10%;
-`;
-
-const Description = styled.p`
-  font-weight: bold;
+const Maker = styled.p`
+  padding-top: .5em;
+  font-size: 1.5em;
+  color: #999999;
 `;
 
 const Item = styled.button`
@@ -91,66 +81,72 @@ const Item = styled.button`
   background-color: transparent;
   cursor: pointer;
   font-size: 1em;
+  text-align: left;
 `;
 
 const GuideMessage = styled.p`
-  padding-left: 10%;
-  padding-right: 10%;
-  margin-top: 5%;
+  width: 100%;
+  padding-top: 2em;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
-// 이렇게 할려면 페이지가 없어야 하고
-// 아니 그러면 이거 머더라
-export default function RecentProducts(
-  { recentViewItems, onClickRecentItemaddCart, onClickCartItem },
-) {
-  const handleClickAddCart = (productId) => {
-    onClickRecentItemaddCart(productId);
-  };
 
-  const handleClickProduct = (wishItemId) => {
-    onClickCartItem(wishItemId);
+export default function RecentViewItems({
+  onClickProduct,
+}) {
+  const recentViewItemStore = useRecentViewItemStore();
+  const [recentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
+
+  useEffect(() => {
+    recentViewItemStore.fetchRecentViewItems(recentlyViewProduct);
+  }, []);
+
+  const { recentViewItems } = recentViewItemStore;
+
+  const handleClickProduct = (productId) => {
+    onClickProduct(productId);
   };
 
   if (!recentViewItems.length) {
-    return <GuideMessage>최근 본 상품이 없습니다</GuideMessage>;
+    return (
+      <div>
+        <H2>최근 본 상품</H2>
+        <GuideMessage>최근 본 상품이 없습니다</GuideMessage>
+      </div>
+    );
   }
 
   return (
     <Container>
-      <Description>최근 본 상품을 담아보세요!</Description>
+      <H2>최근 본 상품</H2>
       <List>
-        {recentViewItems.map((recentWishItem) => (
-          <ListItem key={recentWishItem.id}>
+        {recentViewItems.map((recentViewItem) => (
+          <ListItem key={recentViewItem.id}>
             <Item
               type="button"
               onClick={() => handleClickProduct(recentViewItems.id)}
             >
               <Image
-                src={recentWishItem.productImages.find((productImage) => (
+                src={recentViewItem.productImages.find((productImage) => (
                   productImage.thumbnailImage === true
                 )).url}
                 alt="productImage"
                 width="200px"
                 height="200px"
               />
+              <Maker>{recentViewItem.maker}</Maker>
+              <ProductName>{recentViewItem.productName}</ProductName>
               <PriceBox>
                 <Price>
-                  {numberFormat(recentWishItem.price)}
+                  {numberFormat(recentViewItem.price)}
                 </Price>
                 <Won>
                   원
                 </Won>
               </PriceBox>
-              <ProductName>{recentWishItem.productName}</ProductName>
             </Item>
-            <ButtonWrapper>
-              <CartButton
-                type="button"
-                onClick={() => handleClickAddCart(recentWishItem.id)}
-              >
-                장바구니 추가
-              </CartButton>
-            </ButtonWrapper>
           </ListItem>
         ))}
       </List>

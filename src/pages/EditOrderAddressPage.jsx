@@ -7,7 +7,7 @@ import useUserStore from '../hooks/useUserStore';
 const Container = styled.div`
     padding-inline: 15%;
     padding-top: 3em;
-    width: 100%;
+    width: 100%;  
 `;
 
 export default function EditOrderAddressPage() {

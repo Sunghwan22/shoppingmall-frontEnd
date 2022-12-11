@@ -81,7 +81,7 @@ export default function SearchProductForm() {
   };
 
   if (pathName === 'product') {
-    return;
+    return null;
   }
 
   return (

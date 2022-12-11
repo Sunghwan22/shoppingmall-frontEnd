@@ -5,6 +5,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import CartItems from '../components/CartItems';
 import RecentProducts from '../components/RecentProducts';
 import SelectOptionModal from '../components/SelectOptionModal';
+import SelectProductModal from '../components/SelectProductModal';
 import WishItems from '../components/WishItems';
 import useCartStore from '../hooks/useCartStore';
 import useProductStore from '../hooks/useProductStore';
@@ -21,7 +22,7 @@ const BottomBanner = styled.div`
     position: fixed;
     bottom: 0%;
     height: 80px;
-    background: linear-gradient(to left, #83a4d4, #b6fbff);
+    background-color: #35992D;
     font-size: 1.6em;
 `;
 
@@ -86,6 +87,7 @@ export default function CartPage() {
   const navigate = useNavigate();
 
   const [selectOption, setSelectOption] = useState(false);
+  const [selectProductModal, setSelectProductModal] = useState(false);
 
   const [accessToken] = useLocalStorage('accessToken', '');
   const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
@@ -104,8 +106,6 @@ export default function CartPage() {
   const {
     cartItems, checkItems, orderAmount, checkedCartItem, productType,
   } = cartStore;
-
-  const { wishItems } = wishItemStore;
 
   const {
     product, totalPayment, quantity,
@@ -144,6 +144,7 @@ export default function CartPage() {
 
   const handleClickTotalOrder = () => {
     if (!checkItems.length) {
+      setSelectProductModal(true);
       return;
     }
 
@@ -225,6 +226,7 @@ export default function CartPage() {
 
   const onClickCancel = () => {
     setSelectOption(false);
+    setSelectProductModal(false);
   };
 
   return (
@@ -266,7 +268,7 @@ export default function CartPage() {
         </PriceBox>
       </BottomBanner>
       <WishItems
-        wishItems={wishItems}
+        accessToken={accessToken}
         onClickWishItemaddCart={onClickWishItemaddCart}
         onClickCartItem={onClickCartItem}
       />
@@ -292,6 +294,11 @@ export default function CartPage() {
           />
         )
         : null}
+      {selectProductModal ? (
+        <SelectProductModal
+          onClickCancel={onClickCancel}
+        />
+      ) : null}
     </Container>
   );
 }

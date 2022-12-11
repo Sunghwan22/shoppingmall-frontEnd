@@ -16,6 +16,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import OrderSuccess from './components/OrderSuccess';
 import SearchProductForm from './components/SearchProductForm';
+import MyPage from './pages/MyPage';
 
 const Main = styled.main`
   min-width: 768px;
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/edit-orderForm" element={<EditOrderFormPage />} />
             <Route path="/oauth/callback/kakao" element={<KakaoRedirectPage />} />
             <Route path="/edit-orderAddress" element={<EditOrderAddressPage />} />
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </Main>
       </ModalProvider>

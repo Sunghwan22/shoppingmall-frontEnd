@@ -1,19 +1,33 @@
-import { apiService } from '../services/APIService';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import HomePageWishItems from '../components/HomePageWishItems';
+import RecentViewItem from '../components/RecentViewItems';
+
+const Container = styled.div`
+  width: 100%;
+  padding-inline: 15%;
+  padding-top: 2em;
+`;
 
 export default function HomePage() {
-  const handleClickKakao = () => {
-    apiService.testKakao();
+  const [accessToken] = useLocalStorage('accessToken', '');
+
+  const navigate = useNavigate();
+
+  const onClickProduct = (productId) => {
+    navigate(`/product/${productId}`);
   };
 
   return (
-    <div>
-      <p>Hello, world</p>
-      <button
-        onClick={handleClickKakao}
-        type="button"
-      >
-        흐에!
-      </button>
-    </div>
+    <Container>
+      <RecentViewItem
+        onClickProduct={onClickProduct}
+      />
+      <HomePageWishItems
+        accessToken={accessToken}
+        onClickProduct={onClickProduct}
+      />
+    </Container>
   );
 }
