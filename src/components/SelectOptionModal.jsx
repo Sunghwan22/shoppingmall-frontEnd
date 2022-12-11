@@ -5,7 +5,6 @@ import numberFormat from '../utils/NumberFormat';
 import AddCartImage from '../assets/addcart.png';
 
 const StyledModal = Modal.styled`
-    font-size : .8em;
     width: 30%;
     height : 100%;
     display: flex;
@@ -18,7 +17,8 @@ const StyledModal = Modal.styled`
 
 const ProductOption = styled.select`
   width: 90%;
-  padding: 0.3em;
+  font-size: 1.3em;
+  padding: 1em;
   margin-bottom: 1em;
   cursor: pointer;
 `;
@@ -26,11 +26,12 @@ const ProductOption = styled.select`
 const PayInformation = styled.div`
   width: 90%;
   padding-top: .5em;
-  padding-bottom: .5em;
+  /* padding-bottom: em; */
   border-radius: .4em;
   margin-top: .5em;
   margin-bottom: .5em;
   background-color: #f0eded;
+  height: 20%;
 
   p{
     padding-top: 1em;
@@ -61,12 +62,14 @@ const PlusButton = styled.button`
 const PayMoeny = styled.p`
     display:  flex;
     width: 90%;
+    height: 100%;
     justify-content: flex-end;
     align-items: center;
 
+    padding-top: 2em;
     color: red;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 2em;
 
     span {
       padding-right: 1.5em;
@@ -93,6 +96,7 @@ const Title = styled.h2`
   padding-bottom: 1em;
   border-bottom: 2px solid ;
   padding-top: 2em;
+  font-size: 1.5em;
 `;
 
 const ProductImageAndName = styled.div`
@@ -109,10 +113,11 @@ const Label = styled.label`
   display: flex;
   width: 90%;
   padding-bottom: .5em;
+  font-size: 1.5em;
 `;
 
 const QuantityBox = styled.div`
-  width: 30%;
+  width: 20%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -124,11 +129,12 @@ const QuantityBox = styled.div`
 const AddCartButton = styled.button`
     width: 100%;
     margin-top: 10em;
-    padding-top: 1em;
+    padding-top: .5em;
     padding-bottom: 1em;
     background-color: transparent;
     border: 1px solid #e4e1e1;
     cursor: pointer;
+    font-size: 1.5em;
 `;
 
 const CartButtonBox = styled.div`
@@ -138,6 +144,10 @@ const CartButtonBox = styled.div`
 const Image = styled.img`
   background-size: cover;
   padding-right: .5em;
+`;
+
+const ProductName = styled.p`
+  font-size: 1.5em;
 `;
 
 export default function SelectOptionModal({
@@ -199,9 +209,9 @@ export default function SelectOptionModal({
               productImage.thumbnailImage === true
             )).url}
             alt="productImage"
-            width="100px"
+            width="200px"
           />
-          <p>{product.productName}</p>
+          <ProductName>{product.productName}</ProductName>
         </ProductImageAndName>
         <Label htmlfor="product-option">
           옵션선택(필수)
@@ -261,7 +271,7 @@ export default function SelectOptionModal({
             <Image
               src={AddCartImage}
               alt="addCartImage"
-              width="20px"
+              width="50px"
             />
             장바구니 추가
           </AddCartButton>

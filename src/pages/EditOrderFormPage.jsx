@@ -1,7 +1,14 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import CartItemEditForm from '../components/CartItemEditForm';
 import useCartStore from '../hooks/useCartStore';
+
+const Container = styled.div`
+  width: 100%;
+  min-height: 100%;
+  padding-inline: 15%;
+`;
 
 export default function EditOrderFormPage() {
   const location = useLocation();
@@ -43,7 +50,7 @@ export default function EditOrderFormPage() {
   };
 
   return (
-    <div>
+    <Container>
       <CartItemEditForm
         cartItem={cartItem}
         options={options}
@@ -57,6 +64,6 @@ export default function EditOrderFormPage() {
         onClickConfirm={onClickConfirm}
         guideMessage={guideMessage}
       />
-    </div>
+    </Container>
   );
 }

@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import useUserStore from '../hooks/useUserStore';
 
 export default function KakaoRedirectPage() {
-  const [, setAccessToekn] = useLocalStorage('accessToken', '');
+  const [, setAccessToken] = useLocalStorage('accessToken', '');
 
   const navigate = useNavigate();
 
@@ -16,17 +16,11 @@ export default function KakaoRedirectPage() {
   const fetchKakaoLoginResult = async () => {
     const data = await userStore.sendAuthcode(authCode);
 
-    const { accessToken, state, name } = data;
+    const { accessToken } = data;
 
-    setAccessToekn(accessToken);
+    setAccessToken(accessToken);
 
-    if (state === 'UNREGISTERED') {
-      navigate('/signUp', {
-        state: {
-          name,
-        },
-      });
-    }
+    navigate(-2);
   };
 
   useEffect(() => {

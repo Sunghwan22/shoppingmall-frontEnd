@@ -7,7 +7,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 `;
 
 const H2 = styled.h2`
@@ -21,7 +20,13 @@ const List = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr; 
+
+  li {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 const Image = styled.img`
@@ -48,12 +53,14 @@ export default function ProductDetailDescription(
       </H2>
       <List>
         {subProductImages.map((productImage) => (
-          <Image
-            key={v4()}
-            src={productImage.url}
-            alt="productImage"
-            width="100%"
-          />
+          <li key={v4()}>
+            <Image
+              // src={productImage.url}
+              src="https://newsimg.sedaily.com/2022/10/01/26C6IEIKFR_1.jpg"
+              alt="productImage"
+              width="50%"
+            />
+          </li>
         ))}
       </List>
       <Description>{product.description}</Description>

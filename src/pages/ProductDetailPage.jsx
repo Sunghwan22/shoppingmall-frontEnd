@@ -226,7 +226,11 @@ export default function ProductDetailPage() {
   };
 
   const onClickConfirm = () => {
-    navigate('/login');
+    navigate('/login', {
+      state: {
+        productId,
+      },
+    });
     setLoginConfirm(false);
   };
 
@@ -295,7 +299,7 @@ export default function ProductDetailPage() {
         totalInquiryNumber={totalInquiryNumber}
         inquiryPageNumbers={inquiryPageNumbers}
         onClickInquiryPageNumbers={onClickInquiryPageNumbers}
-        onClickInquiry={onClickInquiry}
+        onClickInquiry={onClickInquiry} //
         inquiry={inquiry}
         onClickFindMyInquiries={onClickFindMyInquiries}
         onClickWriteInquiry={onClickWriteInquiry}

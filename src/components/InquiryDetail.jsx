@@ -61,6 +61,10 @@ export default function InquiryDetail(
     return (<GuideMessage>접근 권한이 없습니다</GuideMessage>);
   }
 
+  if (!inquiry.answers) {
+    return <p>now loading</p>;
+  }
+
   return (
     <Container>
       <InquiryContent>{inquiry.content}</InquiryContent>

@@ -7,8 +7,7 @@ import kakaoLoginConfig from '../kakaoLoginConfig';
 import { apiService } from '../services/APIService';
 
 const Container = styled.div`
-  width: 120%;
-  padding-left: 15%;
+  width: 100%;
 `;
 
 export default function LoginFormPage() {
@@ -28,16 +27,11 @@ export default function LoginFormPage() {
     if (accessToken) {
       setAccessToken(accessToken);
       apiService.setAccessToken(accessToken);
-      navigate('/');
     }
-
+    // 카카오 로그인 성공할 시에 리다이렉트를 시켜주는 uri가 있나
     if (productId) {
       navigate(`/product/${productId}`);
     }
-  };
-
-  const onClickSignup = () => {
-    navigate('/signup');
   };
 
   const onClickKakaoLogin = () => {
@@ -48,7 +42,6 @@ export default function LoginFormPage() {
     <Container>
       <LoginForm
         onClickLogin={onClickLogin}
-        onClickSignup={onClickSignup}
         onClickKakaoLogin={onClickKakaoLogin}
         errorMessage={errorMessage}
       />

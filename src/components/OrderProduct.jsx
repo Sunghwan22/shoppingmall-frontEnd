@@ -12,7 +12,7 @@ const Table = styled.table`
   
   
   th {
-    font-weight: bold;
+    font-weight: bold;   
     padding-bottom: 2em;
   }
   
@@ -45,6 +45,7 @@ const ProductImageAndName = styled.td`
   display: flex;
   align-items: center;
   padding-left: 2em;
+  padding-bottom: 2em;
 `;
 
 const ProductName = styled.p`

@@ -17,5 +17,6 @@ module.exports = {
         },
       },
     }],
+    '.+\\.(css|scss|png|jpg|svg|jpeg)$': 'jest-transform-stub',
   },
 };

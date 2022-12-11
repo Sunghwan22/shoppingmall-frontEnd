@@ -304,7 +304,8 @@ export default function ProductInformation(
   return (
     <Container>
       <Image
-        src={thumbnailImage.url}
+        // src={thumbnailImage.url}
+        src="https://newsimg.sedaily.com/2022/10/01/26C6IEIKFR_1.jpg"
         // src="https://img.gqkorea.co.kr/gq/2021/10/style_616f710161913-819x1024.jpg"
         alt="productProfile"
       />
