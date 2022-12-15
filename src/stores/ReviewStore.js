@@ -24,6 +24,9 @@ export default class ReviewStore extends Store {
 
     this.errorMessage = '';
 
+    this.reviewsCurrentpage = 0;
+    this.bestReviewsCurrentpage = 0;
+
     this.listeners = new Set();
   }
 
@@ -36,9 +39,9 @@ export default class ReviewStore extends Store {
       this.errorMessage = message;
     }
 
-    await this.fetchBestReviews({ productId });
+    await this.fetchBestReviews({ productId, page: this.bestReviewsCurrentpage });
 
-    await this.fetchReviews({ productId });
+    await this.fetchReviews({ productId, page: this.reviewsCurrentpage });
 
     this.publish();
   }
@@ -62,11 +65,17 @@ export default class ReviewStore extends Store {
   async fetchReviews({ productId, page = 1 }) {
     const data = await reviewApiService.fetchReviews({ productId, page });
 
-    this.reviews = data.reviews;
-
     this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
 
     this.totalRating = data.totalRating;
+
+    this.reviews = data.reviews.map((review) => {
+      const star = this.ratingStar(review.rating);
+
+      return { ...review, star };
+    });
+
+    this.reviewsCurrentpage = page;
 
     this.totalReviewsNumber = data.totalReviewNumber;
 
@@ -76,9 +85,31 @@ export default class ReviewStore extends Store {
   async fetchBestReviews({ productId, page = 1 }) {
     const data = await reviewApiService.fetchBestReviews({ productId, page });
 
-    this.bestReviews = data.reviews;
-
     this.bestReviewPageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
+
+    this.bestReviews = data.reviews.map((review) => {
+      const star = this.ratingStar(review.rating);
+
+      return { ...review, star };
+    });
+
+    this.bestReviewsCurrentpage = page;
+
+    this.publish();
+  }
+
+  async createReview({
+    reviewImages, rating, content, accessToken,
+    productId, description,
+  }) {
+    await reviewApiService.createReview({
+      reviewImages,
+      rating,
+      content,
+      accessToken,
+      productId,
+      description,
+    });
 
     this.publish();
   }
@@ -93,6 +124,30 @@ export default class ReviewStore extends Store {
     this.isBestReviewDetail = false;
 
     this.publish();
+  }
+
+  ratingStar(number) {
+    if (number === 1) {
+      return '⭐️';
+    }
+
+    if (number === 2) {
+      return '⭐️⭐️';
+    }
+
+    if (number === 3) {
+      return '⭐️⭐️⭐️';
+    }
+
+    if (number === 4) {
+      return '⭐️⭐️⭐️⭐️';
+    }
+
+    if (number === 5) {
+      return '⭐️⭐️⭐️⭐️⭐️';
+    }
+
+    return null;
   }
 }
 

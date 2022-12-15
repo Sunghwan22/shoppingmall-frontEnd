@@ -24,7 +24,7 @@ export default function ProductsPage() {
     productStore.fetchProducts({ page: 1 });
   }, []);
 
-  const { products, pageNumbers } = productStore;
+  const { products, pageNumbers, currentPage } = productStore;
 
   const onClickProduct = (productId) => {
     navigate(`/product/${productId}`);
@@ -34,13 +34,15 @@ export default function ProductsPage() {
     productStore.fetchProducts({ page: number });
   };
 
-  const onClickWishes = (productId) => {
+  const onClickWishes = async (productId) => {
     if (!accessToken) {
       setLoginConfirm(true);
       return;
     }
 
-    wishStore.createWishes(productId, accessToken);
+    await wishStore.createWishes(productId, accessToken);
+
+    await productStore.fetchProducts({ currentPage });
   };
 
   const onClickConfirm = () => {

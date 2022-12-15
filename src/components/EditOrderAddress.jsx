@@ -114,6 +114,7 @@ const Buttons = styled.div`
     border-radius: .2em;
     margin-right: 1em;
     color: white;
+    cursor: pointer;
   }
 
   button:nth-child(2) {
@@ -124,7 +125,6 @@ const Buttons = styled.div`
     border-radius: .2em;
     margin-right: 1em;
     color: black;
-    
     cursor: pointer;
   }
 `;

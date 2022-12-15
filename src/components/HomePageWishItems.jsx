@@ -49,6 +49,7 @@ const Image = styled.img`
 const Price = styled.p`
   font-weight: bold;
   color: #444444;
+  font-size: 1em;
 `;
 
 const PriceBox = styled.div`
@@ -69,6 +70,15 @@ const ProductName = styled.p`
   color: #444444;
   padding-bottom: .3em;
   padding-top: .6em;
+
+  display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 15em;
+    word-break: break-all;
+    font-size: 1em;
+    height: 5em;
 `;
 
 const Maker = styled.p`
@@ -118,7 +128,7 @@ export default function HomePageWishItems(
     );
   }
 
-  if (!wishItems.length) {
+  if (wishItems.length === 0) {
     return (
       <div>
         <H2>찜한 상품</H2>

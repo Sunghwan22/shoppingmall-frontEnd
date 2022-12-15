@@ -28,7 +28,7 @@ const ProductInformation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 3em;
+  padding-left: 3em;      
 `;
 
 const ListItem = styled.li`

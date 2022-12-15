@@ -51,6 +51,25 @@ export default class ReviewApiService extends APIService {
 
     return data;
   }
+
+  async createReview({
+    reviewImages,
+    rating,
+    content,
+    accessToken,
+    productId,
+    description,
+  }) {
+    const url = `${baseurl}/reviews`;
+
+    await axios.post(url, {
+      rating, content, reviewImages, productId, description,
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
 }
 
 export const reviewApiService = new ReviewApiService();

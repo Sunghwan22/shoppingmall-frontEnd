@@ -28,6 +28,8 @@ export default class ProductStore extends Store {
     this.pageNumbers = [];
     this.totalProductsNumber = 0;
 
+    this.currentPage = 0;
+
     this.listeners = new Set();
   }
 
@@ -84,6 +86,8 @@ export default class ProductStore extends Store {
     this.products = data.products;
 
     this.pageNumbers = [...Array(data.pages)].map((number, index) => index + 1);
+
+    this.currentPage = page;
 
     this.publish();
   }

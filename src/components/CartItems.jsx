@@ -1,5 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import useCartStore from '../hooks/useCartStore';
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
@@ -175,33 +178,37 @@ const GuideMessage = styled.p`
     justify-content: center;
     align-items: center;
     padding-top: 5em;
-    padding-left: 15%;
     font-size: 1.7em;
     font-weight: 500;
 `;
 
 export default function CartItems(
   {
-    cartItems,
-    checkItems,
-    onClickSingleCheck,
-    onClickWholeCheck,
-    onClickDeleteCartItem,
     onClickCartItem,
     onClickOrder,
     onClickEditOrder,
   },
 ) {
-  const handleClickAllcheck = (checked) => {
-    onClickWholeCheck(checked);
-  };
+  const [accessToken] = useLocalStorage('accessToken', '');
 
-  const handleClickDelete = () => {
-    onClickDeleteCartItem();
+  const cartStore = useCartStore();
+
+  useEffect(() => {
+    cartStore.fetchCartItems(accessToken);
+  }, []);
+
+  const { cartItems, checkItems } = cartStore;
+
+  const handleClickDeleteCartItem = () => {
+    cartStore.deleteCartItems(accessToken);
   };
 
   const handleClickSingleCheck = (checked, cartItemId) => {
-    onClickSingleCheck(checked, cartItemId);
+    cartStore.Singlecheck(checked, cartItemId);
+  };
+
+  const handleClickAllcheck = (checked) => {
+    cartStore.wholeCheck(checked);
   };
 
   const handleClickCartItem = (productId) => {
@@ -236,7 +243,7 @@ export default function CartItems(
         </Allcheck>
         <DeleteButton
           type="button"
-          onClick={handleClickDelete}
+          onClick={handleClickDeleteCartItem}
         >
           X
           선택 삭제

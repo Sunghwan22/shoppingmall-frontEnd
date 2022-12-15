@@ -3,23 +3,24 @@ import styled from 'styled-components';
 import Modal from 'styled-react-modal';
 
 const StyledModal = Modal.styled`
-  font-size : 1em;
-  width: 25%;
-  height: 20%;
-  display: flex;
-  flex-direction : column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-radius: 15px;
+    font-size : 1em;
+    width: 30%;
+    height: 20%;
+    display: flex;
+    flex-direction : column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 15px;
 
-  p {
-      text-align: center;
-      font-size : 1.5em;
-  }
+    p {
+        text-align: center;
+        font-size : 1.2em;
+    }
 `;
 
 const Buttons = styled.div`
+    width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 2em;
@@ -57,14 +58,12 @@ const StayButton = styled.button`
     }
 `;
 
-export default function LoginConfirmModal(
-  { onClickConfirm, onClickStay },
-) {
+export default function AddCartModal({ onClickStay, onClickNavigateToCart }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const handleClickConfirm = () => {
     setIsOpen(false);
-    onClickConfirm();
+    onClickNavigateToCart();
   };
 
   const handleClickReject = () => {
@@ -78,7 +77,7 @@ export default function LoginConfirmModal(
       onBackgroundClick={handleClickReject}
       onEscapeKeydown={handleClickReject}
     >
-      <p>로그인이 필요한 서비스 입니다 로그인 하시겠습니까?</p>
+      <p>장바구니에 상품이 추가 되었습니다. 장바구니로 이동하시겠습니까?</p>
       <Buttons>
         <ConfirmButton
           type="button"

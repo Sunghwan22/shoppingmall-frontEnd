@@ -27,6 +27,31 @@ export default class OrderApiService {
 
     return data;
   }
+
+  async fetchWriteableReviewProducts({ accessToken, page }) {
+    const url = `${baseurl}/user/me/writeableReviewProducts`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        page,
+      },
+    });
+
+    return data;
+  }
+
+  async fetchWriteableProduct(id) {
+    const url = `${baseurl}/user/me/writeableReviewProducts/${id}`;
+
+    const { data } = await axios.get(url);
+
+    console.log(data);
+
+    return data;
+  }
 }
 
 export const orderApiService = new OrderApiService();

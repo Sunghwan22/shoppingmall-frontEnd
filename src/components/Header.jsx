@@ -17,9 +17,9 @@ const Container = styled.div`
     
     div {
       display: flex;
-      align-items: center;
+      align-items: center;   
     }
-
+      
     a {
       text-decoration: none;
       cursor: pointer;
@@ -151,7 +151,7 @@ export default function Header() {
                 <p>유저 닉네임</p>
               </li>
               <li>
-                <Link to="/myPage">마이페이지</Link>
+                <Link to="/mypage">마이페이지</Link>
               </li>
               <li>
                 <LogoutButton

@@ -1,4 +1,9 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import useCartStore from '../hooks/useCartStore';
+import useProductStore from '../hooks/useProductStore';
+import useRecentViewItemStore from '../hooks/useRecentViewItemStore';
 import numberFormat from '../utils/NumberFormat';
 
 const Container = styled.div`
@@ -21,7 +26,7 @@ const ListItem = styled.li`
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  margin-right: 1em;
+  margin-right: 3em;
   border-radius: 5px;
 
   &:hover{
@@ -58,10 +63,19 @@ const Won = styled.p`
 `;
 
 const ProductName = styled.p`
-  font-size: .8em;
+  font-size: 1em;
   color: #444444;
-  padding-bottom: .3em;
-  padding-top: .3em;
+  padding-bottom: .5em;
+  padding-top: .5em;
+
+  display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 15em;
+    word-break: break-all;
+    font-size: 1em;
+    height: 5em;
 `;
 
 const CartButton = styled.button`
@@ -83,6 +97,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Description = styled.p`
+  font-size: 1.5em;
   font-weight: bold;
 `;
 
@@ -94,39 +109,70 @@ const Item = styled.button`
 `;
 
 const GuideMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10%;
   padding-left: 10%;
   padding-right: 10%;
   margin-top: 5%;
+  font-size: 1.5em;
 `;
-// 이렇게 할려면 페이지가 없어야 하고
-// 아니 그러면 이거 머더라
+
+const H2 = styled.h2`
+  padding-top: 5%;
+  padding-left: 15%;
+  font-size: 1.5em;
+  font-weight: bold;
+`;
+
 export default function RecentProducts(
-  { recentViewItems, onClickRecentItemaddCart, onClickCartItem },
+  { onClickRecentItemaddCart, onClickCartItem },
 ) {
-  const handleClickAddCart = (productId) => {
-    onClickRecentItemaddCart(productId);
+  const [recentlyViewProduct] = useLocalStorage('recentlyViewProduct', '');
+
+  const recentViewItemStore = useRecentViewItemStore();
+  const productStore = useProductStore();
+  const cartStore = useCartStore();
+
+  useEffect(() => {
+    if (recentlyViewProduct.length !== 2 || recentlyViewProduct.length !== 0) {
+      recentViewItemStore.fetchRecentViewItems(recentlyViewProduct);
+    }
+  }, []);
+
+  const { recentViewItems } = recentViewItemStore;
+
+  const handleClickAddCart = async (productId) => {
+    await productStore.fetchProduct(productId);
+    onClickRecentItemaddCart();
+    await cartStore.addRecentViewItem();
   };
 
-  const handleClickProduct = (wishItemId) => {
-    onClickCartItem(wishItemId);
+  const handleClickProduct = (productId) => {
+    onClickCartItem(productId);
   };
 
   if (!recentViewItems.length) {
-    return <GuideMessage>최근 본 상품이 없습니다</GuideMessage>;
+    return (
+      <div>
+        <H2>최근 본 상품을 담아보세요!</H2>
+        <GuideMessage>최근 본 상품이 없습니다</GuideMessage>
+      </div>
+    );
   }
 
   return (
     <Container>
       <Description>최근 본 상품을 담아보세요!</Description>
       <List>
-        {recentViewItems.map((recentWishItem) => (
-          <ListItem key={recentWishItem.id}>
+        {recentViewItems.map((recentViewItem) => (
+          <ListItem key={recentViewItem.id}>
             <Item
               type="button"
-              onClick={() => handleClickProduct(recentViewItems.id)}
+              onClick={() => handleClickProduct(recentViewItem.id)}
             >
               <Image
-                src={recentWishItem.productImages.find((productImage) => (
+                src={recentViewItem.productImages.find((productImage) => (
                   productImage.thumbnailImage === true
                 )).url}
                 alt="productImage"
@@ -135,18 +181,18 @@ export default function RecentProducts(
               />
               <PriceBox>
                 <Price>
-                  {numberFormat(recentWishItem.price)}
+                  {numberFormat(recentViewItem.price)}
                 </Price>
                 <Won>
                   원
                 </Won>
               </PriceBox>
-              <ProductName>{recentWishItem.productName}</ProductName>
+              <ProductName>{recentViewItem.productName}</ProductName>
             </Item>
             <ButtonWrapper>
               <CartButton
                 type="button"
-                onClick={() => handleClickAddCart(recentWishItem.id)}
+                onClick={() => handleClickAddCart(recentViewItem.id)}
               >
                 장바구니 추가
               </CartButton>

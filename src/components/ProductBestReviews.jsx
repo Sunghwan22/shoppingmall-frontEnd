@@ -12,6 +12,7 @@ const PageList = styled.ul`
     padding-bottom: 2em;
     border-bottom: 1px solid #D9D9D9;
     padding-top: 1em;
+    width: 100%;
 
     li {
       button {
@@ -183,9 +184,7 @@ export default function ProductBestReviews(
             >
               <UserReviewRatingBox>
                 <span>
-                  ★★★★★
-                  {' '}
-                  {' '}
+                  {bestReview.star}
                 </span>
                 <UserReviewRating>
                   {bestReview.rating}
