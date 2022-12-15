@@ -8,8 +8,14 @@ export default class RecentViewItemStore extends Store {
     this.recentViewItems = [];
   }
 
-  async fetchRecentViewItems(recentlyViewProduct) {
-    this.recentViewItems = await productApiService.fetchRecentViewItems(recentlyViewProduct);
+  async fetchRecentViewItems(deleteArray) {
+    if (deleteArray.length === 2) {
+      this.recentViewItems = [];
+      this.publish();
+      return;
+    }
+
+    this.recentViewItems = await productApiService.fetchRecentViewItems(deleteArray);
 
     this.publish();
   }

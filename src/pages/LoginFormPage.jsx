@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
@@ -17,16 +18,22 @@ export default function LoginFormPage() {
 
   const productId = location.state;
 
-  const [, setAccessToken] = useLocalStorage('accessToken', '');
+  const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
   const { errorMessage } = userStore;
 
-  const onClickLogin = async ({ identifier, password }) => {
-    const accessToken = await userStore.login({ identifier, password });
-
+  useEffect(() => {
     if (accessToken) {
-      setAccessToken(accessToken);
-      apiService.setAccessToken(accessToken);
+      navigate(-1);
+    }
+  });
+
+  const onClickLogin = async ({ identifier, password }) => {
+    const receivedAccessToken = await userStore.login({ identifier, password });
+
+    if (receivedAccessToken) {
+      setAccessToken(receivedAccessToken);
+      apiService.setAccessToken(receivedAccessToken);
     }
     // 카카오 로그인 성공할 시에 리다이렉트를 시켜주는 uri가 있나
     if (productId) {

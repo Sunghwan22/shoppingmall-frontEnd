@@ -15,9 +15,7 @@ const H2 = styled.h2`
   padding-bottom: 2em;
   font-size: 1.5em;
   font-weight: bold;
-  background: linear-gradient(to right, #03cd54, #0575e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #000000;
 `;
 
 const TextAreaBox = styled.div`

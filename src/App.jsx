@@ -17,6 +17,8 @@ import Header from './components/Header';
 import OrderSuccess from './components/OrderSuccess';
 import SearchProductForm from './components/SearchProductForm';
 import MyPage from './pages/MyPage';
+import OrderCancel from './components/OrderCancel';
+import OrderFail from './components/OrderFail';
 
 const Main = styled.main`
   min-width: 768px;
@@ -41,8 +43,8 @@ export default function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/orderForm" element={<OrderFormPage />} />
             <Route path="/order/success" element={<OrderSuccess />} />
-            <Route path="/order/cancel" element={<OrderSuccess />} />
-            <Route path="/order/fail" element={<OrderSuccess />} />
+            <Route path="/order/cancel" element={<OrderCancel />} />
+            <Route path="/order/fail" element={<OrderFail />} />
             <Route path="/login" element={<LoginFormPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/edit-orderForm" element={<EditOrderFormPage />} />

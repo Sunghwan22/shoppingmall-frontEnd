@@ -9,7 +9,6 @@ const Container = styled.div`
 
 const H2 = styled.h2`
   font-size: 1.5em;
-  
 `;
 
 const PageList = styled.ul`
@@ -199,9 +198,9 @@ export default function ProductReviews(
             {totalReviewsNumber}
           </p>
         </TotalReviews>
-        <RatingPercentage>
+        {/* <RatingPercentage>
           <p>평점 비율</p>
-        </RatingPercentage>
+        </RatingPercentage> */}
       </ReviewGeneralInformation>
       <div>
         <List>
@@ -221,7 +220,7 @@ export default function ProductReviews(
                   />
                   <Content>
                     <Rating>
-                      ★★★★★
+                      {review.star}
                       {' '}
                       {review.rating}
                       {' '}

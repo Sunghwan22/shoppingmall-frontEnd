@@ -113,6 +113,18 @@ const Tr = styled.tr`
   }
 `;
 
+const NoInquiryContainer = styled.div`
+  padding-inline: 15%;
+  padding-bottom: 5em;
+  padding-top: 5em;
+`;
+
+const GuideMessage = styled.p`
+  padding-top: 5em;
+  text-align: center;
+  font-size: 1.5em;
+`;
+
 export default function ProductInquiries(
   {
     inquiries,
@@ -146,7 +158,30 @@ export default function ProductInquiries(
   };
 
   if (inquiries.length === 0) {
-    return <p>작성된 상품 문의가 없습니다</p>;
+    return (
+      <NoInquiryContainer>
+        <H2>
+          Q&A
+          {' '}
+          {totalInquiryNumber}
+        </H2>
+        <WriteInquiryButton
+          type="button"
+          onClick={handleClickCreateInquiry}
+        >
+          상품 Q&A작성하기
+          {' '}
+        </WriteInquiryButton>
+        <FindMyInquiryButton
+          type="button"
+          onClick={handleClickMyInquiries}
+        >
+          나의 Q&A 조회
+          {' '}
+        </FindMyInquiryButton>
+        <GuideMessage>작성된 상품 문의가 없습니다</GuideMessage>
+      </NoInquiryContainer>
+    );
   }
 
   return (

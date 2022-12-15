@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useLocalStorage } from 'usehooks-ts';
+import AddCartModal from '../components/AddCartModal';
 import LoginConfirmModal from '../components/LoginConfirmModal';
 import ProductBestReviews from '../components/ProductBestReviews';
 
@@ -36,6 +37,7 @@ export default function ProductDetailPage() {
 
   const [accessToken] = useLocalStorage('accessToken', '');
   const [loginConfirm, setLoginConfirm] = useState(false);
+  const [addCart, setAddCart] = useState(false);
   const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
 
   const navigate = useNavigate();
@@ -159,7 +161,7 @@ export default function ProductDetailPage() {
 
     await productStore.addCartItem(productId, accessToken);
 
-    // navigate('/cart');
+    setAddCart(true);
   };
 
   const onClickRecommendation = (reviewId) => {
@@ -236,6 +238,11 @@ export default function ProductDetailPage() {
 
   const onClickStay = () => {
     setLoginConfirm(false);
+    setAddCart(false);
+  };
+
+  const onClickNavigateToCart = () => {
+    navigate('/cart');
   };
 
   return (
@@ -307,6 +314,12 @@ export default function ProductDetailPage() {
       {loginConfirm ? (
         <LoginConfirmModal
           onClickConfirm={onClickConfirm}
+          onClickStay={onClickStay}
+        />
+      ) : null}
+      {addCart ? (
+        <AddCartModal
+          onClickNavigateToCart={onClickNavigateToCart}
           onClickStay={onClickStay}
         />
       ) : null}

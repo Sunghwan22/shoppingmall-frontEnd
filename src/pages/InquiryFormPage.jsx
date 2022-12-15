@@ -30,11 +30,11 @@ export default function InquiryFormPage() {
 
     await inquiryStore.createInquiry(productId, accessToken, inquiryInformation);
 
-    navigate(`/products/${productId}`);
+    navigate(`/product/${productId}`);
   };
 
   const onClickCancel = () => {
-    navigate(`/products/${productId}`);
+    navigate(`/product/${productId}`);
   };
 
   const onClickConfirm = () => {

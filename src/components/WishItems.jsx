@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import useCartStore from '../hooks/useCartStore';
+import useProductStore from '../hooks/useProductStore';
 import useWishItemStore from '../hooks/useWishItemStore';
 import numberFormat from '../utils/NumberFormat';
 
@@ -22,7 +24,7 @@ const ListItem = styled.li`
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  margin-right: 1em;
+  margin-right: 3em;
   border-radius: 5px;
 
   &:hover{
@@ -62,6 +64,15 @@ const ProductName = styled.p`
   color: #444444;
   padding-bottom: .3em;
   padding-top: .3em;
+
+  display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 15em;
+    word-break: break-all;
+    font-size: .7em;
+    height: 4em;
 `;
 
 const CartButton = styled.button`
@@ -103,15 +114,19 @@ export default function WishItems(
   { onClickWishItemaddCart, onClickCartItem, accessToken },
 ) {
   const wishItemStore = useWishItemStore();
+  const productStore = useProductStore();
+  const cartStore = useCartStore();
 
   useEffect(() => {
     wishItemStore.fetchWishItems(accessToken);
-  });
+  }, []);
 
   const { wishItems } = wishItemStore;
 
-  const handleClickAddCart = (wishItemId) => {
-    onClickWishItemaddCart(wishItemId);
+  const handleClickAddCart = async (wishItemId) => {
+    await productStore.fetchProduct(wishItemId);
+    onClickWishItemaddCart();
+    await cartStore.addWishItem();
   };
 
   const handleClickProduct = (wishItemId) => {

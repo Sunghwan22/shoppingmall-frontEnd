@@ -55,8 +55,8 @@ export default function ProductDetailDescription(
         {subProductImages.map((productImage) => (
           <li key={v4()}>
             <Image
-              // src={productImage.url}
-              src="https://newsimg.sedaily.com/2022/10/01/26C6IEIKFR_1.jpg"
+              src={productImage.url}
+              // src="https://newsimg.sedaily.com/2022/10/01/26C6IEIKFR_1.jpg"
               alt="productImage"
               width="50%"
             />

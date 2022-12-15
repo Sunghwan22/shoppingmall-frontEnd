@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from 'styled-react-modal';
+import { useLocalStorage } from 'usehooks-ts';
 import numberFormat from '../utils/NumberFormat';
 import AddCartImage from '../assets/addcart.png';
+import useProductStore from '../hooks/useProductStore';
+import useWishItemStore from '../hooks/useWishItemStore';
+import useCartStore from '../hooks/useCartStore';
+import useRecentViewItemStore from '../hooks/useRecentViewItemStore';
 
 const StyledModal = Modal.styled`
     width: 30%;
@@ -151,24 +156,36 @@ const ProductName = styled.p`
 `;
 
 export default function SelectOptionModal({
-  product, totalPayment, onClickCancel, quantity, guideMessage,
-  onClickSelectOption, onClickAddQuantity, onClickReduceQuantity, onClickResetOption,
-  onClickAddCartItem,
+  onClickCancel,
 }) {
+  const [accessToken] = useLocalStorage('accessToken', '');
+  const [recentlyViewProduct, setRecentlyViewProduct] = useLocalStorage('recentlyViewProduct', JSON.stringify([]));
+
+  const productStore = useProductStore();
+  const wishItemStore = useWishItemStore();
+  const cartStore = useCartStore();
+  const recentViewItemStore = useRecentViewItemStore();
+
   const [isOpen, setIsOpen] = useState(true);
   const [selectedOption, setSelectedOption] = useState(false);
+
+  const {
+    product, totalPayment, quantity, guideMessage, selectedProductOption,
+  } = productStore;
+
+  const { productType } = cartStore;
 
   const handleClickClose = () => {
     setIsOpen(false);
     onClickCancel();
   };
 
-  const handleClickOption = (event) => {
+  const handleClickOption = async (event) => {
     const { value } = event.target;
 
     if (value === '옵션을 선택해주세요') {
       setSelectedOption(false);
-      onClickResetOption();
+      await productStore.resetQuantityAndTotalPayment();
       return;
     }
 
@@ -176,19 +193,53 @@ export default function SelectOptionModal({
 
     setSelectedOption(true);
 
-    onClickSelectOption(productOption);
+    const amount = productOption.addAmount;
+
+    await productStore.selectOption(amount, productOption);
   };
 
-  const handleClickMinus = () => {
-    onClickReduceQuantity();
+  const handleClickMinus = async () => {
+    await productStore.reduceQuantity();
   };
 
-  const handleClickPlus = () => {
-    onClickAddQuantity();
+  const handleClickPlus = async () => {
+    await productStore.addQuantity();
   };
 
-  const handleClickAddCart = () => {
-    onClickAddCartItem(product.id);
+  const handleClickAddCart = async () => {
+    if (!selectedProductOption) {
+      return;
+    }
+
+    if (Object.keys(selectedProductOption).length === 0) {
+      await productStore.checkOption();
+      return;
+    }
+
+    if (productType === 'recentViewItem') {
+      const deleteArray = JSON.parse(recentlyViewProduct).filter((viewProductId) => (
+        viewProductId !== product.id
+      ));
+
+      await setRecentlyViewProduct(JSON.stringify(deleteArray));
+
+      await productStore.addCartItem(product.id, accessToken);
+
+      await recentViewItemStore.fetchRecentViewItems(recentlyViewProduct);
+    }
+
+    if (productType === 'wishItem') {
+      await productStore.addCartItem(product.id, accessToken);
+
+      await wishItemStore.deleteWishItem(product.id, accessToken);
+
+      await wishItemStore.fetchWishItems(accessToken);
+    }
+
+    await cartStore.fetchCartItems(accessToken);
+
+    setIsOpen(false);
+    onClickCancel();
   };
 
   if (!product || !product.productImages) {
