@@ -28,8 +28,8 @@ export default class OrderApiService {
     return data;
   }
 
-  async fetchWriteableReviewProducts({ accessToken, page }) {
-    const url = `${baseurl}/user/me/writeableReviewProducts`;
+  async fetchWriteableOrders({ accessToken, page }) {
+    const url = `${baseurl}/user/me/writeableReviewOrders`;
 
     const { data } = await axios.get(url, {
       headers: {
@@ -44,11 +44,9 @@ export default class OrderApiService {
   }
 
   async fetchWriteableProduct(id) {
-    const url = `${baseurl}/user/me/writeableReviewProducts/${id}`;
+    const url = `${baseurl}/user/me/writeableReviewOrders/${id}`;
 
     const { data } = await axios.get(url);
-
-    console.log(data);
 
     return data;
   }

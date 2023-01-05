@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Heart from '../assets/Heart.png';
-import DarkHeart from '../assets/darkHeart.png';
 
 import numberFormat from '../utils/NumberFormat';
 
