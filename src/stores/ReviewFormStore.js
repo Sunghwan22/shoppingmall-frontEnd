@@ -6,9 +6,11 @@ export default class ReviewFormStore extends Store {
 
     this.rating = 0;
     this.content = '';
-    this.reviewImages = [];
+    this.preViewImages = [];
 
     this.errorMessage = '';
+
+    this.uploadImages = [];
   }
 
   async changeRating(rating) {
@@ -29,14 +31,14 @@ export default class ReviewFormStore extends Store {
     this.publish();
   }
 
-  async changeUploadImage(images) {
-    this.reviewImages = [...images];
+  async changePreViewImage(images) {
+    this.preViewImages = [...images];
 
     this.publish();
   }
 
-  async deletePreviewImage(image) {
-    this.reviewImages = this.reviewImages.filter((element) => image !== element);
+  async changeUploadImage(imageList) {
+    this.uploadImages = imageList;
 
     this.publish();
   }

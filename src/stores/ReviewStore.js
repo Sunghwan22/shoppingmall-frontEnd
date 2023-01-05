@@ -99,16 +99,17 @@ export default class ReviewStore extends Store {
   }
 
   async createReview({
-    reviewImages, rating, content, accessToken,
-    productId, description,
+    uploadImages, rating, content, accessToken,
+    productId, description, writeReviewId,
   }) {
     await reviewApiService.createReview({
-      reviewImages,
+      uploadImages,
       rating,
       content,
       accessToken,
       productId,
       description,
+      writeReviewId,
     });
 
     this.publish();

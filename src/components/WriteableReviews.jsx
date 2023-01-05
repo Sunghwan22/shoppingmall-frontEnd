@@ -87,7 +87,7 @@ export default function WriteableReviews({ accessToken, onClickWriteReview }) {
   const writeableReviewProductStore = useWriteableReviewProductStore();
 
   useEffect(() => {
-    writeableReviewProductStore.fetchWriteableProducts({ accessToken });
+    writeableReviewProductStore.fetchWriteableOrders({ accessToken });
   }, []);
 
   const { writeableReviewProducts, pageNumbers } = writeableReviewProductStore;

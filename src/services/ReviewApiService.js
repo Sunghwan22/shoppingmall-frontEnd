@@ -6,6 +6,10 @@ import APIService from './APIService';
 const baseurl = config.apiBaseUrl;
 
 export default class ReviewApiService extends APIService {
+  constructor() {
+    super();
+  }
+
   async fetchRecommendation(accessToken, reviewId) {
     const url = `${baseurl}/reviews/${reviewId}/recommendations`;
 
@@ -53,22 +57,38 @@ export default class ReviewApiService extends APIService {
   }
 
   async createReview({
-    reviewImages,
+    uploadImages,
     rating,
     content,
+    description,
     accessToken,
     productId,
-    description,
+    writeReviewId,
   }) {
-    const url = `${baseurl}/reviews`;
+    const review = {
+      rating,
+      content,
+      description,
+      writeReviewId,
+    };
 
-    await axios.post(url, {
-      rating, content, reviewImages, productId, description,
-    }, {
+    const formdata = new FormData();
+
+    formdata.append('review', JSON.stringify(review));
+
+    uploadImages.forEach((uploadImage) => (
+      formdata.append('multipartFiles', uploadImage)
+    ));
+
+    const url = `${baseurl}/products/${productId}/reviews`;
+
+    const { data } = await axios.post(url, formdata, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data',
       },
     });
+    return data;
   }
 }
 

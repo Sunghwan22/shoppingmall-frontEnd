@@ -150,16 +150,7 @@ const ImageUploadInput = styled.div`
   }
 `;
 
-const DeleteButton = styled.button`
-   width: 15%;
-   height: 15%;
-   border: 1px solid #D9D9D9;
-   font-size: .5em;
-   cursor: pointer;
-   background-color: transparent;
-`;
-
-const PreviewImageBox = styled.div`
+const PreviewImageBox = styled.div` 
   width: 50%;
   font-size: 1.5em;
   display: flex;   
@@ -172,6 +163,13 @@ const Error = styled.p`
   align-items: center;
   padding-bottom: 3em;
   color: red;
+`;
+
+const ContentLength = styled.p`
+  font-size: .6em;
+  width: 90%;
+  padding-top: 1em;
+  text-align: end;
 `;
 
 export default function WriteReviewForm({
@@ -193,7 +191,7 @@ export default function WriteReviewForm({
 
   const { writeableReviewProduct } = writeableReviewProductStore;
   const {
-    reviewImages, rating, content, errorMessage,
+    preViewImages, rating, content, errorMessage, uploadImages,
   } = reviewFormStore;
 
   const handleClickStar = async (index) => {
@@ -219,7 +217,9 @@ export default function WriteReviewForm({
   const handleChangeUploadFile = async (event) => {
     const imageList = [...event.target.files];
 
-    const imageUrlLists = [...reviewImages];
+    await reviewFormStore.changeUploadImage(imageList);
+
+    const imageUrlLists = [];
 
     imageList.forEach((image) => (
       imageUrlLists.push(URL.createObjectURL(image))
@@ -231,11 +231,7 @@ export default function WriteReviewForm({
       return;
     }
 
-    await reviewFormStore.changeUploadImage(imageUrlLists);
-  };
-
-  const handleClickDeletePreviewImage = async (image) => {
-    await reviewFormStore.deletePreviewImage(image);
+    await reviewFormStore.changePreViewImage(imageUrlLists);
   };
 
   const handleSubmit = async (event) => {
@@ -252,12 +248,13 @@ export default function WriteReviewForm({
     }
 
     await reviewStore.createReview({
-      reviewImages,
+      uploadImages,
       rating,
       content,
       accessToken,
       productId: writeableReviewProduct.productId,
       description: writeableReviewProduct.description,
+      writeReviewId,
     });
   };
 
@@ -308,10 +305,16 @@ export default function WriteReviewForm({
           <textarea
             minLength="20"
             rows="20"
+            maxLength="500"
             placeholder="내용"
             onChange={(event) => handleChangeContent(event)}
           />
         </ReviewForm>
+        <ContentLength>
+          {content.length}
+          {' '}
+          / 500자
+        </ContentLength>
         <ImageUploadInput>
           <label htmlFor="uploadFile">
             이미지 업로드
@@ -325,8 +328,8 @@ export default function WriteReviewForm({
           />
         </ImageUploadInput>
         <PreviewImages>
-          {reviewImages.length ? (
-            reviewImages.map((image) => (
+          {preViewImages.length ? (
+            preViewImages.map((image) => (
               <PreviewImageBox>
                 <PreviewImage
                   key={image}
@@ -335,12 +338,6 @@ export default function WriteReviewForm({
                   width="200px"
                   height="180px"
                 />
-                <DeleteButton
-                  type="button"
-                  onClick={() => handleClickDeletePreviewImage(image)}
-                >
-                  X
-                </DeleteButton>
               </PreviewImageBox>
             ))
           ) : null}

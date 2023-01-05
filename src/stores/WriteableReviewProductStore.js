@@ -9,8 +9,8 @@ export default class WriteableReviewProductStore extends Store {
     this.pageNumbers = [];
   }
 
-  async fetchWriteableProducts({ accessToken, page = 1 }) {
-    const data = await orderApiService.fetchWriteableReviewProducts({ accessToken, page });
+  async fetchWriteableOrders({ accessToken, page = 1 }) {
+    const data = await orderApiService.fetchWriteableOrders({ accessToken, page });
 
     this.writeableReviewProducts = data.orders;
 

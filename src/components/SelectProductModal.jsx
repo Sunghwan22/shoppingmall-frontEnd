@@ -23,7 +23,7 @@ const ConfirmButton = styled.button`
     cursor: pointer;
     background-color: transparent;
 
-    :hover {
+    :hover {   
         background-color: #D9D9D9;
     }
 `;
